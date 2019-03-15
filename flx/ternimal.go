@@ -1,0 +1,68 @@
+package flx
+
+import (
+	"bufio"
+	"github.com/dejavuzhou/felix/models"
+	"golang.org/x/crypto/ssh"
+	"io"
+	"os"
+	"strings"
+)
+
+const sudoPrefix, sudoSuffix = "[sudo] password for ", ": "
+const sudoPrefixLen = len(sudoPrefix)
+
+type SSHTerminal struct {
+	Session            *ssh.Session
+	exitMsg            string
+	stdout             io.Reader
+	stdin              io.Writer
+	stderr             io.Reader
+	Password           string
+	EnableSudoPassword bool
+}
+
+func RunSshTerminal(h *models.Machine, sudoMode bool) error {
+	client := newSshClient(h)
+	defer client.Close()
+	session, err := client.NewSession()
+	if err != nil {
+		return err
+	}
+	defer session.Close()
+	if h.Password == "" {
+		sudoMode = false
+	}
+	s := SSHTerminal{
+		Session:            session,
+		Password:           h.Password,
+		EnableSudoPassword: sudoMode,
+	}
+	return s.interactiveSession()
+}
+
+func enableSudoPassword(t *SSHTerminal) {
+	var (
+		line string
+		r    = bufio.NewReader(t.stdout)
+	)
+	for {
+		b, err := r.ReadByte()
+		if err != nil {
+			break
+		}
+		line += string(b)
+		os.Stdout.Write([]byte{b})
+		if b == byte('\n') {
+			line = ""
+			continue
+		}
+		if len(line) >= sudoPrefixLen && strings.HasPrefix(line, sudoPrefix) && strings.HasSuffix(line, sudoSuffix) {
+			_, err = t.stdin.Write([]byte(t.Password + "\n"))
+			if err != nil {
+				break
+			}
+			os.Stdout.Write([]byte("Felix has input the password for you, No thanks."))
+		}
+	}
+}
