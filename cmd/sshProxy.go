@@ -11,7 +11,7 @@ import (
 
 // proxyCmd represents the proxy command
 var proxyCmd = &cobra.Command{
-	Use:   "proxy",
+	Use:   "sshProxy",
 	Short: "SSH隧道代理: felix proxy ID -l -r",
 	Long:  `代理ssh服务器上127.0.0.1:3306 到本地 127.0.0.1:5555,这样本地就可以通过5555端口访问ssh服务器上3306端口的数据库: felix proxy 2 -l 127.0.0.1:5555 -r 127.0.0.1:3306`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -18,27 +18,20 @@ import (
 	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
-// delCmd represents the del command
-var delCmd = &cobra.Command{
-	Use:   "del",
-	Short: "删除SSH服务器",
-	Long:  `删除ID为2的SSH服务器 felix del 2`,
-	Args:  cobra.MinimumNArgs(1),
+// hostResetCmd represents the hostReset command
+var hostResetCmd = &cobra.Command{
+	Use:   "sshFlush",
+	Short: "清空SSH服务器全部记录",
+	Long:  `删除~/.felix.db SQLite数据库,下次运行命令重建数据库`,
 	Run: func(cmd *cobra.Command, args []string) {
-		id, err := strconv.ParseUint(args[0], 10, 64)
-		if err != nil {
-			cmd.Help()
-			fmt.Println("ID参数必须为正整数")
-		}
-		if err := models.MachineDelete(uint(id)); err != nil {
+		if err := models.FlushSqliteDb(); err != nil {
 			fmt.Println(err)
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(delCmd)
+	rootCmd.AddCommand(hostResetCmd)
 }

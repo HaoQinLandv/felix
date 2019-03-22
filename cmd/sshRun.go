@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/flx"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/spf13/cobra"
@@ -8,11 +9,15 @@ import (
 	"strconv"
 )
 
-// proxyCmd represents the proxy command
-var proxySocksCmd = &cobra.Command{
-	Use:   "socks",
-	Short: "SSH隧道SOCKS代理: felix proxy socks ID",
-	Long:  `把目标SSH服务器ID:2 作为SOCKS代理 felix proxy socks 2 --localPort=1080`,
+// sshCmd represents the ssh command
+var sshCmd = &cobra.Command{
+	Use:   "sshBash",
+	Short: "登陆SSH服务",
+	Long: `
+		第一步: 获取SSH服务器列表 执行命令: felix ls
+		第二步: 获取SSH服务器ID   执行命令: felix ssh 2
+`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			flx.AllMachines("")
@@ -26,14 +31,14 @@ var proxySocksCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal("错误的SSH服务器ID ", err)
 		}
-		if err := flx.RunSocksProxy(h, localPort); err != nil {
-			log.Fatal(err)
+		if err := flx.RunSshTerminal(h, enableSudoMode); err != nil {
+			fmt.Println(err)
 		}
 	},
 }
-var localPort int
+var enableSudoMode bool
 
 func init() {
-	proxyCmd.AddCommand(proxySocksCmd)
-	proxySocksCmd.Flags().IntVar(&localPort, "localPort", 1080, "socks4/5 代理到本地[127.0.0.1]本地端口")
+	rootCmd.AddCommand(sshCmd)
+	sshCmd.Flags().BoolVarP(&enableSudoMode, "sudo", "s", true, "sudo模式:自动帮助你输sudo的密码,默认开启")
 }

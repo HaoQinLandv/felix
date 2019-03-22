@@ -11,7 +11,7 @@ import (
 
 // uploadCmd represents the upload command
 var uploadCmd = &cobra.Command{
-	Use:   "up",
+	Use:   "sshUp",
 	Short: "上传本地文件(目录)到SSH服务器",
 	Long: `用法: felix up 1 --remote=/data/temp --local=/c/Users/zhouqing1/go/src/github.com/dejavuzhou/felix
 	1           : SSH服务器ID,通过 felix ls 命令查询

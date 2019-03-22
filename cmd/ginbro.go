@@ -10,7 +10,7 @@ var appListen, appDir, authTable, authColumn, dbUser, dbPassword, dbAddr, dbName
 
 // restCmd represents the rest command
 var restCmd = &cobra.Command{
-	Use:     "rest",
+	Use:     "ginbro",
 	Short:   "根据数据库配置生成RESTfulAPIs APP",
 	Long:    `generate a RESTful APIs app with gin and gorm for gophers`,
 	Example: `felix rest -u root -p password -a "127.0.0.1:3306" -d dbname -c utf8 --authTable=users --authColumn=pw_column -o=FelixRestOut"`,

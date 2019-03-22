@@ -10,7 +10,7 @@ import (
 
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
-	Use:   "dl",
+	Use:   "sshDl",
 	Short: "从服务器上下载文件",
 	Long:  ``,
 	Args:  cobra.MinimumNArgs(1),
