@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"log"
 	"os"
@@ -54,11 +53,15 @@ func importHost() {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		if line := strings.TrimSpace(scanner.Text()); line != "" {
-			if !strings.Contains(line, "#") {
-				fmt.Println("开始部署:", line)
-				models.MachineAdd(line, line, imUser, imPassword, imKey, imAuth, 22)
+		line := scanner.Text()
+		if !strings.Contains(line, "#") {
+			cells := strings.Fields(line)
+			if len(cells) >= 2 {
+				addrT := cells[0]
+				ip := cells[1]
+				models.MachineAdd(addrT, addrT, ip, imUser, imPassword, imKey, imAuth, 22)
 			}
+
 		}
 	}
 	if err := scanner.Err(); err != nil {

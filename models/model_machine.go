@@ -6,6 +6,7 @@ type Machine struct {
 	gorm.Model
 	Name     string `json:"name" gorm:"type:varchar(50);unique_index"`
 	Host     string `json:"host" gorm:"type:varchar(50)"`
+	Ip       string `json:"host" gorm:"type:varchar(80)"`
 	Port     uint   `json:"port" gorm:"type:int(6)"`
 	User     string `json:"user" gorm:"type:varchar(20)"`
 	Password string `json:"password"`
@@ -13,8 +14,8 @@ type Machine struct {
 	Type     string `json:"type" gorm:"type:varchar(20)"`
 }
 
-func MachineAdd(name, addr, user, password, key, auth string, port uint) error {
-	ins := &Machine{Name: name, Host: addr, User: user, Password: password, Key: key, Type: auth, Port: port}
+func MachineAdd(name, addr, ip, user, password, key, auth string, port uint) error {
+	ins := &Machine{Name: name, Ip: ip, Host: addr, User: user, Password: password, Key: key, Type: auth, Port: port}
 	return db.Create(ins).Error
 }
 

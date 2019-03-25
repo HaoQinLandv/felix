@@ -17,13 +17,13 @@ var addCmd = &cobra.Command{
 			cmd.Help()
 			return
 		}
-		if err := models.MachineAdd(name, addr, user, password, key, authType, port); err != nil {
+		if err := models.MachineAdd(name, addr, "", user, password, key, authType, port); err != nil {
 			fmt.Println(err)
 		}
 	},
 }
 
-var key, name, addr, user, password, authType string
+var key, name, addr, ip, user, password, authType string
 var port uint
 
 func init() {
