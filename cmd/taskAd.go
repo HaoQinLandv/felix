@@ -1,31 +1,30 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/dejavuzhou/felix/models"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
 // taskadCmd represents the taskad command
 var taskadCmd = &cobra.Command{
 	Use:   "taskAd",
-	Short: "create a task into the task list",
-	Long:  `usage: felix taskad "do some awesome stuff"`,
+	Short: "添加任务",
+	Long:  ``,
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("taskad called")
+		content := args[0]
+		err := models.TaskAdd(content, category, deadline)
+		if err != nil {
+			color.Red("%s", err)
+		}
 	},
 }
+var deadline, category string
 
 func init() {
 	rootCmd.AddCommand(taskadCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// taskadCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// taskadCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	taskadCmd.Flags().StringVarP(&category, "category", "c", "defaul", "task category")
+	taskadCmd.Flags().StringVarP(&deadline, "deadline", "d", "", "task deadline")
 }

@@ -3,9 +3,11 @@ package flx
 import (
 	"fmt"
 	"github.com/dejavuzhou/felix/models"
+	"github.com/mattn/go-isatty"
 	"github.com/olekukonko/tablewriter"
 	"log"
 	"os"
+	"runtime"
 	"strconv"
 )
 
@@ -17,6 +19,8 @@ func AllMachines(search string) {
 	table.SetHeader([]string{"ID", "名称", "Addr", "用户名", "私钥", "登陆类型", "端口"})
 	table.SetBorder(true) // Set Border to false
 	table.SetCaption(true, caption)
+	table.SetAutoMergeCells(true)
+	table.SetRowLine(true)
 
 	setListTableColor(table)
 
@@ -38,4 +42,24 @@ func fetchMachineToRows(search string) [][]string {
 		rows = append(rows, one)
 	}
 	return rows
+}
+func setListTableColor(table *tablewriter.Table) {
+	if isatty.IsCygwinTerminal(os.Stdout.Fd()) || (runtime.GOOS != "windows") {
+		table.SetHeaderColor(
+			tablewriter.Colors{tablewriter.FgHiRedColor, tablewriter.Bold},
+			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold},
+			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold},
+			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold},
+			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold},
+			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold},
+			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold})
+		table.SetColumnColor(
+			tablewriter.Colors{tablewriter.FgRedColor},
+			tablewriter.Colors{tablewriter.FgCyanColor},
+			tablewriter.Colors{tablewriter.FgCyanColor},
+			tablewriter.Colors{tablewriter.FgCyanColor},
+			tablewriter.Colors{tablewriter.FgCyanColor},
+			tablewriter.Colors{tablewriter.FgCyanColor},
+			tablewriter.Colors{tablewriter.FgCyanColor})
+	}
 }

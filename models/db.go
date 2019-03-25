@@ -26,7 +26,7 @@ func CreateSqliteDB(verbose bool) {
 		log.Fatalf("master fail to open its sqlite db in %s. please install master first. error:%s", dbPath, err)
 	} else {
 		db = sqlite
-		db.AutoMigrate(Config{}, Machine{})
+		db.AutoMigrate(Config{}, Machine{}, Task{})
 		db.LogMode(verbose)
 	}
 }

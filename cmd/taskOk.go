@@ -1,8 +1,10 @@
 package cmd
 
 import (
-	"fmt"
+	"github.com/dejavuzhou/felix/models"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
 // taskdnCmd represents the taskdn command
@@ -10,8 +12,15 @@ var taskdnCmd = &cobra.Command{
 	Use:   "taskOk",
 	Short: "mark a task has been done",
 	Long:  `usage:felix taskdn 1`,
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("taskdn called")
+		id, err := strconv.ParseUint(args[0], 10, 64)
+		if err != nil {
+			color.Red("第一个参数必须为正整数:[%s]", err)
+		}
+		if err := models.TaskUpdate(uint(id), "DONE"); err != nil {
+			color.Red("%s", err)
+		}
 	},
 }
 

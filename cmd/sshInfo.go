@@ -7,6 +7,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	"os"
+	"runtime"
 	"strconv"
 )
 
@@ -37,6 +38,7 @@ func init() {
 
 func renderInfoTable(m *models.Machine) {
 	data := [][]string{
+		{"ID", strconv.Itoa(int(m.ID))},
 		{"Name", m.Name},
 		{"Host", m.Host},
 		{"IP", m.Ip},
@@ -54,7 +56,7 @@ func renderInfoTable(m *models.Machine) {
 	table.Render()
 }
 func setInfoTableColor(table *tablewriter.Table) {
-	if isatty.IsCygwinTerminal(os.Stdout.Fd()) {
+	if isatty.IsCygwinTerminal(os.Stdout.Fd()) || (runtime.GOOS != "windows") {
 		table.SetHeaderColor(
 			tablewriter.Colors{tablewriter.FgHiRedColor, tablewriter.Bold},
 			tablewriter.Colors{tablewriter.FgHiGreenColor, tablewriter.Bold},
