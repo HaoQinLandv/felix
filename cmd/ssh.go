@@ -14,8 +14,7 @@ var sshCmd = &cobra.Command{
 	Use:   "ssh",
 	Short: "登陆SSH服务",
 	Long: `
-		第一步: 获取SSH服务器列表 执行命令: felix ls
-		第二步: 获取SSH服务器ID   执行命令: felix ssh 2
+usage: felix ssh 1
 `,
 
 	Run: func(cmd *cobra.Command, args []string) {

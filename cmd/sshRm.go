@@ -25,7 +25,7 @@ import (
 var delCmd = &cobra.Command{
 	Use:   "sshrm",
 	Short: "删除SSH服务器",
-	Long:  `删除ID为2的SSH服务器 felix del 2`,
+	Long:  `删除ID为2的SSH服务器 felix sshrm 2`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		id, err := strconv.ParseUint(args[0], 10, 64)

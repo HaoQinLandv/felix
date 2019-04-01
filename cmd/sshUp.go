@@ -13,7 +13,7 @@ import (
 var uploadCmd = &cobra.Command{
 	Use:   "sshup",
 	Short: "上传本地文件(目录)到SSH服务器",
-	Long: `用法: felix sshUp 1 --remote=/data/temp --local=/c/Users/zhouqing1/go/src/github.com/dejavuzhou/felix
+	Long: `用法: felix sshup 1 --remote=/data/temp --local=/c/Users/zhouqing1/go/src/github.com/dejavuzhou/felix
 	1           : SSH服务器ID,通过 felix ls 命令查询
 	--remote(-r):上传到ssh服务器的绝对路径
 	--local (-l): 要上传的本地路径

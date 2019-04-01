@@ -14,8 +14,8 @@ import (
 // sshInfoCmd represents the sshInfo command
 var sshInfoCmd = &cobra.Command{
 	Use:   "sshinfo",
-	Short: "",
-	Long:  ``,
+	Short: "查看单行ssh详情",
+	Long:  `usage:felix sshinfo 1`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		id, err := strconv.ParseUint(args[0], 10, 64)

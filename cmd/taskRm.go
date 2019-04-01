@@ -9,8 +9,8 @@ import (
 
 // taskrmCmd represents the taskrm command
 var taskrmCmd = &cobra.Command{
-	Use:   "taskRm",
-	Short: "remove one task from task list",
+	Use:   "taskrm",
+	Short: "删除reminder列表中的一条任务",
 	Long:  `usage: felix taskrm 1`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

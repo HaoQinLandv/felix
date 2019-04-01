@@ -9,9 +9,9 @@ import (
 
 // taskdnCmd represents the taskdn command
 var taskdnCmd = &cobra.Command{
-	Use:   "taskOk",
-	Short: "mark a task has been done",
-	Long:  `usage:felix taskdn 1`,
+	Use:   "taskok",
+	Short: "设置reminder中一条任务完成",
+	Long:  `usage:felix taskok 1;设置ID为1的任务完成`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		id, err := strconv.ParseUint(args[0], 10, 64)

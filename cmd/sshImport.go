@@ -28,7 +28,7 @@ import (
 var testImportCmd = &cobra.Command{
 	Use:   "sshimport",
 	Short: "批量导入SSH服务器",
-	Long:  ``,
+	Long:  `usage: felix sshimport -f import.txt`,
 	Run: func(cmd *cobra.Command, args []string) {
 		importHost()
 	},
@@ -38,9 +38,9 @@ var imPassword, imFile, imUser, imKey, imAuth string
 func init() {
 	rootCmd.AddCommand(testImportCmd)
 	testImportCmd.Flags().StringVarP(&imFile, "file", "f", ``, "SSH服务器文本文件一行就是一个服务器")
-	testImportCmd.Flags().StringVarP(&imPassword, "password", "p", "", "导入密码")
-	testImportCmd.Flags().StringVarP(&imUser, "user", "u", "", "导入用户名")
-	testImportCmd.Flags().StringVarP(&imKey, "key", "k", "~/.ssh/id_rsa", "SSH Private Key")
+	testImportCmd.Flags().StringVarP(&imPassword, "password", "p", "", "默认导入密码")
+	testImportCmd.Flags().StringVarP(&imUser, "user", "u", "", "默认导入用户名")
+	testImportCmd.Flags().StringVarP(&imKey, "key", "k", "~/.ssh/id_rsa", "默认SSH Private Key")
 	testImportCmd.Flags().StringVarP(&imAuth, "auth", "", "password", "SSH验证类型 passwor key")
 }
 

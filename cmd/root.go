@@ -45,7 +45,7 @@ func init() {
 
 func initFunc() {
 	models.CreateSqliteDB(verbose)
-	intializeSlackLogrus()
+	//intializeSlackLogrus()
 }
 func intializeSlackLogrus() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})

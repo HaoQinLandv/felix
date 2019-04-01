@@ -10,7 +10,7 @@ import (
 var addCmd = &cobra.Command{
 	Use:   "sshadd",
 	Short: "添加SSH服务器",
-	Long:  `实例: felix add -p my_password -k ~/.ssh/id_rsa -n mySSH -a 192.168.0.01:22 -u root --auth=key`,
+	Long:  `实例: felix sshadd -p my_password -k ~/.ssh/id_rsa -n mySSH -a 192.168.0.01:22 -u root --auth=key`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if addr == "" || user == "" {
 			fmt.Println("addr user 不能为空")

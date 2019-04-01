@@ -11,8 +11,8 @@ import (
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
 	Use:   "sshdl",
-	Short: "从服务器上下载文件",
-	Long:  ``,
+	Short: "scp 服务器下载文件/目录到本地",
+	Long:  `usage: felix sshdl 1 -r="/home/root/awesome" -l="D;/awesome"`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		dbId, err := strconv.ParseUint(args[0], 10, 64)

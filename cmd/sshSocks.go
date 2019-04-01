@@ -35,5 +35,5 @@ var localPort int
 
 func init() {
 	proxyCmd.AddCommand(proxySocksCmd)
-	proxySocksCmd.Flags().IntVar(&localPort, "localPort", 1080, "socks4/5 代理到本地[127.0.0.1]本地端口")
+	proxySocksCmd.Flags().IntVarP(&localPort, "localPort", "l", 1080, "socks4/5 代理到本地[127.0.0.1]本地端口")
 }

@@ -47,3 +47,14 @@ func MachineUpdate(name, addr, user, password, pkey, t string, id, port uint) er
 	wh.ID = id
 	return db.Model(wh).Updates(ins).Error
 }
+
+func MachineDuplicate(idx uint) error {
+	ins := &Machine{}
+	ins.ID = idx
+	err := db.First(ins).Error
+	if err != nil {
+		return err
+	}
+	ins.ID = 0
+	return db.Create(ins).Error
+}

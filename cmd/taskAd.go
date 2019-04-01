@@ -8,7 +8,7 @@ import (
 
 // taskadCmd represents the taskad command
 var taskadCmd = &cobra.Command{
-	Use:   "taskAd",
+	Use:   "taskad",
 	Short: "添加任务",
 	Long:  ``,
 	Args:  cobra.MinimumNArgs(1),

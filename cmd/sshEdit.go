@@ -12,7 +12,7 @@ import (
 var hostUpdateCmd = &cobra.Command{
 	Use:   "sshedit",
 	Short: "更新SSH服务器信息",
-	Long:  `更新ID:1 SSH服务器的名称 felix update 1 -n=Awesome`,
+	Long:  `SSH服务器的名称 felix sshedit 1 -n=Awesome`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		argId, err := strconv.ParseUint(args[0], 10, 64)

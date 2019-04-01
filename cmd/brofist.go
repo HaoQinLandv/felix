@@ -3,9 +3,8 @@ package cmd
 import (
 	"github.com/dejavuzhou/felix/flx"
 	"github.com/fatih/color"
-	"time"
-
 	"github.com/spf13/cobra"
+	"time"
 )
 
 // brofistCmd represents the brofist command
@@ -25,14 +24,4 @@ var brofistCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(brofistCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// brofistCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// brofistCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
