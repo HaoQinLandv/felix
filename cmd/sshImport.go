@@ -26,7 +26,7 @@ import (
 
 // testImportCmd represents the testImport command
 var testImportCmd = &cobra.Command{
-	Use:   "sshImport",
+	Use:   "sshimport",
 	Short: "批量导入SSH服务器",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -8,7 +8,7 @@ import (
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
-	Use:   "sshAdd",
+	Use:   "sshadd",
 	Short: "添加SSH服务器",
 	Long:  `实例: felix add -p my_password -k ~/.ssh/id_rsa -n mySSH -a 192.168.0.01:22 -u root --auth=key`,
 	Run: func(cmd *cobra.Command, args []string) {

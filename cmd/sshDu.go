@@ -22,7 +22,7 @@ import (
 
 // hostCpCmd represents the hostCp command
 var hostCpCmd = &cobra.Command{
-	Use:   "hostCp",
+	Use:   "sshcp",
 	Short: "复制一行ssh登陆信息并编辑",
 	Long:  ` `,
 	Run: func(cmd *cobra.Command, args []string) {

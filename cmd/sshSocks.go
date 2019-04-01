@@ -10,7 +10,7 @@ import (
 
 // proxyCmd represents the proxy command
 var proxySocksCmd = &cobra.Command{
-	Use:   "sshSocks",
+	Use:   "sshsocks",
 	Short: "SSH隧道SOCKS代理: felix proxy socks ID",
 	Long:  `把目标SSH服务器ID:2 作为SOCKS代理 felix proxy socks 2 --localPort=1080`,
 	Run: func(cmd *cobra.Command, args []string) {

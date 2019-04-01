@@ -16,11 +16,11 @@ const caption = "登陆SSH:felix ssh ID 登陆ssh服务器\n添加SSH:felix add 
 func AllMachines(search string) {
 	data := fetchMachineToRows(search)
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "名称", "Addr", "用户名", "私钥", "登陆类型", "端口"})
+	table.SetHeader([]string{"ID", "名称", "Addr", "用户名", "IP", "登陆类型", "端口"})
 	table.SetBorder(true) // Set Border to false
 	table.SetCaption(true, caption)
-	table.SetAutoMergeCells(true)
-	table.SetRowLine(true)
+	//table.SetAutoMergeCells(true)
+	//table.SetRowLine(true)
 
 	setListTableColor(table)
 
@@ -38,7 +38,7 @@ func fetchMachineToRows(search string) [][]string {
 	var rows [][]string
 	for _, mc := range mcs {
 		id := fmt.Sprintf("%d", mc.ID)
-		one := []string{id, mc.Name, mc.Host, mc.User, mc.Key, mc.Type, strconv.Itoa(int(mc.Port))}
+		one := []string{id, mc.Name, mc.Host, mc.User, mc.Ip, mc.Type, strconv.Itoa(int(mc.Port))}
 		rows = append(rows, one)
 	}
 	return rows

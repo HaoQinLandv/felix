@@ -11,7 +11,7 @@ import (
 
 // sshCmd represents the ssh command
 var sshCmd = &cobra.Command{
-	Use:   "sshBash",
+	Use:   "ssh",
 	Short: "登陆SSH服务",
 	Long: `
 		第一步: 获取SSH服务器列表 执行命令: felix ls

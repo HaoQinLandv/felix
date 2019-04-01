@@ -15,7 +15,7 @@ open `index.html` edit LINE 40 `url: "/swagger/doc.yml",`
 
         // Build a system
         const ui = SwaggerUIBundle({
-            url: "/swagger/doc.yml",
+            url: "/swagger/doc.yaml",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [

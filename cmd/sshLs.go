@@ -7,7 +7,7 @@ import (
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "sshLs",
+	Use:   "sshls",
 	Short: "查看全部的SSH服务器",
 	Long:  `查看全部的SSH服务器: felix ls`,
 	Run: func(cmd *cobra.Command, args []string) {

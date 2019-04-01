@@ -13,7 +13,7 @@ import (
 
 // sshInfoCmd represents the sshInfo command
 var sshInfoCmd = &cobra.Command{
-	Use:   "sshInfo",
+	Use:   "sshinfo",
 	Short: "",
 	Long:  ``,
 	Args:  cobra.MinimumNArgs(1),

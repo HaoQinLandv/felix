@@ -23,7 +23,7 @@ import (
 
 // delCmd represents the del command
 var delCmd = &cobra.Command{
-	Use:   "sshRm",
+	Use:   "sshrm",
 	Short: "删除SSH服务器",
 	Long:  `删除ID为2的SSH服务器 felix del 2`,
 	Args:  cobra.MinimumNArgs(1),
