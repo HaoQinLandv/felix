@@ -34,27 +34,33 @@ go get github.com/dejavuzhou/felix || sudo go get github.com/dejavuzhou/felix
 ## Usage
 
 ```bash
-Usage:
-  felix [flags]
-  felix [command]
-
 Available Commands:
-  add          添加SSH服务器
-  del          删除SSH服务器
-  dl           从SSH服务器上下载文件
-  import       批量导入SSH服务器
-  ls           查看全部的SSH服务器
-  reset        清空SSH服务器全部记录
-  ssh          登陆SSH服务
-  up           上传本地文件/目录到SSH服务器
-  update       更新SSH服务器信息
-  help         Help about any command
+  brofist     Pewdiepie needs your help.Do your part to subscribe Felix's Youtube Channel.
+  ginbro      根据数据库配置生成RESTfulAPIs APP
+  goDoc       golang.google.cn/pkg
+  help        Help about any command
+  json        开启浏览器json2struct工具
+  ssh         登陆SSH服务
+  sshadd      添加SSH服务器
+  sshdl       scp 服务器下载文件/目录到本地
+  sshdu       复制(duplicate)一行ssh登陆信息,提供sshedit使用
+  sshedit     更新SSH服务器信息
+  sshflush    清空SSH服务器全部记录
+  sshimport   批量导入SSH服务器
+  sshinfo     查看单行ssh详情
+  sshls       查看全部的SSH服务器
+  sshproxy    SSH隧道代理服务器端口代理
+  sshrm       删除SSH服务器
+  sshup       上传本地文件(目录)到SSH服务器
+  task        显示全部的reminder任务
+  taskad      添加任务
+  taskok      设置reminder中一条任务完成
+  taskrm      删除reminder列表中的一条任务
 
 Flags:
   -h, --help      help for felix
   -v, --verbose   显示日志
 
-Use "felix [command] --help" for more information about a command.
 ```
 
 ### 1. `felix ls` 查看全部服务器

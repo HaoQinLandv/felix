@@ -40,7 +40,7 @@ var verbose bool
 func init() {
 	cobra.OnInitialize(initFunc)
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "显示日志")
+	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "显示日志")
 }
 
 func initFunc() {
