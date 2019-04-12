@@ -34,15 +34,21 @@ var sshImportCmd = &cobra.Command{
 	Short: "批量导入SSH服务器",
 	Long:  `usage: felix sshimport -f import.txt`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if isFlushSsh {
+			if err := models.MachineDeleteAll(); err != nil {
+				log.Fatalln(err)
+			}
+		}
+
 		if isExportTemplate {
-			exportCsvToHomeDir()
+			exportCsvTemplateToHomeDir()
 		} else {
 			importHost()
 		}
 	},
 }
 var imPassword, imFile, imUser, imKey, imAuth string
-var isExportTemplate bool
+var isExportTemplate, isFlushSsh bool
 
 func init() {
 	rootCmd.AddCommand(sshImportCmd)
@@ -52,6 +58,7 @@ func init() {
 	sshImportCmd.Flags().StringVarP(&imKey, "key", "k", "~/.ssh/id_rsa", "默认SSH Private Key")
 	sshImportCmd.Flags().StringVarP(&imAuth, "auth", "", "password", "SSH验证类型 passwor key")
 	sshImportCmd.Flags().BoolVarP(&isExportTemplate, "template", "t", false, "is export csv template into HOME dir")
+	sshImportCmd.Flags().BoolVarP(&isFlushSsh, "flush", "F", false, "is Flush all ssh rows then import csv")
 }
 
 func importHost() {
@@ -81,7 +88,7 @@ func importHost() {
 			sshPassword = record[1]
 		}
 		var sshPort uint = 22
-		if i, err := strconv.ParseUint(record[4], 10, 64); err != nil {
+		if i, err := strconv.ParseUint(record[4], 10, 64); err != nil && i != 0 {
 			sshPort = uint(i)
 		}
 		if err := models.MachineAdd(record[2], record[2], record[3], sshUser, sshPassword, imKey, imAuth, sshPort); err != nil {
@@ -92,7 +99,7 @@ func importHost() {
 
 }
 
-func exportCsvToHomeDir() {
+func exportCsvTemplateToHomeDir() {
 	filePath, _ := homedir.Expand("~/sshImportCsvTemplate.csv")
 	csvFile, err := os.Create(filePath)
 	if err != nil {

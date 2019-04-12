@@ -40,6 +40,10 @@ func MachineDelete(idx uint) error {
 	ins.ID = idx
 	return db.Where("id = ?", idx).Delete(&ins).Error
 }
+func MachineDeleteAll() error {
+	ins := Machine{}
+	return db.Delete(&ins).Error
+}
 
 func MachineUpdate(name, addr, user, password, pkey, t string, id, port uint) error {
 	ins := Machine{Name: name, Host: addr, User: user, Password: password, Key: pkey, Type: t, Port: port}
