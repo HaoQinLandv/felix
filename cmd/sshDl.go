@@ -11,21 +11,21 @@ import (
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
 	Use:   "sshdl",
-	Short: "scp 服务器下载文件/目录到本地",
-	Long:  `usage: felix sshdl 1 -r="/home/root/awesome" -l="D;/awesome"`,
+	Short: "scp download file or folder",
+	Long:  `download file or folder, usage: felix sshdl 2 -r="/home/root/awesome" -l="D;/awesome"`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		dbId, err := strconv.ParseUint(args[0], 10, 64)
 		if err != nil {
-			log.Fatal("第一个参数必须为正整数:", err)
+			log.Fatal("ID must be an int", err)
 		}
 		h, err := models.MachineFind(uint(dbId))
 		if err != nil {
-			log.Fatal("错误的I参数:", err)
+			log.Fatal("wrong ID:", err)
 		}
 		err = flx.ScpRL(h, remotePath, localPath)
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 	},
 }
@@ -33,7 +33,9 @@ var localPath, remotePath string
 
 func init() {
 	rootCmd.AddCommand(downloadCmd)
-	downloadCmd.Flags().StringVarP(&remotePath, "remote", "r", "", "远程服务器要下载的绝对路径")
-	downloadCmd.Flags().StringVarP(&localPath, "local", "l", "", "保存到本地绝对路径")
+	downloadCmd.Flags().StringVarP(&remotePath, "remote", "r", "", "ssh server file/folder remote path")
+	downloadCmd.Flags().StringVarP(&localPath, "local", "l", "", "local path/folder path")
+	downloadCmd.MarkFlagRequired("remote")
+	downloadCmd.MarkFlagRequired("local")
 
 }

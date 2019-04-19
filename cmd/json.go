@@ -8,8 +8,8 @@ import (
 // jsonCmd represents the json command
 var jsonCmd = &cobra.Command{
 	Use:   "json",
-	Short: "开启浏览器json2struct工具",
-	Long:  `打开浏览器(app.quicktype.io)json2struct工具`,
+	Short: "open a tab in browser to convert json to golang struct",
+	Long:  `open a tab in browser to convert json to golang struct powered by https://quicktype.io/`,
 	Run: func(cmd *cobra.Command, args []string) {
 		flx.BrowserOpen("https://app.quicktype.io/")
 	},

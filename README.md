@@ -34,18 +34,25 @@ go get github.com/dejavuzhou/felix || sudo go get github.com/dejavuzhou/felix
 ## Usage
 
 ```bash
+$ felix -h
+Usage:
+  felix [flags]
+  felix [command]
+
 Available Commands:
   brofist     Pewdiepie needs your help.Do your part to subscribe Felix's Youtube Channel.
+  clean       purge all felix info
   ginbro      根据数据库配置生成RESTfulAPIs APP
   goDoc       golang.google.cn/pkg
   help        Help about any command
-  json        开启浏览器json2struct工具
-  ssh         登陆SSH服务
-  sshadd      添加SSH服务器
-  sshdl       scp 服务器下载文件/目录到本地
-  sshdu       复制(duplicate)一行ssh登陆信息,提供sshedit使用
-  sshedit     更新SSH服务器信息
-  sshflush    清空SSH服务器全部记录
+  json        open a tab in browser to convert json to golang struct
+  mini        A brief description of your command
+  ssh         open a ssh terminal
+  sshadd      add a ssh connection
+  sshdl       scp download file or folder
+  sshdu       duplicate a ssh connection
+  sshedit     update a ssh connection config
+  sshexport   export all ssh connection info to a csv file
   sshimport   批量导入SSH服务器
   sshinfo     查看单行ssh详情
   sshls       查看全部的SSH服务器
@@ -56,32 +63,4 @@ Available Commands:
   taskad      添加任务
   taskok      设置reminder中一条任务完成
   taskrm      删除reminder列表中的一条任务
-
-Flags:
-  -h, --help      help for felix
-  -v, --verbose   显示日志
-
 ```
-
-### 1. `felix ls` 查看全部服务器
-![](images/felix_ls.png)
-
-### 2. `felix ssh ID` SSH登陆
-![](images/felix_ssh.png)
-
-### 3. `felix dl ID -r=/remotePath -l=/localPath` scp 下载文件
-![](images/felix_dl.png)
-
-### 4. `felix up ID -r=/remotePath -l=/localPath` scp 上传文件
-![](images/felix_up.png)
-
-### 5. `felix -h` 查看帮助,或者 `felix COMMAND -h` 查看每个命令的说明
-![](images/felix_h.png)
-
-![](images/felix_h1.png)
-
-![](images/felix_ls1.png)
-
-
-## 已知BUG
-- [ ]windows 平台vim 窗口size问题,`signal.Notify(sigwinchCh, syscall.SIGWINCH)` `fd`获取不到

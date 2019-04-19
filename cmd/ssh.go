@@ -12,11 +12,8 @@ import (
 // sshCmd represents the ssh command
 var sshCmd = &cobra.Command{
 	Use:   "ssh",
-	Short: "登陆SSH服务",
-	Long: `
-usage: felix ssh 1
-`,
-
+	Short: "open a ssh terminal",
+	Long:  `open a ssh terminal by id, usage: felix ssh 1, list all ID by felix sshls command`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			flx.AllMachines("")
@@ -24,11 +21,11 @@ usage: felix ssh 1
 		}
 		dbId, err := strconv.ParseUint(args[0], 10, 64)
 		if err != nil {
-			log.Fatal("服务器ID必须为正整数:", err)
+			log.Fatal("ssh ID must be a int:", err)
 		}
 		h, err := models.MachineFind(uint(dbId))
 		if err != nil {
-			log.Fatal("错误的SSH服务器ID ", err)
+			log.Fatal("wrong ssh ID:", err)
 		}
 		if err := flx.RunSshTerminal(h, enableSudoMode); err != nil {
 			fmt.Println(err)

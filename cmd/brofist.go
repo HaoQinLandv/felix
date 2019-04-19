@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// brofistCmd represents the brofist command
-var brofistCmd = &cobra.Command{
+// broFistCmd represents the brofist command
+var broFistCmd = &cobra.Command{
 	Use:   "brofist",
 	Short: "Pewdiepie needs your help.Do your part to subscribe Felix's Youtube Channel.",
 	Long:  `PewDiePie vs T-Series`,
@@ -23,5 +23,5 @@ var brofistCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(brofistCmd)
+	rootCmd.AddCommand(broFistCmd)
 }

@@ -29,8 +29,12 @@ import (
 // sshExportCmd represents the sshexport command
 var sshExportCmd = &cobra.Command{
 	Use:   "sshexport",
-	Short: "A brief description of your command",
-	Long:  ``,
+	Short: "export all ssh connection info to a csv file",
+	Long: `export all ssh connection info to a csv file,
+for massively editing ssh connection,
+after that use felix "sshimport -f 'path' -F" to update ssh connection
+usage: felix sshexport
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := exportAllSshInfoToHomeDirCsvFile(); err != nil {
 			log.Fatal(err)
