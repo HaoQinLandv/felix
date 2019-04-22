@@ -11,6 +11,7 @@
 ## Do What
 
 - manage massive SSH login configuration
+- ssh login speedily
 - generate a RESTful app from SQL database with [gin-gonic/gin](https://github.com/gin-gonic/gin) and [GORM](https://github.com/jinzhu/gorm) in GO
 - start TCP and SOCK proxy with ssh with speedily
 - terminal task list
@@ -96,16 +97,37 @@ required flag(s) "appDir", "dbAddr" not set
 
 ### command: `felix sshls`
 
-![felix sshls](iamges/sshls.png)
+![felix sshls](images/sshls.png)
 
 ### command: `felix ssh 2`
 
-![felix sshls](iamges/sshIn.png)
+![felix sshls](images/sshIn.png)
 
 ### command: `felix sshsocks 34 -l 1080`
 
-![felix sshls](iamges/sshsocks.png)
+![felix sshls](images/sshsocks.png)
 
 ### command: `felix taskad`
 
-![felix sshls](iamges/taskad.png)
+![felix sshls](images/taskad.png)
+
+
+## Code Detail
+
+- save SSH configurations into a SQLite.db in $HOME/.felix
+- use [spf13/cobra](https://github.com/spf13/cobra#getting-started) as command framework
+
+### `felix ginbro` detail
+- 1. use SQL query get all tables and column schema from database
+- 2. transform SQL type into Goalng type and [Swagger Doc](https://swagger.io/) type
+- 3. use [Golang Std Lib(text/template)](https://golang.org/pkg/text/template/) to output [Gin's handler and Route files](https://github.com/gin-gonic/gin) and [GORM model files](https://github.com/jinzhu/gorm)
+- 4. `os.exec` call `go fmt` to format the output codebase
+
+### `felix sshls` detail
+- 1. use gorm retrieve all SSH configuration from SQLite.db
+- 2. use [olekukonko/tablewriter](https://github.com/olekukonko/tablewriter) write table into terminal
+
+### `felix ssh 9`
+- 1. get a ssh configuration by ID
+- 2. use [golang.org/x/crypto/ssh](https://golang.org/x/crypto/ssh) package start ssh session
+- 3. customize `stdin` and `stdout` to listen Sudo command for password message then input sudo password automatically
