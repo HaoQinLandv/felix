@@ -106,7 +106,7 @@ Global Flags:
 
 required flag(s) "appDir", "dbAddr" not set
 ```
-
+#### the output code base
 ![ginbro output code base dir](images/ginbroCodeBase.png)
 
 ### command: `felix sshls`
