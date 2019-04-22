@@ -10,7 +10,7 @@ import (
 // broFistCmd represents the brofist command
 var broFistCmd = &cobra.Command{
 	Use:   "brofist",
-	Short: "Pewdiepie needs your help.Do your part to subscribe Felix's Youtube Channel.",
+	Short: "Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Youtube Channel.",
 	Long:  `PewDiePie vs T-Series`,
 	Run: func(cmd *cobra.Command, args []string) {
 		color.Red("Pewdiepie needs your help.")

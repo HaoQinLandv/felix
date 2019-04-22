@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/dejavuzhou/felix/flx"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/spf13/cobra"
 	"os"
@@ -13,12 +12,12 @@ var rootCmd = &cobra.Command{
 	Use:   "felix",
 	Short: "",
 	Long:  ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			flx.AllMachines("")
-			cmd.Help()
-		}
-	},
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	if len(args) == 0 {
+	//		flx.AllMachines("")
+	//		cmd.Help()
+	//	}
+	//},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -35,7 +34,7 @@ var verbose bool
 func init() {
 	cobra.OnInitialize(initFunc)
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "显示日志")
+	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "verbose")
 }
 
 func initFunc() {
