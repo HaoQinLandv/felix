@@ -1,17 +1,3 @@
-// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
@@ -31,8 +17,8 @@ import (
 // sshImportCmd represents the testImport command
 var sshImportCmd = &cobra.Command{
 	Use:   "sshimport",
-	Short: "批量导入SSH服务器",
-	Long:  `usage: felix sshimport -f import.txt`,
+	Short: "import massive ssh server info from a csv file",
+	Long:  `usage: felix sshimport -f import.csv -u felix -p pewdiepie -F`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if isFlushSsh {
 			if err := models.MachineDeleteAll(); err != nil {
@@ -52,11 +38,11 @@ var isExportTemplate, isFlushSsh bool
 
 func init() {
 	rootCmd.AddCommand(sshImportCmd)
-	sshImportCmd.Flags().StringVarP(&imFile, "file", "f", ``, "SSH服务器文本文件一行就是一个服务器")
-	sshImportCmd.Flags().StringVarP(&imPassword, "password", "p", "", "默认导入密码")
-	sshImportCmd.Flags().StringVarP(&imUser, "user", "u", "", "默认导入用户名")
-	sshImportCmd.Flags().StringVarP(&imKey, "key", "k", "~/.ssh/id_rsa", "默认SSH Private Key")
-	sshImportCmd.Flags().StringVarP(&imAuth, "auth", "", "password", "SSH验证类型 passwor key")
+	sshImportCmd.Flags().StringVarP(&imFile, "file", "f", ``, "a csv file has a lot ssh server info")
+	sshImportCmd.Flags().StringVarP(&imPassword, "password", "p", "", "ssh password")
+	sshImportCmd.Flags().StringVarP(&imUser, "user", "u", "", "ssh username")
+	sshImportCmd.Flags().StringVarP(&imKey, "key", "k", "~/.ssh/id_rsa", "default SSH Private Key path")
+	sshImportCmd.Flags().StringVarP(&imAuth, "auth", "", "password", "auth type only allows password and key")
 	sshImportCmd.Flags().BoolVarP(&isExportTemplate, "template", "t", false, "is export csv template into HOME dir")
 	sshImportCmd.Flags().BoolVarP(&isFlushSsh, "flush", "F", false, "is Flush all ssh rows then import csv")
 }

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/mitchellh/go-homedir"
-	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 )
@@ -26,18 +26,18 @@ func newSshClient(h *models.Machine) *ssh.Client {
 	addr := fmt.Sprintf("%s:%d", h.Host, h.Port)
 	c, err := ssh.Dial("tcp", addr, config)
 	if err != nil {
-		logrus.WithError(err).Fatal("ssh dial failed")
+		log.Fatal("ssh dial failed", err)
 	}
 	return c
 }
 func hostKeyCallBackFunc(host string) ssh.HostKeyCallback {
 	hostPath, err := homedir.Expand("~/.ssh/known_hosts")
 	if err != nil {
-		logrus.WithError(err).Fatal("find known_hosts's home dir failed")
+		log.Fatal("find known_hosts's home dir failed", err)
 	}
 	file, err := os.Open(hostPath)
 	if err != nil {
-		logrus.WithError(err).Fatal("can't find known_host file")
+		log.Fatal("can't find known_host file:", err)
 	}
 	defer file.Close()
 
@@ -52,13 +52,13 @@ func hostKeyCallBackFunc(host string) ssh.HostKeyCallback {
 			var err error
 			hostKey, _, _, _, err = ssh.ParseAuthorizedKey(scanner.Bytes())
 			if err != nil {
-				logrus.WithError(err).Fatalf("error parsing %q: %v", fields[2], err)
+				log.Fatalf("error parsing %q: %v", fields[2], err)
 			}
 			break
 		}
 	}
 	if hostKey == nil {
-		logrus.WithError(err).Fatalf("no hostkey for %s", host)
+		log.Fatalf("no hostkey for %s,%v", host, err)
 	}
 	return ssh.FixedHostKey(hostKey)
 }
@@ -66,16 +66,16 @@ func hostKeyCallBackFunc(host string) ssh.HostKeyCallback {
 func publicKeyAuthFunc(kPath string) ssh.AuthMethod {
 	keyPath, err := homedir.Expand(kPath)
 	if err != nil {
-		logrus.WithError(err).Fatal("find key's home dir failed")
+		log.Fatal("find key's home dir failed", err)
 	}
 	key, err := ioutil.ReadFile(keyPath)
 	if err != nil {
-		logrus.WithError(err).Fatal("ssh key file read failed")
+		log.Fatal("ssh key file read failed", err)
 	}
 	// Create the Signer for this private key.
 	signer, err := ssh.ParsePrivateKey(key)
 	if err != nil {
-		logrus.WithError(err).Fatal("ssh key signer failed")
+		log.Fatal("ssh key signer failed", err)
 	}
 	return ssh.PublicKeys(signer)
 }

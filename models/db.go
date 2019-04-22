@@ -4,7 +4,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mitchellh/go-homedir"
-	"github.com/sirupsen/logrus"
 	"log"
 	"os"
 	"path"
@@ -16,7 +15,7 @@ var dbPath string
 func init() {
 	dir, err := homedir.Dir()
 	if err != nil {
-		logrus.WithError(err).Fatal(" get home dir failed")
+		log.Fatal("get home dir failed:", err)
 	}
 	dbPath = path.Join(dir, ".felix.db")
 }

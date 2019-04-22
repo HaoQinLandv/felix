@@ -4,14 +4,9 @@ import (
 	"fmt"
 	"github.com/dejavuzhou/felix/flx"
 	"github.com/dejavuzhou/felix/models"
-	"github.com/johntdyer/slackrus"
-	"github.com/sirupsen/logrus"
-	"os"
-
 	"github.com/spf13/cobra"
+	"os"
 )
-
-var language = "zh_cn"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -46,20 +41,4 @@ func init() {
 func initFunc() {
 	models.CreateSqliteDB(verbose)
 	//intializeSlackLogrus()
-}
-func intializeSlackLogrus() {
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-	//file, _ := os.Create(time.Now().Format("2006_01_02.log"))
-	//logrus.SetOutput(file)
-
-	logrus.SetLevel(logrus.DebugLevel)
-
-	logrus.AddHook(&slackrus.SlackrusHook{
-		HookURL:        "https://hooks.slack.com/services/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",
-		AcceptedLevels: slackrus.LevelThreshold(logrus.DebugLevel),
-		Channel:        "#felix",
-		IconEmoji:      ":shark:",
-		Username:       "FelixZhou",
-	})
-	//TODO::get langu
 }

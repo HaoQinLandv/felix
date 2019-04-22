@@ -1,9 +1,9 @@
 package flx
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/gorilla/websocket"
-	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
 	"io"
 	"net/http"
@@ -24,8 +24,7 @@ var upgrader = websocket.Upgrader{
 func RunSshXtermJs(h *models.Machine, sudoMode bool, w http.ResponseWriter, r *http.Request) error {
 	_, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		logrus.WithError(err).Error("Unable to upgrade connection")
-		return err
+		return fmt.Errorf("unable to upgrade connection %s", err)
 	}
 
 	client := newSshClient(h)

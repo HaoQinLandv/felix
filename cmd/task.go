@@ -14,8 +14,8 @@ import (
 // tasklsCmd represents the taskls command
 var tasklsCmd = &cobra.Command{
 	Use:   "task",
-	Short: "显示全部的reminder任务",
-	Long:  `usage:felix taskls`,
+	Short: "show all TODO tasks",
+	Long:  `usage:felix task`,
 	Run: func(cmd *cobra.Command, args []string) {
 		mcs, err := models.TaskAll(searchKey)
 		if err != nil {

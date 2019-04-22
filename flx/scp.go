@@ -3,7 +3,7 @@ package flx
 import (
 	"github.com/dejavuzhou/felix/models"
 	"github.com/pkg/sftp"
-	"github.com/sirupsen/logrus"
+	"log"
 	"path/filepath"
 )
 
@@ -13,7 +13,7 @@ func newSftpClient(h *models.Machine) *sftp.Client {
 	conn := newSshClient(h)
 	c, err := sftp.NewClient(conn, sftp.MaxPacket(maxPacket))
 	if err != nil {
-		logrus.WithError(err).Fatal("create sftp client failed")
+		log.Fatal("create sftp client failed", err)
 	}
 	return c
 }

@@ -3,11 +3,11 @@ package flx
 import (
 	"fmt"
 	"github.com/mattn/go-isatty"
-	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/terminal"
 	"golang.org/x/sys/windows"
 	"io"
+	"log"
 	"os"
 	"time"
 )
@@ -74,6 +74,6 @@ func (t *SSHTerminal) interactiveSession() error {
 func makeCygwinRaw(fd int) {
 	var raw = uint32(windows.ENABLE_PROCESSED_INPUT | windows.ENABLE_LINE_INPUT | windows.ENABLE_PROCESSED_OUTPUT)
 	if err := windows.SetConsoleMode(windows.Handle(fd), raw); err != nil {
-		logrus.WithError(err).Error("cygwin set raw failed")
+		log.Printf("cygwin set raw failed %s", err)
 	}
 }

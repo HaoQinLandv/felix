@@ -1,9 +1,9 @@
 package flx
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/pkg/sftp"
-	"github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"path/filepath"
@@ -41,22 +41,18 @@ func rlCopyL(remote, local string, c *sftp.Client) error {
 func rlCopyD(remote, local string, c *sftp.Client) error {
 	contents, err := c.ReadDir(toUnixPath(remote))
 	if err != nil {
-		logrus.WithError(err).Error("ioutil read scp remote dir failed")
-		return err
+		return fmt.Errorf("ioutil read scp remote dir failed %s", err)
 	}
-	logrus.Info("dir size:", len(contents))
 	for _, info := range contents {
 		cdL, csR := filepath.Join(local, info.Name()), filepath.Join(remote, info.Name())
 		//mkdir local dir by remote
 		err := os.MkdirAll(filepath.Dir(cdL), info.Mode())
 		if err != nil {
-			logrus.WithError(err).Error("os local sub mkdir all failed")
-			return err
+			return fmt.Errorf("os local sub mkdir all failed,%s", err)
 		}
 		csR = toUnixPath(csR)
 		if err := rlCopy(csR, cdL, c); err != nil {
-			logrus.WithError(err).Errorf("dir walk remote:%s, local:%s", csR, cdL)
-			return err
+			return fmt.Errorf("dir walk remote:%s, local:%s, %s", csR, cdL, err)
 		}
 	}
 	return nil
@@ -64,28 +60,24 @@ func rlCopyD(remote, local string, c *sftp.Client) error {
 func rlCopyF(remote, local string, info os.FileInfo, c *sftp.Client) error {
 	rFile, err := c.Open(toUnixPath(remote))
 	if err != nil {
-		logrus.WithError(err).Error("BrowserOpen scp remote file failed")
-		return err
+		return fmt.Errorf("BrowserOpen scp remote file failed %s", err)
 	}
 	defer rFile.Close()
 
 	lFile, err := os.Create(local)
 	if err != nil {
-		logrus.WithError(err).Errorf("os create local file failed:%s", local)
-		return err
+		return fmt.Errorf("os create local file failed:%s %s", local, err)
 	}
 	defer lFile.Close()
 
 	size, err := io.Copy(lFile, rFile)
 	if err != nil {
-		logrus.WithError(err).Errorf("io copy remote to local failed.size:%d", size)
-		return err
+		return fmt.Errorf("io copy remote to local failed.size:%d %s", size, err)
 	}
 
 	err = os.Chmod(lFile.Name(), info.Mode())
 	if err != nil {
-		logrus.WithError(err).Error("os local chmod failed")
-		return err
+		return fmt.Errorf("os local chmod failed %s", err)
 	}
 	return nil
 }

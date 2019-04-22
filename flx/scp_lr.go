@@ -1,9 +1,9 @@
 package flx
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/pkg/sftp"
-	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"os"
@@ -39,24 +39,14 @@ func lrCopyL(local, remote string, c *sftp.Client) error {
 	return lrCopy(realLocal, remote, c)
 }
 func lrCopyD(local, remote string, c *sftp.Client) error {
-	//if err := c.MkdirAll(remote); err != nil {
-	//	logrus.WithError(err).Error("scp mkdir failed")
-	//	return err
-	//}
-	//if err := c.Chmod(remote,info.Mode()); err != nil {
-	//	logrus.WithError(err).Error("scp chmod dir failed")
-	//	return err
-	//}
 	contents, err := ioutil.ReadDir(local)
 	if err != nil {
-		logrus.WithError(err).Error("ioutil read local dir failed")
-		return err
+		return fmt.Errorf("ioutil read local dir failed %s", err)
 	}
 	for _, content := range contents {
 		cs, cd := filepath.Join(local, content.Name()), filepath.Join(remote, content.Name())
 		if err := lrCopy(cs, cd, c); err != nil {
-			logrus.WithError(err).Error(cs, cd)
-			return err
+			return fmt.Errorf("%s %s %s", err, cs, cd)
 		}
 	}
 	return nil
@@ -64,30 +54,25 @@ func lrCopyD(local, remote string, c *sftp.Client) error {
 func lrCopyF(local, remote string, info os.FileInfo, c *sftp.Client) error {
 	localFile, err := os.Open(local)
 	if err != nil {
-		logrus.WithError(err).Error("BrowserOpen local file failed")
-		return err
+		return fmt.Errorf("BrowserOpen local file failed %s", err)
 	}
 	defer localFile.Close()
 	err = c.MkdirAll(toUnixPath(filepath.Dir(remote)))
 	if err != nil {
-		logrus.WithError(err).Error("scp mkdir all failed")
-		return err
+		return fmt.Errorf("scp mkdir all failed %s", err)
 	}
 	remoteFile, err := c.Create(toUnixPath(remote))
 	if err != nil {
-		logrus.WithError(err).WithField("path", info).Error("create remote file failed:", remote)
-		return err
+		return fmt.Errorf("create remote file failed %s:%s", remote, err)
 	}
 	defer remoteFile.Close()
 	err = c.Chmod(remoteFile.Name(), info.Mode())
 	if err != nil {
-		logrus.WithError(err).Error("scp chmod failed")
-		return err
+		return fmt.Errorf("scp chmod failed %s", err)
 	}
 	_, err = io.Copy(remoteFile, localFile)
 	if err != nil {
-		logrus.WithError(err).Error("io copy failed")
-		return err
+		return fmt.Errorf("io copy failed %s", err)
 	}
 	return nil
 }
