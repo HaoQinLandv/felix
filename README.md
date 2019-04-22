@@ -1,7 +1,7 @@
 # Felix
 [![Build Status](https://travis-ci.org/dejavuzhou/felix.svg?branch=master)](https://travis-ci.org/dejavuzhou/felix)
 
-## For Who
+## For Whom
 
 - BackEnd Engineer
 - Golang SQL RESTful APIs engineer
