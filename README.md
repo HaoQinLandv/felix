@@ -1,66 +1,110 @@
-# felix
+# Felix
 [![Build Status](https://travis-ci.org/dejavuzhou/felix.svg?branch=master)](https://travis-ci.org/dejavuzhou/felix)
 
-## 解决痛点
-- 有一大堆服务器需要管理
-- 有服务器设置的密码台复杂记不住
-- 解决sudo输入密码的问题
+## For Who
 
-## Feature
+- BackEnd Engineer
+- DevOps Engineer
+- People Heavily engage with SSH
 
-- 纯go语言编写安装简单
-- 遇到sudo时候自动帮助你输入sudo的密码(解决粘贴密码的疼苦)
-- 快捷scp/sftp 上传下载文件或者目录
-- 批量导入SSH服务器
-- 支持windows,linux,mac多平台
+## Do What
 
-## 安装
-### 编译安装(拥有GO语言环境)
-```bash
-mkdir -p $GOPATH/src/golang.org/x && cd $GOPATH/src/golang.org/x 
-git clone https://github.com/golang/sys.git
-git clone https://github.com/golang/crypto.git
-echo "上面代码为了解决go get golang.org失败,使用github.com镜像获取依赖包."
+- manage massive SSH login configuration
+- generate a RESTful app from SQL database with [gin-gonic/gin](https://github.com/gin-gonic/gin) and [GORM](https://github.com/jinzhu/gorm) in GO
+- start TCP and SOCK proxy with ssh with speedily
+- terminal task list
+- Pewdiepie's brofit command to subscribe the Youtube channel
 
-go get github.com/dejavuzhou/felix || sudo go get github.com/dejavuzhou/felix
-```
-导出GOIB到PATH
-在你的`~/.profile` or `~/.bashrc` 中增加 `export PATH=$PATH:$GOPATH:$GOBIN` 
-
-成功: `felix -h` 或者 `cd $GOPATH/src/github.com/dejavuzhou/felix;  go build;   ./felix -h;`
-
-### 二进制下载安装
-//TODO ...
-## Usage
+## Overview
+commands:
 
 ```bash
-$ felix -h
+$ felix
+
 Usage:
-  felix [flags]
   felix [command]
 
 Available Commands:
-  brofist     Pewdiepie needs your help.Do your part to subscribe Felix's Youtube Channel.
-  clean       purge all felix info
-  ginbro      根据数据库配置生成RESTfulAPIs APP
+  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Yo                                                                                                              utube Channel.
+  clean       purge all felix configuration
+  ginbro      generate a RESTful code project from SQL database
   goDoc       golang.google.cn/pkg
   help        Help about any command
   json        open a tab in browser to convert json to golang struct
-  mini        A brief description of your command
   ssh         open a ssh terminal
   sshadd      add a ssh connection
   sshdl       scp download file or folder
   sshdu       duplicate a ssh connection
   sshedit     update a ssh connection config
   sshexport   export all ssh connection info to a csv file
-  sshimport   批量导入SSH服务器
-  sshinfo     查看单行ssh详情
-  sshls       查看全部的SSH服务器
-  sshproxy    SSH隧道代理服务器端口代理
-  sshrm       删除SSH服务器
-  sshup       上传本地文件(目录)到SSH服务器
-  task        显示全部的reminder任务
-  taskad      添加任务
-  taskok      设置reminder中一条任务完成
-  taskrm      删除reminder列表中的一条任务
+  sshimport   import massive ssh server info from a csv file
+  sshinfo     view a ssh info
+  sshls       list all ssh info or search by hostname
+  sshproxy    ssh port proxy
+  sshrm       delete a ssh info
+  sshsocks    start a socks4/5 proxy
+  sshup       scp upload
+  task        show all TODO tasks
+  taskad      add a task
+  taskok      set a task done
+  taskrm      remove a task
+
+Flags:
+  -h, --help      help for felix
+      --verbose   verbose
+
+Use "felix [command] --help" for more information about a command.
+
 ```
+
+
+## Installation Or Compiling
+
+### 
+
+## ScreenShot
+
+### command: `felix ginbro`
+```bash
+$ felix ginbro
+Error: required flag(s) "appDir", "dbAddr" not set
+Usage:
+  felix ginbro [flags]
+
+Examples:
+felix rest -u root -p password -a "127.0.0.1:3306" -d dbname -c utf8 --authTable=users --authColumn=pw_column -o=FelixRestOut"
+
+Flags:
+  -o, --appDir string       app's code output directory
+  -l, --appListen string    app's listening addr (default "127.0.0.1:5555")
+      --authColumn string   bcrypt password column (default "password")
+      --authTable string    login user table (default "users")
+  -a, --dbAddr string       datatbase connection addr (default "127.0.0.1:3306")
+  -c, --dbCharset string    database charset (default "utf8")
+  -n, --dbName string       database name
+  -p, --dbPassword string   database user password (default "password")
+  -t, --dbType string       database type: mysql/postgres/mssql/sqlite (default "mysql")
+  -u, --dbUser string       database username (default "root")
+  -h, --help                help for ginbro
+
+Global Flags:
+      --verbose   verbose
+
+required flag(s) "appDir", "dbAddr" not set
+```
+
+### command: `felix sshls`
+
+![felix sshls](iamges/sshls)
+
+### command: `felix ssh 2`
+
+![felix sshls](iamges/sshIn)
+
+### command: `felix sshsocks 34 -l 1080`
+
+![felix sshls](iamges/sshsocks)
+
+### command: `felix taskad`
+
+![felix sshls](iamges/taskad)

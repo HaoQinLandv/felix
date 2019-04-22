@@ -12,7 +12,7 @@ import (
 // proxyCmd represents the proxy command
 var proxySocksCmd = &cobra.Command{
 	Use:   "sshsocks",
-	Short: "stat a socks4/5 proxy",
+	Short: "start a socks4/5 proxy",
 	Long:  `usage: felix proxy socks 2 --l=1080`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
@@ -36,7 +36,7 @@ var proxySocksCmd = &cobra.Command{
 var localPort int
 
 func init() {
-	proxyCmd.AddCommand(proxySocksCmd)
+	rootCmd.AddCommand(proxySocksCmd)
 	proxySocksCmd.Flags().IntVarP(&localPort, "localPort", "l", 1080, "socks4/5 local port")
 	proxySocksCmd.MarkFlagRequired("localPort")
 }

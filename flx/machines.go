@@ -11,12 +11,12 @@ import (
 	"strconv"
 )
 
-const caption = "登陆SSH:felix ssh ID 登陆ssh服务器\n添加SSH:felix add -h"
+const caption = "ssh login by ID: felix ssh 2"
 
 func AllMachines(search string) {
 	data := fetchMachineToRows(search)
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "名称", "Addr", "用户名", "IP", "登陆类型", "端口"})
+	table.SetHeader([]string{"ID", "Name", "Addr", "User", "IP", "TYPE", "PORT"})
 	table.SetBorder(true) // Set Border to false
 	table.SetCaption(true, caption)
 	//table.SetAutoMergeCells(true)
