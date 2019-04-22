@@ -27,7 +27,7 @@ Usage:
   felix [command]
 
 Available Commands:
-  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Yo                                                                                                              utube Channel.
+  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Youtube channel
   clean       purge all felix configuration
   ginbro      generate a RESTful code project from SQL database
   goDoc       golang.google.cn/pkg
@@ -126,20 +126,20 @@ required flag(s) "appDir", "dbAddr" not set
 
 ## Code Detail
 
-- save SSH configurations into a SQLite.db in $HOME/.felix
+- save SSH configurations into a SQLite.db in `$HOME/.felix.db`
 - use [spf13/cobra](https://github.com/spf13/cobra#getting-started) as command framework
 
 ### `felix ginbro` detail
-- 1. use SQL query get all tables and column schema from database
-- 2. transform SQL type into Goalng type and [Swagger Doc](https://swagger.io/) type
-- 3. use [Golang Std Lib(text/template)](https://golang.org/pkg/text/template/) to output [Gin's handler and Route files](https://github.com/gin-gonic/gin) and [GORM model files](https://github.com/jinzhu/gorm)
-- 4. `os.exec` call `go fmt` to format the output codebase
+1. use SQL query get all tables and column schema from database
+2. transform SQL type into Golang type and [Swagger Doc](https://swagger.io/) type
+3. use [Golang Std Lib(text/template)](https://golang.org/pkg/text/template/) to output [Gin's handler and Route files](https://github.com/gin-gonic/gin) and [GORM model files](https://github.com/jinzhu/gorm)
+4. `os.exec` call `go fmt` to format the output codebase
 
 ### `felix sshls` detail
-- 1. use [GORM](https://github.com/jinzhu/gorm) retrieve all SSH configuration from SQLite.db
-- 2. use [olekukonko/tablewriter](https://github.com/olekukonko/tablewriter) write table into terminal
+1. use [GORM](https://github.com/jinzhu/gorm) retrieve all SSH configuration from SQLite.db
+2. use [olekukonko/tablewriter](https://github.com/olekukonko/tablewriter) write table into terminal
 
 ### `felix ssh 9`
-- 1. get a ssh configuration by ID
-- 2. use [golang.org/x/crypto/ssh](https://golang.org/x/crypto/ssh) package start ssh session
-- 3. customize `stdin` and `stdout` to listen Sudo command for password message then input sudo password automatically
+1. get a ssh configuration by ID
+2. use [golang.org/x/crypto/ssh](https://golang.org/x/crypto/ssh) package start ssh session
+3. customize `stdin` and `stdout` to listen Sudo command for password message then input sudo password automatically

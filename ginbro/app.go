@@ -2,6 +2,7 @@ package ginbro
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"os"
 	"os/exec"
 	"path"
@@ -166,5 +167,6 @@ func (app *app) goFmtCodeBase() error {
 	if err != nil {
 		return err
 	}
+	color.Red("your code base is at %s", app.ProjectPath)
 	return nil
 }
