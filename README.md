@@ -67,6 +67,12 @@ Use "felix [command] --help" for more information about a command.
 ## ScreenShot
 
 ### command: `felix ginbro`
+
+`felix ginbro` command is migrated from [dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro).
+[Generated WordPress MySQL database running demo](http://ginbro.mojotv.cn/swagger/)
+
+[Generated code base](https://github.com/dejavuzhou/ginbro-son)
+
 ```bash
 $ felix ginbro
 Error: required flag(s) "appDir", "dbAddr" not set
@@ -124,7 +130,7 @@ required flag(s) "appDir", "dbAddr" not set
 - 4. `os.exec` call `go fmt` to format the output codebase
 
 ### `felix sshls` detail
-- 1. use gorm retrieve all SSH configuration from SQLite.db
+- 1. use [GORM](https://github.com/jinzhu/gorm) retrieve all SSH configuration from SQLite.db
 - 2. use [olekukonko/tablewriter](https://github.com/olekukonko/tablewriter) write table into terminal
 
 ### `felix ssh 9`
