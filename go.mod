@@ -37,15 +37,10 @@ replace (
 )
 
 require (
-	github.com/abiosoft/ishell v2.0.0+incompatible
-	github.com/abiosoft/readline v0.0.0-20180607040430-155bce2042db // indirect
-	github.com/chzyer/logex v1.1.10 // indirect
-	github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190401154936-ce35bd87d4b3 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fatih/color v1.7.0
-	github.com/flynn-archive/go-shlex v0.0.0-20150515145356-3f9db97f8568 // indirect
 	github.com/gin-contrib/cors v0.0.0-20190301062745-f9e10995c85a
 	github.com/gin-contrib/static v0.0.0-20190301062546-ed515893e96b
 	github.com/gin-gonic/autotls v0.0.0-20190119125636-0b5f4fc15768
@@ -53,15 +48,12 @@ require (
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
-	github.com/gorilla/mux v1.7.0
 	github.com/gorilla/websocket v1.4.0
 	github.com/iancoleman/strcase v0.0.0-20180726023541-3605ed457bf7
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
 	github.com/jinzhu/now v1.0.0 // indirect
-	github.com/johntdyer/slack-go v0.0.0-20180213144715-95fac1160b22 // indirect
-	github.com/johntdyer/slackrus v0.0.0-20180518184837-f7aae3243a07
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/lib/pq v1.0.0 // indirect
@@ -75,7 +67,6 @@ require (
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pkg/sftp v1.10.0
-	github.com/prometheus/common v0.2.0
 	github.com/sirupsen/logrus v1.4.1
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/viper v1.3.2

@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/dejavuzhou/felix/models"
-	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
+	"log"
 	"strconv"
 )
 

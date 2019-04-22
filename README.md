@@ -60,9 +60,15 @@ Use "felix [command] --help" for more information about a command.
 ```
 
 
-## Installation Or Compiling
+## Build and Run
 
-### 
+- `go get github.com/dejavuzhou/felix`
+- `go install`
+- append $GOBIN into your env $PATH
+- `felix -h` 
+
+or just `go build` run binary by `./felix`
+
 
 ## ScreenShot
 
