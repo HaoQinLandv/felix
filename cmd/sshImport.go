@@ -5,19 +5,18 @@ import (
 	"github.com/dejavuzhou/felix/models"
 	"github.com/fatih/color"
 	"github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
 	"io"
 	"log"
 	"os"
 	"strconv"
 	"strings"
-
-	"github.com/spf13/cobra"
 )
 
 // sshImportCmd represents the testImport command
 var sshImportCmd = &cobra.Command{
 	Use:   "sshimport",
-	Short: "import massive ssh server info from a csv file",
+	Short: "import massive ssh connection configuration from a csv file",
 	Long:  `usage: felix sshimport -f import.csv -u felix -p pewdiepie -F`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if isFlushSsh {

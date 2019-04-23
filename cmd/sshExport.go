@@ -29,7 +29,7 @@ import (
 // sshExportCmd represents the sshexport command
 var sshExportCmd = &cobra.Command{
 	Use:   "sshexport",
-	Short: "export all ssh connection info to a csv file",
+	Short: "export all ssh connection configuration to a csv file",
 	Long: `export all ssh connection info to a csv file,
 for massively editing ssh connection,
 after that use felix "sshimport -f 'path' -F" to update ssh connection

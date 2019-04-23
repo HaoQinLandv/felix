@@ -38,8 +38,8 @@ Available Commands:
   sshadd      add a ssh connection configuration
   sshdu       duplicate a ssh connection
   sshedit     update a ssh connection
-  sshexport   export all ssh connection info to a csv file
-  sshimport   import massive ssh server info from a csv file
+  sshexport   export all ssh connection configuration to a csv file
+  sshimport   import massive ssh connection configuration from a csv file
   sshinfo     view a ssh connection
   sshls       list all ssh connection configuration or search by hostname
   sshproxy    ssh port proxy
