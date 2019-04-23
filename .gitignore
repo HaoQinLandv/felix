@@ -4,3 +4,4 @@ builds
 builds/*
 test*
 *.exe
+release
