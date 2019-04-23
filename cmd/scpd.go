@@ -37,5 +37,4 @@ func init() {
 	downloadCmd.Flags().StringVarP(&localPath, "local", "l", "", "local path/folder path")
 	downloadCmd.MarkFlagRequired("remote")
 	downloadCmd.MarkFlagRequired("local")
-
 }

@@ -53,6 +53,7 @@ Available Commands:
 Flags:
   -h, --help      help for felix
       --verbose   verbose
+  -V, --version show binary build informantion
 ```
 
 

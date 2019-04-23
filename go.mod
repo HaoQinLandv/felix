@@ -9,8 +9,7 @@ replace (
 	go.uber.org/multierr => github.com/uber-go/multierr v1.1.0
 	go.uber.org/zap => github.com/uber-go/zap v1.9.1
 	golang.org/x/build => github.com/golang/build v0.0.0-20190403045414-85a73d7451e7
-
-	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20190325154230-a5d413f7728c
+    golang.org/x/crypto=> github.com/golang/crypto latest
 	golang.org/x/exp => github.com/golang/exp v0.0.0-20190402192236-7fd597ecf556
 	golang.org/x/image => github.com/golang/image v0.0.0-20190321063152-3fc05d484e9f
 	golang.org/x/lint => github.com/golang/lint v0.0.0-20190313153728-d0100b6bd8b3

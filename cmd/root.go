@@ -43,7 +43,7 @@ var verbose, isShowVersion bool
 
 func init() {
 	cobra.OnInitialize(initFunc)
-	rootCmd.Flags().BoolVarP(&isShowVersion, "version", "V", false, "show felix build isShowVersion")
+	rootCmd.Flags().BoolVarP(&isShowVersion, "version", "V", false, "show binary build information")
 	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "verbose")
 }
 
