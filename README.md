@@ -109,6 +109,10 @@ required flag(s) "appDir", "dbAddr" not set
 
 ![felix sshls](images/sshls.png)
 
+### command: `felix ssh 3`
+
+![felix sshls](images/sshInfo.png)
+
 ### command: `felix ssh 2`
 
 ![felix sshls](images/sshIn.png)
@@ -122,22 +126,22 @@ required flag(s) "appDir", "dbAddr" not set
 ![felix sshls](images/taskad.png)
 
 
-## Code Detail
+## Code Logic
 
 - save SSH configurations into a SQLite.db in `$HOME/.felix.db`
 - use [spf13/cobra](https://github.com/spf13/cobra#getting-started) as command framework
 
-### `felix ginbro` detail
+### `felix ginbro` Logic
 1. use SQL query get all tables and column schema from database
 2. transform SQL type into Golang type and [Swagger Doc](https://swagger.io/) type
 3. use [Golang Std Lib(text/template)](https://golang.org/pkg/text/template/) to output [Gin's handler and Route files](https://github.com/gin-gonic/gin) and [GORM model files](https://github.com/jinzhu/gorm)
 4. `os.exec` call `go fmt` to format the output codebase
 
-### `felix sshls` detail
+### `felix sshls` Logic
 1. use [GORM](https://github.com/jinzhu/gorm) retrieve all SSH configuration from SQLite.db
 2. use [olekukonko/tablewriter](https://github.com/olekukonko/tablewriter) write table into terminal
 
-### `felix ssh 9`
+### `felix ssh 9` Logic
 1. get a ssh configuration by ID
 2. use [golang.org/x/crypto/ssh](https://golang.org/x/crypto/ssh) package start ssh session
 3. customize `stdin` and `stdout` to listen Sudo command for password message then input sudo password automatically
