@@ -21,42 +21,38 @@
 commands:
 
 ```bash
-$ felix
-
+$ felix -h
 Usage:
   felix [command]
 
 Available Commands:
-  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Youtube channel
+  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Yo                                                      utube Channel.
   clean       purge all felix configuration
   ginbro      generate a RESTful code project from SQL database
   goDoc       golang.google.cn/pkg
   help        Help about any command
   json        open a tab in browser to convert json to golang struct
+  scpd        scp download file or folder
+  scpu        scp upload a file or a folder
   ssh         open a ssh terminal
-  sshadd      add a ssh connection
-  sshdl       scp download file or folder
+  sshadd      add a ssh connection configuration
   sshdu       duplicate a ssh connection
-  sshedit     update a ssh connection config
+  sshedit     update a ssh connection
   sshexport   export all ssh connection info to a csv file
   sshimport   import massive ssh server info from a csv file
-  sshinfo     view a ssh info
-  sshls       list all ssh info or search by hostname
+  sshinfo     view a ssh connection
+  sshls       list all ssh connection configuration or search by hostname
   sshproxy    ssh port proxy
-  sshrm       delete a ssh info
+  sshrm       delete a ssh connection
   sshsocks    start a socks4/5 proxy
-  sshup       scp upload
-  task        show all TODO tasks
-  taskad      add a task
-  taskok      set a task done
-  taskrm      remove a task
+  task        list all rows in TaskList
+  taskad      add a row into TaskList
+  taskok      set a row done in TaskList
+  taskrm      remove a row in TaskList
 
 Flags:
   -h, --help      help for felix
       --verbose   verbose
-
-Use "felix [command] --help" for more information about a command.
-
 ```
 
 

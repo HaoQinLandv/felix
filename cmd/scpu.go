@@ -10,8 +10,8 @@ import (
 
 // uploadCmd represents the upload command
 var uploadCmd = &cobra.Command{
-	Use:   "sshup",
-	Short: "scp upload",
+	Use:   "scpu",
+	Short: "scp upload a file or a folder",
 	Long: `usage: felix sshup 1 --remote=/data/temp --local=/c/Users/Felix/go/src/github.com/dejavuzhou/felix
 
 `,

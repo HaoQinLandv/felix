@@ -9,7 +9,7 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "sshadd",
-	Short: "add a ssh connection",
+	Short: "add a ssh connection configuration",
 	Long:  `add a ssh connection,usage: felix sshadd -p my_password -k ~/.ssh/id_rsa -n mySSH -a 192.168.0.01:22 -u root --auth=key`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if authType != "password" || authTable != "key" {

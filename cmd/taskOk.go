@@ -10,7 +10,7 @@ import (
 // taskdnCmd represents the taskdn command
 var taskdnCmd = &cobra.Command{
 	Use:   "taskok",
-	Short: "set a task done",
+	Short: "set a row done in TaskList",
 	Long:  `usage:felix taskok 1`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

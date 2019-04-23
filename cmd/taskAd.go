@@ -9,7 +9,7 @@ import (
 // taskadCmd represents the taskad command
 var taskadCmd = &cobra.Command{
 	Use:   "taskad",
-	Short: "add a task",
+	Short: "add a row into TaskList",
 	Long:  `usage: felix taskad 'subscribe Pewdiepie's Youtube channel`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

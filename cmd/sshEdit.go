@@ -12,8 +12,8 @@ import (
 // hostUpdateCmd represents the hostEdit command
 var hostUpdateCmd = &cobra.Command{
 	Use:   "sshedit",
-	Short: "update a ssh connection config",
-	Long:  `update a ssh connection config, usually be called after sshud command, usage felix sshedit 1 -n=Awesome`,
+	Short: "update a ssh connection",
+	Long:  `update a ssh connection configuration, usually be called after sshud command, usage felix sshedit 1 -n=Awesome`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		argId, err := strconv.ParseUint(args[0], 10, 64)

@@ -14,7 +14,7 @@ import (
 // tasklsCmd represents the taskls command
 var tasklsCmd = &cobra.Command{
 	Use:   "task",
-	Short: "show all TODO tasks",
+	Short: "list all rows in TaskList",
 	Long:  `usage:felix task`,
 	Run: func(cmd *cobra.Command, args []string) {
 		mcs, err := models.TaskAll(searchKey)

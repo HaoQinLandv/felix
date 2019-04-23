@@ -10,7 +10,7 @@ import (
 
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
-	Use:   "sshdl",
+	Use:   "scpd",
 	Short: "scp download file or folder",
 	Long:  `download file or folder, usage: felix sshdl 2 -r="/home/root/awesome" -l="D;/awesome"`,
 	Args:  cobra.MinimumNArgs(1),

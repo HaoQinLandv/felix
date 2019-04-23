@@ -8,7 +8,7 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "sshls",
-	Short: "list all ssh info or search by hostname",
+	Short: "list all ssh connection configuration or search by hostname",
 	Long:  `usage: felix sshls -s ".cn",search ssh by hostname`,
 	Run: func(cmd *cobra.Command, args []string) {
 		flx.AllMachines(searchKey)
