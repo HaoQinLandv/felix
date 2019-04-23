@@ -9,7 +9,7 @@ replace (
 	go.uber.org/multierr => github.com/uber-go/multierr v1.1.0
 	go.uber.org/zap => github.com/uber-go/zap v1.9.1
 	golang.org/x/build => github.com/golang/build v0.0.0-20190403045414-85a73d7451e7
-    golang.org/x/crypto=> github.com/golang/crypto latest
+	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20190422183909-d864b10871cd
 	golang.org/x/exp => github.com/golang/exp v0.0.0-20190402192236-7fd597ecf556
 	golang.org/x/image => github.com/golang/image v0.0.0-20190321063152-3fc05d484e9f
 	golang.org/x/lint => github.com/golang/lint v0.0.0-20190313153728-d0100b6bd8b3
@@ -18,7 +18,7 @@ replace (
 	golang.org/x/oauth2 => github.com/golang/oauth2 v0.0.0-20190402181905-9f3314589c9a
 	golang.org/x/perf => github.com/golang/perf v0.0.0-20190312170614-0655857e383f
 	golang.org/x/sync => github.com/golang/sync v0.0.0-20190227155943-e225da77a7e6
-	golang.org/x/sys => github.com/golang/sys v0.0.0-20190402142545-baf5eb976a8c
+	golang.org/x/sys => github.com/golang/sys v0.0.0-20190422165155-953cdadca894
 	golang.org/x/text => github.com/golang/text v0.3.0
 	golang.org/x/time => github.com/golang/time v0.0.0-20190308202827-9d24e82272b4
 	golang.org/x/tools => github.com/golang/tools v0.0.0-20190402200628-202502a5a924
@@ -70,5 +70,5 @@ require (
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/viper v1.3.2
 	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
-	golang.org/x/sys v0.0.0-20190312061237-fead79001313
+	golang.org/x/sys v0.0.0-20190412213103-97732733099d
 )
