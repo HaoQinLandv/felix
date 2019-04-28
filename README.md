@@ -1,4 +1,4 @@
-# Felix
+# Felix [中午](README_zh.md)
 [![Build Status](https://travis-ci.org/dejavuzhou/felix.svg?branch=master)](https://travis-ci.org/dejavuzhou/felix)
 
 ## For Whom
@@ -61,7 +61,7 @@ Flags:
 
 - `go get github.com/dejavuzhou/felix`
 - `go install`
-- append $GOBIN into your env $PATH
+- [append $GOBIN into your env $PATH](https://stackoverflow.com/questions/25216765/gobin-not-set-cannot-run-go-install)
 - `felix -h` 
 
 or just `go build` run binary by `./felix`

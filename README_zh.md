@@ -18,7 +18,7 @@
 - Pewdiepie's brofit command to subscribe the Youtube channel
 
 ## Overview
-commands:
+提供的命令:
 
 ```bash
 $ felix -h
@@ -61,7 +61,7 @@ Flags:
 
 - `go get github.com/dejavuzhou/felix`
 - `go install`
-- append $GOBIN into your env $PATH
+- [把 $GOBIN 添加到 $PATH](https://stackoverflow.com/questions/25216765/gobin-not-set-cannot-run-go-install)
 - `felix -h` 
 
 or just `go build` run binary by `./felix`
@@ -69,12 +69,12 @@ or just `go build` run binary by `./felix`
 
 ## 功能截图
 
-### command: `felix ginbro`
+### `felix ginbro` 快速的更具SQL(支持 MySql/SQLite/PostgreSQL)数据库生成
 
-`felix ginbro` command is migrated from [dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro).
-[Generated WordPress MySQL database running demo](http://ginbro.mojotv.cn/swagger/)
+`felix ginbro` command 功能迁移自 [dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro).项目
+[生成的wordpress项目golang RESTful APIs](http://ginbro.mojotv.cn/swagger/)
 
-[Generated code base](https://github.com/dejavuzhou/ginbro-son)
+[wordpress RESTful Golang Demo代码预览 ](https://github.com/dejavuzhou/ginbro-son)
 
 ```bash
 $ felix ginbro
