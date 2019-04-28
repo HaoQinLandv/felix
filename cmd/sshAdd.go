@@ -8,13 +8,10 @@ import (
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
-	Use:   "sshadd",
+	Use:   "sshad",
 	Short: "add a ssh connection configuration",
 	Long:  `add a ssh connection,usage: felix sshadd -p my_password -k ~/.ssh/id_rsa -n mySSH -a 192.168.0.01:22 -u root --auth=key`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if authType != "password" || authTable != "key" {
-			log.Fatalln("--auth flag's value must be password or key")
-		}
 		if err := models.MachineAdd(name, addr, "", user, password, key, authType, port); err != nil {
 			log.Fatal(err)
 		}
