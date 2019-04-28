@@ -67,6 +67,7 @@ type Stats struct {
 	FSInfos      []FSInfo
 	NetIntf      map[string]NetIntfInfo
 	CPU          CPUInfo // or []CPUInfo to get all the cpu-core's stats?
+	OsInfo       string
 }
 
 func (stats *Stats) getAllStats(client *ssh.Client) {
@@ -78,6 +79,7 @@ func (stats *Stats) getAllStats(client *ssh.Client) {
 	stats.getInterfaces(client)
 	stats.getInterfaceInfo(client)
 	stats.getCPU(client)
+	stats.getOsInfo(client)
 }
 
 func (stats *Stats) getUptime(client *ssh.Client) (err error) {
@@ -312,6 +314,14 @@ func (stats *Stats) parseCPUFields(fields []string, stat *cpuRaw) {
 	}
 }
 
+func (stats *Stats) getOsInfo(client *ssh.Client) {
+	lines, err := runCommand(client, "uname -a")
+	if err != nil {
+		return
+	}
+	stats.OsInfo = strings.TrimSpace(lines)
+}
+
 // the CPU stats that were fetched last time round
 var preCPU cpuRaw
 
@@ -402,6 +412,7 @@ func showStats(client *ssh.Client) {
 
 	color.HiCyan("Machine Hardware Info:")
 	color.Cyan("HostName:\t%s\tUpTime:\t%s", stats.Hostname, fmtUptime(&stats))
+	color.Yellow("%s", stats.OsInfo)
 	color.HiCyan("Load:")
 	color.Yellow("%s\t%s\t%s", stats.Load1, stats.Load5, stats.Load10)
 	color.HiCyan("CPU:")
