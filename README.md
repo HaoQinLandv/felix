@@ -1,4 +1,4 @@
-# Felix [中午](README_zh.md)
+# Felix [中文](README_zh.md)
 [![Build Status](https://travis-ci.org/dejavuzhou/felix.svg?branch=master)](https://travis-ci.org/dejavuzhou/felix)
 
 ## For Whom
@@ -26,7 +26,7 @@ Usage:
   felix [command]
 
 Available Commands:
-  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Yo                                                      utube Channel.
+  brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Youtube Channel.
   clean       purge all felix configuration
   ginbro      generate a RESTful code project from SQL database
   goDoc       golang.google.cn/pkg

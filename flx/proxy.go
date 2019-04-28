@@ -16,7 +16,10 @@ type sshProxy struct {
 }
 
 func RunProxy(h *models.Machine, localAddr, remoteAddr string) error {
-	client := newSshClient(h)
+	client, err := newSshClient(h)
+	if err != nil {
+		return err
+	}
 	defer client.Close()
 	tunnel := sshProxy{localAddr, remoteAddr, client}
 	return tunnel.start()

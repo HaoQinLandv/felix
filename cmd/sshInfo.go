@@ -1,10 +1,12 @@
 package cmd
 
 import (
+	"github.com/dejavuzhou/felix/flx"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/fatih/color"
 	"github.com/mattn/go-isatty"
 	"github.com/olekukonko/tablewriter"
+	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 	"os"
 	"runtime"
@@ -29,6 +31,10 @@ var sshInfoCmd = &cobra.Command{
 			return
 		}
 		renderInfoTable(mac)
+		err = flx.ShowHardwareInfo(mac)
+		if err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 

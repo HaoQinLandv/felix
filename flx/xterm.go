@@ -27,7 +27,10 @@ func RunSshXtermJs(h *models.Machine, sudoMode bool, w http.ResponseWriter, r *h
 		return fmt.Errorf("unable to upgrade connection %s", err)
 	}
 
-	client := newSshClient(h)
+	client, err := newSshClient(h)
+	if err != nil {
+		return err
+	}
 	defer client.Close()
 	session, err := client.NewSession()
 	if err != nil {

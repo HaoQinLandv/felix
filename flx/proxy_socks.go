@@ -16,7 +16,10 @@ type socksDialer interface {
 }
 
 func RunSocksProxy(h *models.Machine, port int) error {
-	conn := newSshClient(h)
+	conn, err := newSshClient(h)
+	if err != nil {
+		return err
+	}
 	defer conn.Close()
 
 	addr := fmt.Sprintf("127.0.0.1:%d", port)

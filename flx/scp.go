@@ -10,7 +10,10 @@ import (
 const maxPacket = 1 << 15
 
 func newSftpClient(h *models.Machine) *sftp.Client {
-	conn := newSshClient(h)
+	conn, err := newSshClient(h)
+	if err != nil {
+		log.Fatal("create ssh client failed", err)
+	}
 	c, err := sftp.NewClient(conn, sftp.MaxPacket(maxPacket))
 	if err != nil {
 		log.Fatal("create sftp client failed", err)

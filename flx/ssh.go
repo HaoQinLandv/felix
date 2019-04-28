@@ -2,6 +2,7 @@ package flx
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/mitchellh/go-homedir"
@@ -12,7 +13,7 @@ import (
 	"strings"
 )
 
-func newSshClient(h *models.Machine) *ssh.Client {
+func newSshClient(h *models.Machine) (*ssh.Client, error) {
 	config := &ssh.ClientConfig{
 		User:            h.User,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(), //这个可以， 但是不够安全
@@ -26,9 +27,9 @@ func newSshClient(h *models.Machine) *ssh.Client {
 	addr := fmt.Sprintf("%s:%d", h.Host, h.Port)
 	c, err := ssh.Dial("tcp", addr, config)
 	if err != nil {
-		log.Fatal("ssh dial failed", err)
+		return nil, err
 	}
-	return c
+	return c, nil
 }
 func hostKeyCallBackFunc(host string) ssh.HostKeyCallback {
 	hostPath, err := homedir.Expand("~/.ssh/known_hosts")
@@ -78,4 +79,23 @@ func publicKeyAuthFunc(kPath string) ssh.AuthMethod {
 		log.Fatal("ssh key signer failed", err)
 	}
 	return ssh.PublicKeys(signer)
+}
+func runCommand(client *ssh.Client, command string) (stdout string, err error) {
+	session, err := client.NewSession()
+	if err != nil {
+		//log.Print(err)
+		return
+	}
+	defer session.Close()
+
+	var buf bytes.Buffer
+	session.Stdout = &buf
+	err = session.Run(command)
+	if err != nil {
+		//log.Print(err)
+		return
+	}
+	stdout = string(buf.Bytes())
+
+	return
 }
