@@ -15,16 +15,16 @@ Ginbro is a scaffold tool for Gin-Gorm-MySQL which you just need to input one co
 
 ## Feature
 - [fastest way to generate a RESTful APIs application with MySQL in Go](/boilerplate)
-- support [JWT Authorization Bearer](boilerplate/handlers/middleware_jwt.go) [Auth](boilerplate/handlers/handler_auth.go) and [JWT middleware](boilerplate/models/jwt.go)
-- [support brute-force-login firewall](boilerplate/models/model_users.go)
+- support [JWT Authorization Bearer](_boilerplate/handlers/middleware_jwt.go) [Auth](_boilerplate/handlers/handler_auth.go) and [JWT middleware](_boilerplate/models/jwt.go)
+- [support brute-force-login firewall](_boilerplate/models/model_users.go)
 - [build in swift golang-memory cache](https://github.com/dejavuzhou/ginbro/blob/master/boilerplate/models/db_memory.go)
-- [generate GORM model from MySQL database schema](boilerplate/models)
-- [powered with Swagger document and SwaggerUI](boilerplate/static/swagger)
-- [capable of serve VueJs app's static files](boilerplate/static)
-- [configurable CORS middleware](boilerplate/handlers/gin_helper.go)
+- [generate GORM model from MySQL database schema](_boilerplate/models)
+- [powered with Swagger document and SwaggerUI](_boilerplate/static/swagger)
+- [capable of serve VueJs app's static files](_boilerplate/static)
+- [configurable CORS middleware](_boilerplate/handlers/gin_helper.go)
 - [user friendly configuration](tpl/config.toml)
 - [golang GUI app](gui)
-- [fully build-in cron task support](boilerplate/tasks)
+- [fully build-in cron task support](_boilerplate/tasks)
 - [travis CI/CD](https://travis-ci.org/dejavuzhou/ginbro)
     
 ## Ginbro Installation

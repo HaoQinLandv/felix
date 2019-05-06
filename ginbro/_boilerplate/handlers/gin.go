@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/config"
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/models"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/config"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/models"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"

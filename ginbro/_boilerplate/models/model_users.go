@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/config"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/config"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 	"time"
@@ -102,7 +102,7 @@ func (m *AuthorizationModel) Login(ip string) (*jwtObj, error) {
 		return nil, fmt.Errorf("for too many wrong login retries the %s will ban for login in %d minitues", ip, memExpire)
 	}
 	//you can implement more detailed login retry rule
-	//for i don't know what your login username i can't implement the ip+username rule in my boilerplate project
+	//for i don't know what your login username i can't implement the ip+username rule in my _boilerplate project
 	// about username and ip retry rule
 
 	err := db.Where(m).First(&m).Error

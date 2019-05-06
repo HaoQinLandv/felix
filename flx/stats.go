@@ -409,7 +409,6 @@ func showStats(client *ssh.Client) {
 	stats := Stats{}
 	stats.getAllStats(client)
 	used := stats.MemTotal - stats.MemFree - stats.MemBuffers - stats.MemCached
-
 	color.HiCyan("Machine Hardware Info:")
 	color.Cyan("HostName:\t%s\tUpTime:\t%s", stats.Hostname, fmtUptime(&stats))
 	color.Yellow("%s", stats.OsInfo)

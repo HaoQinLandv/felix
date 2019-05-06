@@ -1,20 +1,20 @@
 package handlers
 
 import (
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/models"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/models"
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-	groupApi.GET("user", jwtMiddleware, userAll)
-	groupApi.GET("user/:id", jwtMiddleware, userOne)
-	groupApi.POST("user", jwtMiddleware, userCreate)
-	groupApi.PATCH("user", jwtMiddleware, userUpdate)
-	groupApi.DELETE("user/:id", jwtMiddleware, userDelete)
+	groupApi.GET("department", departmentAll)
+	groupApi.GET("department/:id", departmentOne)
+	groupApi.POST("department", departmentCreate)
+	groupApi.PATCH("department", departmentUpdate)
+	groupApi.DELETE("department/:id", departmentDelete)
 }
 
-func userAll(c *gin.Context) {
-	mdl := models.AuthorizationModel{}
+func departmentAll(c *gin.Context) {
+	mdl := models.Department{}
 	query := &models.PaginationQuery{}
 	err := c.ShouldBindQuery(query)
 	if handleError(c, err) {
@@ -26,8 +26,8 @@ func userAll(c *gin.Context) {
 	}
 	jsonPagination(c, list, total, query)
 }
-func userOne(c *gin.Context) {
-	var mdl models.AuthorizationModel
+func departmentOne(c *gin.Context) {
+	var mdl models.Department
 	id, err := parseParamID(c)
 	if handleError(c, err) {
 		return
@@ -39,13 +39,12 @@ func userOne(c *gin.Context) {
 	}
 	jsonData(c, data)
 }
-func userCreate(c *gin.Context) {
-	var mdl models.AuthorizationModel
+func departmentCreate(c *gin.Context) {
+	var mdl models.Department
 	err := c.ShouldBind(&mdl)
 	if handleError(c, err) {
 		return
 	}
-
 	err = mdl.Create()
 	if handleError(c, err) {
 		return
@@ -53,8 +52,8 @@ func userCreate(c *gin.Context) {
 	jsonData(c, mdl)
 }
 
-func userUpdate(c *gin.Context) {
-	var mdl models.AuthorizationModel
+func departmentUpdate(c *gin.Context) {
+	var mdl models.Department
 	err := c.ShouldBind(&mdl)
 	if handleError(c, err) {
 		return
@@ -66,8 +65,8 @@ func userUpdate(c *gin.Context) {
 	jsonSuccess(c)
 }
 
-func userDelete(c *gin.Context) {
-	var mdl models.AuthorizationModel
+func departmentDelete(c *gin.Context) {
+	var mdl models.Department
 	id, err := parseParamID(c)
 	if handleError(c, err) {
 		return

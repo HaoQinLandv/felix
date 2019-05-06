@@ -1,20 +1,20 @@
 package handlers
 
 import (
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/models"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/models"
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-	groupApi.GET("department", departmentAll)
-	groupApi.GET("department/:id", departmentOne)
-	groupApi.POST("department", departmentCreate)
-	groupApi.PATCH("department", departmentUpdate)
-	groupApi.DELETE("department/:id", departmentDelete)
+	groupApi.GET("user", jwtMiddleware, userAll)
+	groupApi.GET("user/:id", jwtMiddleware, userOne)
+	groupApi.POST("user", jwtMiddleware, userCreate)
+	groupApi.PATCH("user", jwtMiddleware, userUpdate)
+	groupApi.DELETE("user/:id", jwtMiddleware, userDelete)
 }
 
-func departmentAll(c *gin.Context) {
-	mdl := models.Department{}
+func userAll(c *gin.Context) {
+	mdl := models.AuthorizationModel{}
 	query := &models.PaginationQuery{}
 	err := c.ShouldBindQuery(query)
 	if handleError(c, err) {
@@ -26,8 +26,8 @@ func departmentAll(c *gin.Context) {
 	}
 	jsonPagination(c, list, total, query)
 }
-func departmentOne(c *gin.Context) {
-	var mdl models.Department
+func userOne(c *gin.Context) {
+	var mdl models.AuthorizationModel
 	id, err := parseParamID(c)
 	if handleError(c, err) {
 		return
@@ -39,12 +39,13 @@ func departmentOne(c *gin.Context) {
 	}
 	jsonData(c, data)
 }
-func departmentCreate(c *gin.Context) {
-	var mdl models.Department
+func userCreate(c *gin.Context) {
+	var mdl models.AuthorizationModel
 	err := c.ShouldBind(&mdl)
 	if handleError(c, err) {
 		return
 	}
+
 	err = mdl.Create()
 	if handleError(c, err) {
 		return
@@ -52,8 +53,8 @@ func departmentCreate(c *gin.Context) {
 	jsonData(c, mdl)
 }
 
-func departmentUpdate(c *gin.Context) {
-	var mdl models.Department
+func userUpdate(c *gin.Context) {
+	var mdl models.AuthorizationModel
 	err := c.ShouldBind(&mdl)
 	if handleError(c, err) {
 		return
@@ -65,8 +66,8 @@ func departmentUpdate(c *gin.Context) {
 	jsonSuccess(c)
 }
 
-func departmentDelete(c *gin.Context) {
-	var mdl models.Department
+func userDelete(c *gin.Context) {
+	var mdl models.AuthorizationModel
 	id, err := parseParamID(c)
 	if handleError(c, err) {
 		return

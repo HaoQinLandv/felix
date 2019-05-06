@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/models"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/models"
 	"github.com/gin-gonic/gin"
 )
 

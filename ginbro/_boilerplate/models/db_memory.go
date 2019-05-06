@@ -3,7 +3,7 @@ package models
 import (
 	"container/list"
 	"errors"
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/config"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/config"
 	"github.com/sirupsen/logrus"
 	"sync"
 	"time"

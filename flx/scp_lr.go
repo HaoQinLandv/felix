@@ -11,7 +11,7 @@ import (
 )
 
 func ScpLR(h *models.Machine, localPath, remotePath string) error {
-	c := newSftpClient(h)
+	c := NewSftpClient(h)
 	defer c.Close()
 	return lrCopy(localPath, remotePath, c)
 }

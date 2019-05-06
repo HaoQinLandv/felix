@@ -73,9 +73,9 @@ func (app *app) makeProjectDir() error {
 	return nil
 }
 func (app *app) copyStaticAndSwagger() error {
-	srcStatic := filepath.Join(goPath, "src", felixGinbroPackage, "boilerplate/static")
+	srcStatic := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/static")
 	dstStatic := filepath.Join(app.ProjectPath, "static")
-	srcSwagger := filepath.Join(goPath, "src", felixGinbroPackage, "boilerplate/swagger")
+	srcSwagger := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/swagger")
 	dstSwagger := filepath.Join(app.ProjectPath, "swagger")
 	err := CopyDir(srcSwagger, dstSwagger)
 	if err != nil {
@@ -84,12 +84,12 @@ func (app *app) copyStaticAndSwagger() error {
 	return CopyDir(srcStatic, dstStatic)
 }
 func (app *app) copyTimerTaskDir() error {
-	src := filepath.Join(goPath, "src", felixGinbroPackage, "boilerplate/tasks")
+	src := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/tasks")
 	dst := filepath.Join(app.ProjectPath, "tasks")
 	return CopyDir(src, dst)
 }
 func (app *app) copyConfigPackage() error {
-	src := filepath.Join(goPath, "src", felixGinbroPackage, "boilerplate/config")
+	src := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/config")
 	dst := filepath.Join(app.ProjectPath, "config")
 	return CopyDir(src, dst)
 }

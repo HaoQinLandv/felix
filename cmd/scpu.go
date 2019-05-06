@@ -13,7 +13,6 @@ var uploadCmd = &cobra.Command{
 	Use:   "scpu",
 	Short: "scp upload a file or a folder",
 	Long: `usage: felix sshup 1 --remote=/data/temp --local=/c/Users/Felix/go/src/github.com/dejavuzhou/felix
-
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		dbId, err := strconv.ParseUint(args[0], 10, 64)

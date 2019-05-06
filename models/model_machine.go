@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"errors"
+	"github.com/jinzhu/gorm"
+)
 
 type Machine struct {
 	gorm.Model
@@ -61,4 +64,37 @@ func MachineDuplicate(idx uint) error {
 	}
 	ins.ID = 0
 	return db.Create(ins).Error
+}
+
+func (m *Machine) One() (one *Machine, err error) {
+	one = &Machine{}
+	err = crudOne(m, one)
+	return
+}
+
+//All get all for pagination
+func (m *Machine) All(q *PaginationQuery) (list *[]Machine, total uint, err error) {
+	list = &[]Machine{}
+	total, err = crudAll(m, q, list)
+	return
+}
+
+//Update a row
+func (m *Machine) Update() (err error) {
+	where := Machine{Model: gorm.Model{ID: m.ID}}
+	return crudUpdate(m, where)
+}
+
+//Create insert a row
+func (m *Machine) Create() (err error) {
+	m.ID = 0
+	return db.Create(m).Error
+}
+
+//Delete destroy a row
+func (m *Machine) Delete() (err error) {
+	if m.ID == 0 {
+		return errors.New("resource must not be zero value")
+	}
+	return crudDelete(m)
 }

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"errors"
-	"github.com/dejavuzhou/felix/ginbro/boilerplate/models"
+	"github.com/dejavuzhou/felix/ginbro/_boilerplate/models"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"strconv"
