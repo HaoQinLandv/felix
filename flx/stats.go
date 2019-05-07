@@ -405,6 +405,15 @@ func ShowHardwareInfo(mac *models.Machine) error {
 	showStats(client)
 	return nil
 }
+func FetchHardwareInfo(mc *models.Machine) (*Stats, error) {
+	client, err := newSshClient(mc)
+	if err != nil {
+		return nil, err
+	}
+	stats := Stats{}
+	stats.getAllStats(client)
+	return &stats, nil
+}
 func showStats(client *ssh.Client) {
 	stats := Stats{}
 	stats.getAllStats(client)

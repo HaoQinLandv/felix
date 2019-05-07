@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/dejavuzhou/felix/flx"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -17,7 +18,13 @@ func SshAll(c *gin.Context) {
 	if handleError(c, err) {
 		return
 	}
-	jsonPagination(c, list, total, query)
+	var mcs []models.Machine
+	for _, vv := range *list {
+		vv.Password = ""
+		vv.Key = ""
+		mcs = append(mcs, vv)
+	}
+	jsonPagination(c, mcs, total, query)
 }
 func SshOne(c *gin.Context) {
 	id, err := parseParamID(c)
@@ -25,11 +32,16 @@ func SshOne(c *gin.Context) {
 		return
 	}
 	mdl := models.Machine{Model: gorm.Model{ID: id}}
-	data, err := mdl.One()
+	mac, err := mdl.One()
 	if handleError(c, err) {
 		return
 	}
-	jsonData(c, data)
+	info, err := flx.FetchHardwareInfo(mac)
+	if handleError(c, err) {
+		return
+	}
+	//data := gin.H{"mac":mac,"info":info}
+	jsonData(c, info)
 }
 func SshCreate(c *gin.Context) {
 	var mdl models.Machine

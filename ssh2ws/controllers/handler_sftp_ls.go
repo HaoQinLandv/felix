@@ -11,7 +11,7 @@ type Ls struct {
 	Path  string    `json:"path"` // including Name
 	Size  int64     `json:"size"`
 	Time  time.Time `json:"time"`
-	Mod   uint32    `json:"mod"`
+	Mod   string    `json:"mod"`
 	IsDir bool      `json:"is_dir"`
 }
 
@@ -35,7 +35,7 @@ func SftpLs(c *gin.Context) {
 	}
 	fileList := make([]Ls, 0) // this will not be converted to null if slice is empty.
 	for _, file := range files {
-		tt := Ls{Name: file.Name(), Size: file.Size(), Path: path.Join(dirPath, file.Name()), Time: file.ModTime(), Mod: uint32(file.Mode()), IsDir: file.IsDir()}
+		tt := Ls{Name: file.Name(), Size: file.Size(), Path: path.Join(dirPath, file.Name()), Time: file.ModTime(), Mod: file.Mode().String(), IsDir: file.IsDir()}
 		fileList = append(fileList, tt)
 	}
 	jsonData(c, fileList)
