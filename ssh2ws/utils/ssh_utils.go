@@ -7,11 +7,6 @@ import (
 	"log"
 )
 
-const (
-	SSH_IO_MODE_CHANNEL = 0
-	SSH_IO_MODE_SESSION = 1
-)
-
 type SSHConnInterface interface {
 	// close ssh connection
 	Close()

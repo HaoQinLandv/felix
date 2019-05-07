@@ -3,22 +3,17 @@ package flx
 import (
 	"github.com/dejavuzhou/felix/models"
 	"github.com/pkg/sftp"
-	"log"
 	"path/filepath"
 )
 
 const maxPacket = 1 << 15
 
-func NewSftpClient(h *models.Machine) *sftp.Client {
+func NewSftpClient(h *models.Machine) (*sftp.Client, error) {
 	conn, err := newSshClient(h)
 	if err != nil {
-		log.Fatal("create ssh client failed", err)
+		return nil, err
 	}
-	c, err := sftp.NewClient(conn, sftp.MaxPacket(maxPacket))
-	if err != nil {
-		log.Fatal("create sftp client failed", err)
-	}
-	return c
+	return sftp.NewClient(conn, sftp.MaxPacket(maxPacket))
 }
 func toUnixPath(path string) string {
 	return filepath.Clean(path)
