@@ -4,6 +4,7 @@ run: build
 	./build/felix -V
 
 build:
+
 	go build -race -ldflags $(LDFLAGS)  -o build/felix *.go
 
 release:

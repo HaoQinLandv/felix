@@ -4,12 +4,17 @@ import (
 	"errors"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"strconv"
 )
 
 func jsonError(c *gin.Context, msg interface{}) {
 	c.AbortWithStatusJSON(200, gin.H{"ok": false, "msg": msg})
 }
+func jsonAuthError(c *gin.Context, msg interface{}) {
+	c.AbortWithStatusJSON(http.StatusPreconditionFailed, gin.H{"ok": false, "msg": msg})
+}
+
 func jsonData(c *gin.Context, data interface{}) {
 	c.AbortWithStatusJSON(200, gin.H{"ok": true, "data": data})
 }

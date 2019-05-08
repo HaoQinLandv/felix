@@ -15,8 +15,12 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/ssh2ws"
+	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
+	"math/rand"
+	"time"
 )
 
 // sshwCmd represents the sshw command
@@ -25,15 +29,38 @@ var sshwCmd = &cobra.Command{
 	Short: "open ssh terminal in web browser",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		ssh2ws.RunSsh2ws(addr, user, password, isDev)
+		if secret == "" {
+			secret = randomString(32)
+			fmt.Printf("use random string as jwt secret: %s\n", secret)
+		}
+		ex := time.Minute * time.Duration(expire)
+
+		fmt.Println("login user:", user)
+		fmt.Println("login password:", password)
+		fmt.Printf("login expire in %d minutes\n", expire)
+		if err := ssh2ws.RunSsh2ws(addr, user, password, ex, []byte(secret)); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
-var isDev bool
+var expire uint
+var secret string
 
 func init() {
 	rootCmd.AddCommand(sshwCmd)
-	sshwCmd.Flags().BoolVarP(&isDev, "dev", "d", false, "is development mode")
+	sshwCmd.Flags().StringVarP(&secret, "secret", "s", "", "jwt secret string")
 	sshwCmd.Flags().StringVarP(&addr, "addr", "a", ":2222", "listening addr")
-	sshwCmd.Flags().StringVarP(&user, "user", "u", "", "auth user")
-	sshwCmd.Flags().StringVarP(&password, "password", "p", "", "auth password")
+	sshwCmd.Flags().StringVarP(&user, "user", "u", "admin", "auth user")
+	sshwCmd.Flags().StringVarP(&password, "password", "p", "admin", "auth password")
+	sshwCmd.Flags().UintVarP(&expire, "expire", "x", 60*24, "token expire in * minute")
+}
+
+var letterRunes = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_+")
+
+func randomString(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }
