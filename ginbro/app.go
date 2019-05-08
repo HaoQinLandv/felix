@@ -152,7 +152,7 @@ func (app *app) generateCodeBase() error {
 			return err
 		}
 		if resouce.IsAuthTable {
-			err = parseTemplate("tpl/models.helper_jwt.go.tpl", app.ProjectPackage, "models/helper_jwt.go", resouce)
+			err = parseTemplate("tpl/models.jwt.go.tpl", app.ProjectPackage, "models/jwt.go", resouce)
 			if err != nil {
 				return err
 			}
