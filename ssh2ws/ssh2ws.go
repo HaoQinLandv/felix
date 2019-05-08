@@ -2,16 +2,21 @@ package ssh2ws
 
 import (
 	"github.com/dejavuzhou/felix/ssh2ws/controllers"
-	"github.com/gin-contrib/static"
+	"github.com/dejavuzhou/felix/ssh2ws/utils"
+	_ "github.com/dejavuzhou/felix/statik"
 	"github.com/gin-gonic/gin"
+	"github.com/rakyll/statik/fs"
 	"time"
 )
 
 func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret []byte) error {
 	r := gin.Default()
 	r.MaxMultipartMemory = 32 << 20
-
-	r.Use(static.Serve("/", static.LocalFile("dist", true)))
+	statikFS, err := fs.New()
+	if err != nil {
+		return err
+	}
+	r.Use(utils.Serve("/", statikFS))
 
 	api := r.Group("api")
 	r.POST("api/login", controllers.GetLoginHandler(user, password, expire, secret))

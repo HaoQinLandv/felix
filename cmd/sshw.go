@@ -58,6 +58,7 @@ func init() {
 var letterRunes = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_+")
 
 func randomString(n int) string {
+	rand.Seed(time.Now().Unix())
 	b := make([]byte, n)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
