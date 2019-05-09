@@ -5,7 +5,7 @@ git:
 go:
 - 1.10.x
 - 1.11.x
-- 1.12.x
+- 1.x
 
 env:
   - CGO_ENABLED=0 GO111MODULE=on
@@ -16,7 +16,7 @@ script:
   - diff -u <(echo -n) <(gofmt -d .)
   - pwd
   - ls -al
-  - go build ./...
+  - go build
   - ./felix -h
   - go test -race -coverprofile=coverage.txt -covermode=atomic
 
