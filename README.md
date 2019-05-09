@@ -137,7 +137,7 @@ login expire in 1440 minutes
 
 
 
-### command: `felix ginbro`
+### command: `felix ginbro`  [ginbro doc](ginbro)
 
 `felix ginbro` command is migrated from [dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro).
 [Generated WordPress MySQL database running demo](http://ginbro.mojotv.cn/swagger/)

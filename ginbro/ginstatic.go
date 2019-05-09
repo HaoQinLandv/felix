@@ -389,7 +389,7 @@ package %s
 %s
 const zipData = "`, tags, comment, flagPkg, importString)
 
-	FprintZipData(&qb, buffer.Bytes())
+	fprintZipData(&qb, buffer.Bytes())
 
 	fmt.Fprintf(&qb, `"%s`, functionStrings)
 
@@ -399,8 +399,8 @@ const zipData = "`, tags, comment, flagPkg, importString)
 	return f, nil
 }
 
-// FprintZipData converts zip binary contents to a string literal.
-func FprintZipData(dest *bytes.Buffer, zipData []byte) {
+// fprintZipData converts zip binary contents to a string literal.
+func fprintZipData(dest *bytes.Buffer, zipData []byte) {
 	for _, b := range zipData {
 		if b == '\n' {
 			dest.WriteString(`\n`)
