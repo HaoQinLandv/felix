@@ -27,7 +27,7 @@ import (
 var sshwCmd = &cobra.Command{
 	Use:   "sshw",
 	Short: "open ssh terminal in web browser",
-	Long:  ``,
+	Long:  `the demo website is http://home.mojotv.cn:2222`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if secret == "" {
 			secret = randomString(32)

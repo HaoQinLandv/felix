@@ -81,12 +81,3 @@ func (s *SSHShellSession) Close() {
 		s.SshClient.Close()
 	}
 }
-
-type ptyRequestMsg struct {
-	Term     string
-	Columns  uint32
-	Rows     uint32
-	Width    uint32
-	Height   uint32
-	Modelist string
-}

@@ -23,11 +23,13 @@ commands:
 ```bash
 $ felix -h
 Usage:
+  felix [flags]
   felix [command]
 
 Available Commands:
   brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Youtube Channel.
   clean       purge all felix configuration
+  ginbin      Ginbin allows you to embed a directory of static files into your Go binary to be later served from github.com/gin-goin/gin
   ginbro      generate a RESTful code project from SQL database
   goDoc       golang.google.cn/pkg
   help        Help about any command
@@ -35,7 +37,7 @@ Available Commands:
   scpd        scp download file or folder
   scpu        scp upload a file or a folder
   ssh         open a ssh terminal
-  sshadd      add a ssh connection configuration
+  sshad       add a ssh connection configuration
   sshdu       duplicate a ssh connection
   sshedit     update a ssh connection
   sshexport   export all ssh connection configuration to a csv file
@@ -45,6 +47,7 @@ Available Commands:
   sshproxy    ssh port proxy
   sshrm       delete a ssh connection
   sshsocks    start a socks4/5 proxy
+  sshw        open ssh terminal in web browser
   task        list all rows in TaskList
   taskad      add a row into TaskList
   taskok      set a row done in TaskList
@@ -53,7 +56,9 @@ Available Commands:
 Flags:
   -h, --help      help for felix
       --verbose   verbose
-  -V, --version show binary build informantion
+  -V, --version   show binary build information
+
+Use "felix [command] --help" for more information about a command.
 ```
 
 
