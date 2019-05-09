@@ -15,7 +15,7 @@ before_install:
 script:
   - diff -u <(echo -n) <(gofmt -d .)
   - pwd
-  - ll
+  - ls -al
   - go build ./...
   - ./felix -h
   - go test -race -coverprofile=coverage.txt -covermode=atomic
