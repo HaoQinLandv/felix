@@ -17,8 +17,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/dejavuzhou/felix/ssh2ws"
-	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
+	"log"
 	"math/rand"
 	"time"
 )
