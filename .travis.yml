@@ -7,9 +7,15 @@ go:
 - 1.11.x
 - 1.12.x
 
+env:
+  - CGO_ENABLED=0 GO111MODULE=on
+
 before_install:
   - go get -t -v ./...
 script:
+  - diff -u <(echo -n) <(gofmt -d .)
+  - pwd
+  - ll
   - go build ./...
   - ./felix -h
   - go test -race -coverprofile=coverage.txt -covermode=atomic
