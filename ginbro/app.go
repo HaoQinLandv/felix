@@ -3,10 +3,7 @@ package ginbro
 import (
 	"fmt"
 	"github.com/fatih/color"
-	"os"
 	"os/exec"
-	"path"
-	"path/filepath"
 )
 
 type app struct {
@@ -25,24 +22,8 @@ type app struct {
 	DbCharset      string
 }
 
-func Run(dbUser, dbPassword, dbAddr, dbName, dbCharset, dbType, appPackage, appListen, authTable, authColumn string) error {
-	app, err := newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, authColumn, appPackage, appListen)
-	if err != nil {
-		return err
-	}
-	err = app.makeProjectDir()
-	if err != nil {
-		return err
-	}
-	err = app.copyStaticAndSwagger()
-	if err != nil {
-		return err
-	}
-	err = app.copyTimerTaskDir()
-	if err != nil {
-		return err
-	}
-	err = app.copyConfigPackage()
+func Run(dbUser, dbPassword, dbAddr, dbName, dbCharset, dbType, appPath, appListen, authTable, authColumn, pkg string) error {
+	app, err := newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, authColumn, appPath, appListen, pkg)
 	if err != nil {
 		return err
 	}
@@ -58,42 +39,7 @@ func Run(dbUser, dbPassword, dbAddr, dbName, dbCharset, dbType, appPackage, appL
 	return nil
 }
 
-func (app *app) makeProjectDir() error {
-	if err := os.RemoveAll(app.ProjectPath); err != nil {
-		return err
-	}
-	for _, name := range []string{"handlers", "models"} {
-		modulePath := path.Join(app.ProjectPath, name)
-		modulePath = filepath.Clean(modulePath)
-		err := os.MkdirAll(modulePath, 0777)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-func (app *app) copyStaticAndSwagger() error {
-	srcStatic := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/static")
-	dstStatic := filepath.Join(app.ProjectPath, "static")
-	srcSwagger := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/swagger")
-	dstSwagger := filepath.Join(app.ProjectPath, "swagger")
-	err := CopyDir(srcSwagger, dstSwagger)
-	if err != nil {
-		return err
-	}
-	return CopyDir(srcStatic, dstStatic)
-}
-func (app *app) copyTimerTaskDir() error {
-	src := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/tasks")
-	dst := filepath.Join(app.ProjectPath, "tasks")
-	return CopyDir(src, dst)
-}
-func (app *app) copyConfigPackage() error {
-	src := filepath.Join(goPath, "src", felixGinbroPackage, "_boilerplate/config")
-	dst := filepath.Join(app.ProjectPath, "config")
-	return CopyDir(src, dst)
-}
-func newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, authColumn, projectPackage, appListen string) (*app, error) {
+func newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, authColumn, appPath, appListen, pkgName string) (*app, error) {
 	cols, err := FetchDbColumn(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset)
 	if err != nil {
 		return nil, err
@@ -103,13 +49,13 @@ func newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, au
 		return nil, err
 	}
 	return &app{
-		ProjectPackage: projectPackage,
+		ProjectPackage: pkgName,
 		AppListen:      appListen,
 		AuthTable:      authTable,
 		AuthPassword:   authColumn,
 		AppSecret:      randomString(32),
 		Resources:      resources,
-		ProjectPath:    filepath.Join(goPath, "src", projectPackage),
+		ProjectPath:    appPath,
 		DbType:         dbType,
 		DbAddr:         dbAddr,
 		DbName:         dbName,
@@ -119,42 +65,32 @@ func newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, au
 	}, nil
 }
 func (app *app) generateCodeBase() error {
-	jobs := map[string]string{
-		"tpl/single/models.db.go.tpl":               "models/db.go", //TODO::数据库三种连接
-		"tpl/single/models.db_memory.go.tpl":        "models/db_memory.go",
-		"tpl/single/models.db_helper.go.tpl":        "models/db_helper.go",
-		"tpl/single/main.go.tpl":                    "main.go",
-		"tpl/swagger.yaml":                          "swagger/doc.yaml",
-		"tpl/single/handlers.gin.go.tpl":            "handlers/gin.go",
-		"tpl/single/handlers.gin_helper.go.tpl":     "handlers/gin_helper.go",
-		"tpl/single/handlers.middleware_jwt.go.tpl": "handlers/middleware_jwt.go",
 
-		"tpl/config.toml": "config.toml",
-	}
-	for source, destination := range jobs {
-		err := parseTemplate(source, app.ProjectPackage, destination, app)
+	for _, tplNode := range parseOneList {
+		err := tplNode.ParseExecute(app.ProjectPath, "", app)
 		if err != nil {
-			return fmt.Errorf("parse [%s] template into [%s] failed with error : %s", source, destination, err)
+			return fmt.Errorf("parse [%s] template failed with error : %s", tplNode.NameFormat, err)
 		}
 	}
 
-	for _, resouce := range app.Resources {
-		resouce.ProjectPackage = app.ProjectPackage
-		uri := fmt.Sprintf("models/model_%s.go", resouce.TableName)
+	for _, resource := range app.Resources {
+		resource.ProjectPackage = app.ProjectPackage
+		tableName := resource.TableName
 		//generate model from resource
-		err := parseTemplate("tpl/models.template.tpl", app.ProjectPackage, uri, resouce)
-		if err != nil {
-			return err
-		}
-		uri = fmt.Sprintf("handlers/handler_%s.go", resouce.TableName)
-		err = parseTemplate("tpl/handlers.template.tpl", app.ProjectPackage, uri, resouce)
-		if err != nil {
-			return err
-		}
-		if resouce.IsAuthTable {
-			err = parseTemplate("tpl/models.jwt.go.tpl", app.ProjectPackage, "models/jwt.go", resouce)
+		for _, tplNode := range parseObjList {
+			err := tplNode.ParseExecute(app.ProjectPath, tableName, resource)
 			if err != nil {
-				return err
+				return fmt.Errorf("parse [%s] template failed with error : %s", tplNode.NameFormat, err)
+			}
+		}
+		if resource.IsAuthTable {
+			err := tHandlerLogin.ParseExecute(app.ProjectPath, "", resource)
+			if err != nil {
+				return fmt.Errorf("parse [%s] template failed with error : %s", tModelJwt.NameFormat, err)
+			}
+			err = tModelJwt.ParseExecute(app.ProjectPath, "", resource)
+			if err != nil {
+				return fmt.Errorf("parse [%s] template failed with error : %s", tModelJwt.NameFormat, err)
 			}
 		}
 	}

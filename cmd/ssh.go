@@ -27,6 +27,10 @@ var sshCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal("wrong ssh ID:", err)
 		}
+		err = h.ChangeUpdateTime()
+		if err != nil {
+			log.Fatal("change updated time failed:", err)
+		}
 		if err := flx.RunSshTerminal(h, enableSudoMode); err != nil {
 			fmt.Println(err)
 		}

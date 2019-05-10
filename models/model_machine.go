@@ -2,7 +2,9 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type Machine struct {
@@ -24,7 +26,7 @@ func MachineAdd(name, addr, ip, user, password, key, auth string, port uint) err
 
 func MachineAll(search string) ([]Machine, error) {
 	var hs []Machine
-	query := db
+	query := db.Order("updated_at")
 	if search != "" {
 		query = db.Where("name like ?", "%"+search+"%")
 	}
@@ -63,6 +65,7 @@ func MachineDuplicate(idx uint) error {
 		return err
 	}
 	ins.ID = 0
+	ins.Name = fmt.Sprintf("%s_du", ins.Name)
 	return db.Create(ins).Error
 }
 
@@ -97,4 +100,9 @@ func (m *Machine) Delete() (err error) {
 		return errors.New("resource must not be zero value")
 	}
 	return crudDelete(m)
+}
+
+func (m *Machine) ChangeUpdateTime() (err error) {
+	m.UpdatedAt = time.Now()
+	return db.Save(m).Error
 }
