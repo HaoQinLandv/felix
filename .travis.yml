@@ -1,17 +1,24 @@
 language: go
-# Only clone the most recent commit.
+
+matrix:
+  fast_finish: true
+  include:
+    - go: 1.10.x
+    - go: 1.11.x
+      env: CGO_ENABLED=0 GO111MODULE=on
+    - go: 1.12.x
+      env: CGO_ENABLED=0 GO111MODULE=on
+    - go: master
+      env: CGO_ENABLED=0 GO111MODULE=on
+
+
 git:
   depth: 1
-go:
-- 1.10.x
-- 1.11.x
-- 1.x
 
-env:
-  - CGO_ENABLED=0 GO111MODULE=on
 
 before_install:
-  - go get -t -v ./...
+  - go version
+  - go get  ./...
 script:
   - diff -u <(echo -n) <(gofmt -d .)
   - pwd

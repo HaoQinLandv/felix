@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/dejavuzhou/felix/ginbro"
+	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 	"path/filepath"
 )
@@ -11,15 +12,15 @@ var appListen, dir, authTable, authColumn, dbUser, dbPassword, dbAddr, dbName, d
 // restCmd represents the rest command
 var restCmd = &cobra.Command{
 	Use:     "ginbro",
-	Short:   "generate a RESTful code project from SQL database",
+	Short:   "generate a RESTful codebase from SQL database",
 	Long:    `generate a RESTful APIs app with gin and gorm for gophers`,
-	Example: `felix rest -u root -p password -a "127.0.0.1:3306" -d dbname -c utf8 --authTable=users --authColumn=pw_column -o=FelixRestOut"`,
+	Example: `felix ginbro -u root -p password -a "127.0.0.1:3306" -d dbname -c utf8 --authTable=users --authColumn=pw_column -P=FelixRestOut"`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		appDir := filepath.Clean(filepath.Join(dir, packageName))
 		err := ginbro.Run(dbUser, dbPassword, dbAddr, dbName, dbCharset, dbType, appDir, appListen, authTable, authColumn, packageName)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	},
 }
@@ -28,7 +29,7 @@ func init() {
 	rootCmd.AddCommand(restCmd)
 
 	restCmd.Flags().StringVarP(&appListen, "appListen", "l", "127.0.0.1:5555", "app's listening addr")
-	restCmd.Flags().StringVarP(&dir, "dir", "d", ".", "code project output directory")
+	restCmd.Flags().StringVarP(&dir, "dir", "d", ".", "code project output directory,default is current working dir")
 	restCmd.Flags().StringVarP(&packageName, "pkg", "P", "", "eg1: github.com/dejavuzhou/ginSon, eg2: ginbroSon")
 
 	restCmd.Flags().StringVar(&authTable, "authTable", "users", "login user table")
