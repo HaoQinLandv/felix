@@ -3,6 +3,7 @@ language: go
 matrix:
   fast_finish: true
   include:
+    - go: 1.9.x
     - go: 1.10.x
     - go: 1.11.x
       env: CGO_ENABLED=0 GO111MODULE=on
@@ -18,15 +19,13 @@ git:
 
 before_install:
   - go version
-  - go get  ./...
+  - go get -v -t ./...
 script:
   - diff -u <(echo -n) <(gofmt -d .)
   - pwd
   - ls -al
   - go build
   - ./felix -h
-
-
 
 notifications:
   email:

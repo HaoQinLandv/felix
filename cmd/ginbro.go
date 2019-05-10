@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/dejavuzhou/felix/ginbro"
-	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
+	"log"
 	"path/filepath"
 )
 
@@ -14,7 +14,7 @@ var restCmd = &cobra.Command{
 	Use:     "ginbro",
 	Short:   "generate a RESTful codebase from SQL database",
 	Long:    `generate a RESTful APIs app with gin and gorm for gophers`,
-	Example: `felix ginbro -u root -p password -a "127.0.0.1:3306" -d dbname -c utf8 --authTable=users --authColumn=pw_column -P=FelixRestOut"`,
+	Example: `felix ginbro -a dev.wordpress.com:3306 -P go_package_name -n db_name -u db_username -p 'my_db_password' -d '~/thisDir'`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		appDir := filepath.Clean(filepath.Join(dir, packageName))
@@ -37,7 +37,7 @@ func init() {
 
 	restCmd.Flags().StringVarP(&dbUser, "dbUser", "u", "root", "database username")
 	restCmd.Flags().StringVarP(&dbPassword, "dbPassword", "p", "password", "database user password")
-	restCmd.Flags().StringVarP(&dbAddr, "dbAddr", "a", "127.0.0.1:3306", "datatbase connection addr")
+	restCmd.Flags().StringVarP(&dbAddr, "dbAddr", "a", "127.0.0.1:3306", "database connection addr")
 	restCmd.Flags().StringVarP(&dbName, "dbName", "n", "", "database name")
 	restCmd.Flags().StringVarP(&dbCharset, "dbCharset", "c", "utf8", "database charset")
 	restCmd.Flags().StringVarP(&dbType, "dbType", "t", "mysql", "database type: mysql/postgres/mssql/sqlite")

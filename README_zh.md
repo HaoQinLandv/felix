@@ -156,7 +156,7 @@ Flags:
   -l, --appListen string    app's listening addr (default "127.0.0.1:5555")
       --authColumn string   bcrypt password column (default "password")
       --authTable string    login user table (default "users")
-  -a, --dbAddr string       datatbase connection addr (default "127.0.0.1:3306")
+  -a, --dbAddr string       database connection addr (default "127.0.0.1:3306")
   -c, --dbCharset string    database charset (default "utf8")
   -n, --dbName string       database name
   -p, --dbPassword string   database user password (default "password")
