@@ -2,6 +2,7 @@ package ginbro
 
 import (
 	"fmt"
+	"github.com/dejavuzhou/felix/utils"
 	"github.com/fatih/color"
 	"os/exec"
 )
@@ -53,7 +54,7 @@ func newApp(dbType, dbAddr, dbUser, dbPassword, dbName, dbCharset, authTable, au
 		AppListen:      appListen,
 		AuthTable:      authTable,
 		AuthPassword:   authColumn,
-		AppSecret:      randomString(32),
+		AppSecret:      utils.RandomString(32),
 		Resources:      resources,
 		ProjectPath:    appPath,
 		DbType:         dbType,

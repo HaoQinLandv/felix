@@ -17,9 +17,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/dejavuzhou/felix/ssh2ws"
+	"github.com/dejavuzhou/felix/utils"
 	"github.com/spf13/cobra"
 	"log"
-	"math/rand"
 	"time"
 )
 
@@ -30,7 +30,7 @@ var sshwCmd = &cobra.Command{
 	Long:  `the demo website is http://home.mojotv.cn:2222`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if secret == "" {
-			secret = randomString(32)
+			secret = utils.RandomString(32)
 			fmt.Printf("use random string as jwt secret: %s\n", secret)
 		}
 		ex := time.Minute * time.Duration(expire)
@@ -53,15 +53,4 @@ func init() {
 	sshwCmd.Flags().StringVarP(&user, "user", "u", "admin", "auth user")
 	sshwCmd.Flags().StringVarP(&password, "password", "p", "admin", "auth password")
 	sshwCmd.Flags().UintVarP(&expire, "expire", "x", 60*24, "token expire in * minute")
-}
-
-var letterRunes = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_+")
-
-func randomString(n int) string {
-	rand.Seed(time.Now().Unix())
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	return string(b)
 }

@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/dejavuzhou/felix/flx"
-	"github.com/dejavuzhou/felix/ssh2ws/utils"
+	"github.com/dejavuzhou/felix/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"io"
