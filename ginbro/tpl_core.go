@@ -27,7 +27,7 @@ func (n *tplNode) ParseExecute(appDir, pathArg string, data interface{}) error {
 	if err != nil {
 		return err
 	}
-	tplFormat := strings.ReplaceAll(n.TplContent, backQuote, "`")
+	tplFormat := strings.Replace(n.TplContent, backQuote, "`", -1)
 	tmpl, err := template.New(p).Parse(tplFormat)
 	file, err := os.Create(p)
 	if err != nil {
