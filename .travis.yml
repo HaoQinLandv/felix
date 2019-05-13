@@ -1,14 +1,14 @@
 language: go
 os:
-  - windows
   - linux
   - osx
+services:
+  - redis
+  - mysql
 
 matrix:
   fast_finish: true
   include:
-    - go: 1.11.x
-      env: CGO_ENABLED=0 GO111MODULE=on
     - go: 1.12.x
       env: CGO_ENABLED=0 GO111MODULE=on
     - go: master
