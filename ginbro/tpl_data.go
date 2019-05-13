@@ -1147,7 +1147,7 @@ func enableCorsMiddleware() {
 	// - Origin header
 	// - Credentials share
 	// - Preflight requests cached for 12 hours
-	r.Use(cors.New(cors.Config{
+	r.Use(cors.New(cors.config{
 		AllowOrigins:     []string{"*"}, //https://foo.com
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
