@@ -1,4 +1,4 @@
-package flx
+package utils
 
 import (
 	"os/exec"

@@ -11,7 +11,7 @@ matrix:
   include:
     - go: 1.12.x
       env: CGO_ENABLED=0 GO111MODULE=on
-    - go: master
+    - go: 1.x
       env: CGO_ENABLED=0 GO111MODULE=on
 
 git:

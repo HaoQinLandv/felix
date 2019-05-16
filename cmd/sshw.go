@@ -26,7 +26,7 @@ import (
 // sshwCmd represents the sshw command
 var sshwCmd = &cobra.Command{
 	Use:   "sshw",
-	Short: "open ssh terminal in web browser",
+	Short: "open a web UI for Felix http://localhost:2222",
 	Long:  `the demo website is http://home.mojotv.cn:2222`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if secret == "" {

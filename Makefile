@@ -10,7 +10,7 @@ run: build
 	./build/felix -V
 
 build:
-
+    felix -s dist -p staticbin
 	go build -race -ldflags $(LDFLAGS)  -o build/felix *.go
 
 release:

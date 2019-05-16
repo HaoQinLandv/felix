@@ -12,6 +12,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func NewSshClient(id string) (*ssh.Client, error) {
@@ -27,6 +28,7 @@ func NewSshClient(id string) (*ssh.Client, error) {
 }
 func newSshClient(h *models.Machine) (*ssh.Client, error) {
 	config := &ssh.ClientConfig{
+		Timeout:         time.Second,
 		User:            h.User,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(), //这个可以， 但是不够安全
 		//HostKeyCallback: hostKeyCallBackFunc(h.Host),

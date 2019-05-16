@@ -1,9 +1,12 @@
 package ssh2ws
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/ssh2ws/controllers"
 	"github.com/dejavuzhou/felix/staticbin"
+	"github.com/dejavuzhou/felix/utils"
 	"github.com/gin-gonic/gin"
+	"log"
 	"time"
 )
 
@@ -38,7 +41,11 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 		api.GET("sftp/:id/mkdir", controllers.SftpMkdir)
 		api.POST("sftp/:id/up", controllers.SftpUp)
 	}
-
+	time.AfterFunc(time.Second*3, func() {
+		if err = utils.BrowserOpen(fmt.Sprintf("http://localhost%s", bindAddress)); err != nil {
+			log.Println(err)
+		}
+	})
 	if err := r.Run(bindAddress); err != nil {
 		return err
 	}

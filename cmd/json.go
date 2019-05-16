@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/dejavuzhou/felix/flx"
+	"github.com/dejavuzhou/felix/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +11,7 @@ var jsonCmd = &cobra.Command{
 	Short: "open a tab in browser to convert json to golang struct",
 	Long:  `open a tab in browser to convert json to golang struct powered by https://quicktype.io/`,
 	Run: func(cmd *cobra.Command, args []string) {
-		flx.BrowserOpen("https://app.quicktype.io/")
+		utils.BrowserOpen("https://app.quicktype.io/")
 	},
 }
 
