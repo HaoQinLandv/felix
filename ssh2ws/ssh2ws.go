@@ -1,12 +1,9 @@
 package ssh2ws
 
 import (
-	"fmt"
 	"github.com/dejavuzhou/felix/ssh2ws/controllers"
 	"github.com/dejavuzhou/felix/staticbin"
-	"github.com/dejavuzhou/felix/utils"
 	"github.com/gin-gonic/gin"
-	"log"
 	"time"
 )
 
@@ -14,6 +11,7 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 	r := gin.Default()
 	r.MaxMultipartMemory = 32 << 20
 
+	//sever static file in http's root path
 	binStaticMiddleware, err := staticbin.NewGinStaticBinMiddleware("/")
 	if err != nil {
 		return err
@@ -23,7 +21,6 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 	api := r.Group("api")
 	r.POST("api/login", controllers.GetLoginHandler(user, password, expire, secret))
 	api.Use(controllers.JwtAuthMiddleware(secret))
-
 	{
 		api.GET("ws/:id", controllers.WsSsh)
 
@@ -40,12 +37,12 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 		api.GET("sftp/:id/rename", controllers.SftpRename)
 		api.GET("sftp/:id/mkdir", controllers.SftpMkdir)
 		api.POST("sftp/:id/up", controllers.SftpUp)
+
+		api.POST("ginbro/gen", controllers.GinbroGen)
+		api.POST("ginbro/db", controllers.GinbroDb)
+
 	}
-	time.AfterFunc(time.Second*3, func() {
-		if err = utils.BrowserOpen(fmt.Sprintf("http://localhost%s", bindAddress)); err != nil {
-			log.Println(err)
-		}
-	})
+
 	if err := r.Run(bindAddress); err != nil {
 		return err
 	}

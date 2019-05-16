@@ -38,6 +38,11 @@ var sshwCmd = &cobra.Command{
 		fmt.Println("login user:", user)
 		fmt.Println("login password:", password)
 		fmt.Printf("login expire in %d minutes\n", expire)
+		//time.AfterFunc(time.Second*3, func() {
+		//	if err = utils.BrowserOpen(fmt.Sprintf("http://localhost%s", bindAddress)); err != nil {
+		//		log.Println(err)
+		//	}
+		//})
 		if err := ssh2ws.RunSsh2ws(addr, user, password, ex, []byte(secret)); err != nil {
 			log.Fatal(err)
 		}

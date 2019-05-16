@@ -1,13 +1,14 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/ginbro"
+	"github.com/dejavuzhou/felix/models"
 	"github.com/spf13/cobra"
 	"log"
-	"path/filepath"
 )
 
-var appListen, dir, authTable, authColumn, dbUser, dbPassword, dbAddr, dbName, dbCharset, dbType, pkgName string
+var gc models.Ginbro
 
 // restCmd represents the rest command
 var restCmd = &cobra.Command{
@@ -16,29 +17,29 @@ var restCmd = &cobra.Command{
 	Long:    `generate a RESTful APIs app with gin and gorm for gophers`,
 	Example: `felix ginbro -a dev.wordpress.com:3306 -P go_package_name -n db_name -u db_username -p 'my_db_password' -d '~/thisDir'`,
 	Run: func(cmd *cobra.Command, args []string) {
-		appDir := filepath.Clean(filepath.Join(dir, pkgName))
-		err := ginbro.Run(dbUser, dbPassword, dbAddr, dbName, dbCharset, dbType, appDir, appListen, authTable, authColumn, pkgName)
+		app, err := ginbro.Run(gc)
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Printf("cd %s then run go run main.go test your codebase", app.AppDir)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(restCmd)
 
-	restCmd.Flags().StringVarP(&appListen, "appListen", "l", "127.0.0.1:5555", "app's listening addr")
-	restCmd.Flags().StringVarP(&dir, "dir", "d", ".", "code project output directory,default is current working dir")
-	restCmd.Flags().StringVarP(&pkgName, "pkg", "P", "", "eg1: github.com/dejavuzhou/ginSon, eg2: ginbroSon")
-	restCmd.Flags().StringVar(&authTable, "authTable", "users", "login user table")
-	restCmd.Flags().StringVar(&authColumn, "authColumn", "password", "bcrypt password column")
-	restCmd.Flags().StringVarP(&dbUser, "dbUser", "u", "root", "database username")
-	restCmd.Flags().StringVarP(&dbPassword, "dbPassword", "p", "password", "database user password")
-	restCmd.Flags().StringVarP(&dbAddr, "dbAddr", "a", "127.0.0.1:3306", "database connection addr")
-	restCmd.Flags().StringVarP(&dbName, "dbName", "n", "", "database name")
-	restCmd.Flags().StringVarP(&dbCharset, "dbCharset", "c", "utf8", "database charset")
-	restCmd.Flags().StringVarP(&dbType, "dbType", "t", "mysql", "database type: mysql/postgres/mssql/sqlite")
+	restCmd.Flags().StringVarP(&gc.AppAddr, "listen", "l", "127.0.0.1:5555", "app's listening addr")
+	restCmd.Flags().StringVarP(&gc.AppDir, "dir", "d", ".", "code project output directory,default is current working dir")
+	restCmd.Flags().StringVarP(&gc.AppPkg, "pkg", "", "", "eg1: github.com/dejavuzhou/ginSon, eg2: ginbroSon")
+	restCmd.Flags().StringVar(&gc.AuthTable, "authTable", "users", "login user table")
+	restCmd.Flags().StringVar(&gc.AuthColumn, "authColumn", "password", "bcrypt password column")
+	restCmd.Flags().StringVarP(&gc.DbUser, "dbUser", "u", "root", "database username")
+	restCmd.Flags().StringVarP(&gc.DbPassword, "dbPassword", "p", "password", "database user password")
+	restCmd.Flags().StringVarP(&gc.DbAddr, "dbAddr", "a", "127.0.0.1:3306", "database connection addr")
+	restCmd.Flags().StringVarP(&gc.DbName, "dbName", "n", "", "database name")
+	restCmd.Flags().StringVarP(&gc.DbChar, "dbChar", "c", "utf8", "database charset")
+	restCmd.Flags().StringVarP(&gc.DbType, "dbType", "t", "mysql", "database type: mysql/postgres/mssql/sqlite")
 
-	restCmd.MarkFlagRequired("package")
+	restCmd.MarkFlagRequired("pkg")
 	restCmd.MarkFlagRequired("dbAddr")
 }

@@ -30,7 +30,7 @@ type Resource struct {
 	IsAuthTable          bool
 	PasswordPropertyName string
 	PasswordColumnName   string
-	ProjectPackage       string
+	AppPkg               string
 	HasId                bool
 }
 

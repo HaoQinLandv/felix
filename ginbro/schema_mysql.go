@@ -7,10 +7,11 @@ import (
 
 func fetchSchemaMysql(addr, user, password, database, charset string) ([]ColumnSchema, error) {
 	db, err := newDb("mysql", addr, user, password, database, charset)
-	defer db.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer db.Close()
+
 	var list []ColumnSchema
 	rawSql := "SELECT `TABLE_NAME`, `COLUMN_NAME`,`DATA_TYPE`,`COLUMN_TYPE`,`COLUMN_COMMENT`,`COLUMN_KEY` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = ?"
 	rows, err := db.Query(rawSql, database)

@@ -7,7 +7,7 @@ info:
   description: "A GinBro RESTful APIs"
   version: "1.0.0"
   title: "GinBro RESTful APIs Application"
-host: "{{.AppListen}}"
+host: "{{.AppAddr}}"
 basePath: "/api/v1"
 
 schemes:
@@ -257,10 +257,10 @@ var tReadme = tplNode{
 - run: go tidy
     
 ## Usage
-- [swagger DOC ](http://{{.AppListen}}/doc)_[BACKQUOTE]_http://{{.AppListen}}/swagger/_[BACKQUOTE]_
-- [static ](http://{{.AppListen}})_[BACKQUOTE]_http://{{.AppListen}}_[BACKQUOTE]_
-- [app INFO ](http://{{.AppListen}}/app/info)_[BACKQUOTE]_http://{{.AppListen}}/app/info_[BACKQUOTE]_
-- API baseURL : _[BACKQUOTE]_http://{{.AppListen}}/api/v1_[BACKQUOTE]_
+- [swagger DOC ](http://{{.AppAddr}}/doc)_[BACKQUOTE]_http://{{.AppAddr}}/swagger/_[BACKQUOTE]_
+- [static ](http://{{.AppAddr}})_[BACKQUOTE]_http://{{.AppAddr}}_[BACKQUOTE]_
+- [GinbroApp INFO ](http://{{.AppAddr}}/GinbroApp/info)_[BACKQUOTE]_http://{{.AppAddr}}/GinbroApp/info_[BACKQUOTE]_
+- API baseURL : _[BACKQUOTE]_http://{{.AppAddr}}/api/v1_[BACKQUOTE]_
 
 ## Info
 - table'schema which has no "ID","id","Id" or "iD" will not generate model or route.
@@ -284,7 +284,7 @@ import (
 	"errors"
 	"time"
 	{{if .IsAuthTable}}"fmt"
-	"{{.ProjectPackage}}/config"
+	"{{.AppPkg}}/config"
 	"golang.org/x/crypto/bcrypt"
 	"github.com/sirupsen/logrus"
 	{{end}}
@@ -346,8 +346,8 @@ func (m *{{.ModelName}}) Login(ip string) (*jwtObj, error) {
 	m.{{.PasswordPropertyName}} = ""
 	loginTryKey := "login:" + ip
 	loginRetries, _ := mem.GetUint(loginTryKey)
-	if loginRetries > uint(config.GetInt("app.login_try")) {
-		memExpire := config.GetInt("app.mem_expire_min")
+	if loginRetries > uint(config.GetInt("GinbroApp.login_try")) {
+		memExpire := config.GetInt("GinbroApp.mem_expire_min")
 		return nil, fmt.Errorf("for too many wrong login retries the %s will ban for login in %d minitues", ip, memExpire)
 	}
 	//you can implement more detailed login retry rule
@@ -403,15 +403,15 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sirupsen/logrus"
-	"{{.ProjectPackage}}/config"
+	"{{.AppPkg}}/config"
 	"time"
 )
 
 func jwtGenerateToken(m *{{.ModelName}}) (*jwtObj, error) {
 	m.{{.PasswordPropertyName}} = ""
-	expireAfterTime := time.Hour * time.Duration(config.GetInt("app.jwt_expire_hour"))
-	iss := config.GetString("app.name")
-	appSecret := config.GetString("app.secret")
+	expireAfterTime := time.Hour * time.Duration(config.GetInt("GinbroApp.jwt_expire_hour"))
+	iss := config.GetString("GinbroApp.name")
+	appSecret := config.GetString("GinbroApp.secret")
 	expireTime := time.Now().Add(expireAfterTime)
 	stdClaims := jwt.StandardClaims{
 		ExpiresAt: expireTime.Unix(),
@@ -445,7 +445,7 @@ func JwtParseUser(tokenString string) (*{{.ModelName}}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		secret := config.GetString("app.secret")
+		secret := config.GetString("GinbroApp.secret")
 		return []byte(secret), nil
 	})
 	if err != nil {
@@ -454,7 +454,7 @@ func JwtParseUser(tokenString string) (*{{.ModelName}}, error) {
 	if claims.VerifyExpiresAt(time.Now().Unix(), true) == false {
 		return nil, errors.New("token is expired")
 	}
-	appName := config.GetString("app.name")
+	appName := config.GetString("GinbroApp.name")
 	if !claims.VerifyIssuer(appName, true) {
 		return nil, errors.New("token's issuer is wrong,greetings Hacker")
 	}
@@ -487,7 +487,7 @@ var tHandlersObj = tplNode{
 package handlers
 
 import (
-	"{{.ProjectPackage}}/models"
+	"{{.AppPkg}}/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -631,9 +631,9 @@ func {{.HandlerName}}Delete(c *gin.Context) {
 var tConfigToml = tplNode{
 	NameFormat: "config.toml",
 	TplContent: `
-[app]
+[GinbroApp]
     name = "ginBro"
-    addr ="{{.AppListen}}" # eg1: www.mojotv.cn     eg:localhost:3333 eg1:127.0.0.1:88
+    addr ="{{.AppAddr}}" # eg1: www.mojotv.cn     eg:localhost:3333 eg1:127.0.0.1:88
     secret = "{{.AppSecret}}"
     env = "local" # only allows local/dev/test/prod
     log_level = "error" # only allows debug info warn error fatal panic
@@ -656,7 +656,7 @@ var tConfigToml = tplNode{
     user = "{{.DbUser}}"
     password = "{{.DbPassword}}"
     database = "{{.DbName}}"
-    charset = "{{.DbCharset}}"
+    charset = "{{.DbChar}}"
 [redis]
     addr = "" # 127.0.0.1:6379 empty string will not init the redis db in models package
     password = ""
@@ -679,7 +679,7 @@ import (
 	"container/list"
 	"errors"
 	"github.com/sirupsen/logrus"
-	"{{.ProjectPackage}}/config"
+	"{{.AppPkg}}/config"
 	"sync"
 	"time"
 )
@@ -690,12 +690,12 @@ func init() {
 	mem = new(memoryStore)
 	mem.digitsById = make(map[string]interface{})
 	mem.idByTime = list.New()
-	maxCount := config.GetInt("app.mem_max_count")
+	maxCount := config.GetInt("GinbroApp.mem_max_count")
 	if maxCount <= 1024 {
 		maxCount = 1024
 	}
 	mem.collectNum = maxCount
-	expireIn := config.GetInt("app.mem_expire_min")
+	expireIn := config.GetInt("GinbroApp.mem_expire_min")
 	if expireIn <= 0 {
 		expireIn = 30
 	}
@@ -927,7 +927,7 @@ import (
     _ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
-	"{{.ProjectPackage}}/config"
+	"{{.AppPkg}}/config"
 	"strings"
 	"errors"
 )
@@ -957,7 +957,7 @@ func init() {
 		logrus.WithError(err).Fatalln("create database connection failed")
 	}
 	//enable Gorm mysql log
-	if flag := config.GetBool("app.enable_sql_log"); flag {
+	if flag := config.GetBool("GinbroApp.enable_sql_log"); flag {
 		db.LogMode(flag)
 		//f, err := os.OpenFile("mysql_gorm.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		//if err != nil {
@@ -1015,13 +1015,13 @@ var tMain = tplNode{
 package main
 
 import (
-	"{{.ProjectPackage}}/handlers"
-	"{{.ProjectPackage}}/tasks"
-	"{{.ProjectPackage}}/config"
+	"{{.AppPkg}}/handlers"
+	"{{.AppPkg}}/tasks"
+	"{{.AppPkg}}/config"
 )
 
 func main() {
-	if config.GetBool("app.enable_cron") {
+	if config.GetBool("GinbroApp.enable_cron") {
 		go tasks.RunTasks()
 	}
 	defer handlers.Close()
@@ -1037,7 +1037,7 @@ var tHandlerMiddlewareJwt = tplNode{
 package handlers
 
 import (
-	"{{.ProjectPackage}}/models"
+	"{{.AppPkg}}/models"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -1071,7 +1071,7 @@ var tHandlerLogin = tplNode{
 package handlers
 
 import (
-	"{{.ProjectPackage}}/models"
+	"{{.AppPkg}}/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -1102,7 +1102,7 @@ package handlers
 
 import (
 	"errors"
-	"{{.ProjectPackage}}/models"
+	"{{.AppPkg}}/models"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -1140,24 +1140,16 @@ func parseParamID(c *gin.Context) (uint, error) {
 }
 
 func enableCorsMiddleware() {
-	//TODO:: customize your own CORS
-	//https://github.com/gin-contrib/cors
-	// CORS for https://foo.com and https://github.com origins, allowing:
-	// - PUT and PATCH methods
-	// - Origin header
-	// - Credentials share
-	// - Preflight requests cached for 12 hours
-	r.Use(cors.New(cors.config{
-		AllowOrigins:     []string{"*"}, //https://foo.com
-		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
+		r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"PUT", "PATCH"},
+		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: false, //enable cookie
+		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
 			return true
-			//return origin == "https://github.com"
 		},
-		MaxAge: 12 * time.Hour, //cache options result decrease request lag
+		MaxAge: 12 * time.Hour,
 	}))
 }
 
@@ -1171,11 +1163,11 @@ package handlers
 
 import (
 	"fmt"
-	"{{.ProjectPackage}}/models"
+	"{{.AppPkg}}/models"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
-	"{{.ProjectPackage}}/config"
+	"{{.AppPkg}}/config"
 	"log"
 	"path"
 )
@@ -1185,12 +1177,12 @@ var groupApi *gin.RouterGroup
 
 //in the same package init executes in file'name alphabet order
 func init() {
-	if config.GetBool("app.enable_cors") {
+	if config.GetBool("GinbroApp.enable_cors") {
 		enableCorsMiddleware()
 	}
-	if sp := config.GetString("app.static_path"); sp != "" {
+	if sp := config.GetString("GinbroApp.static_path"); sp != "" {
 		r.Use(static.Serve("/", static.LocalFile(sp, true)))
-		if config.GetBool("app.enable_not_found") {
+		if config.GetBool("GinbroApp.enable_not_found") {
 			r.NoRoute(func(c *gin.Context) {
 				file := path.Join(sp, "index.html")
 				c.File(file)
@@ -1198,21 +1190,21 @@ func init() {
 		}
 	}
 
-	if config.GetBool("app.enable_swagger") && config.GetString("app.env") != "prod" {
+	if config.GetBool("GinbroApp.enable_swagger") && config.GetString("GinbroApp.env") != "prod" {
 		//add edit your own swagger.doc.yml file in ./swagger/doc.yml
 		//generateSwaggerDocJson()
 		r.Static("doc", "./doc")
 	}
-	prefix := config.GetString("app.api_prefix")
+	prefix := config.GetString("GinbroApp.api_prefix")
 	api := "api"
 	if prefix != "" {
 		api = fmt.Sprintf("%s/%s", api, prefix)
 	}
 	groupApi = r.Group(api)
 
-	if config.GetString("app.env") != "prod" {
-		r.GET("/app/info", func(c *gin.Context) {
-			c.JSON(200, config.GetStringMapString("app"))
+	if config.GetString("GinbroApp.env") != "prod" {
+		r.GET("/GinbroApp/info", func(c *gin.Context) {
+			c.JSON(200, config.GetStringMapString("GinbroApp"))
 		})
 	}
 
@@ -1221,18 +1213,18 @@ func init() {
 //ServerRun start the gin server
 func ServerRun() {
 
-	addr := config.GetString("app.addr")
-	if config.GetBool("app.enable_https") {
+	addr := config.GetString("GinbroApp.addr")
+	if config.GetBool("GinbroApp.enable_https") {
 		log.Fatal(autotls.Run(r, addr))
 	} else {
-		log.Printf("visit http://%s/swagger for RESTful APIs Document", addr)
+		log.Printf("visit http://%s/doc for RESTful APIs Document", addr)
 		log.Printf("visit http://%s/ for front-end static html files", addr)
-		log.Printf("visit http://%s/app/info for app info only on not-prod mode", addr)
+		log.Printf("visit http://%s/GinbroApp/info for GinbroApp info only on not-prod mode", addr)
 		r.Run(addr)
 	}
 }
 
-//Close gin app
+//Close gin GinbroApp
 func Close() {
 	models.Close()
 }
@@ -2037,11 +2029,11 @@ var tDocIndex = tplNode{
 
 var tMod = tplNode{
 	NameFormat: "go.mod",
-	TplContent: `module {{.ProjectPackage}}
+	TplContent: `module {{.AppPkg}}
 
 go 1.12
 `,
 }
-var parseOneList = []tplNode{tDocIndex, tDocOauth2, tStaticIndex, tTaskCore, tTaskExample, tMod, tDocYaml, tConfig, tReadme, tGitIgnore, tHandlerGin, tHandlerHelper, tHandlerMiddlewareJwt, tMain, tModelDbMem, tModelDbSql, tModelHelper, tConfigToml}
+var parseOneList = []tplNode{tDocIndex, tDocOauth2, tStaticIndex, tTaskCore, tTaskExample, tMod, tDocYaml, tConfig, tReadme, tGitIgnore, tHandlerGin, tHandlerHelper, tMain, tModelDbMem, tModelDbSql, tModelHelper, tConfigToml}
 
 var parseObjList = []tplNode{tModelObj, tHandlersObj}
