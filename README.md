@@ -124,6 +124,8 @@ login expire in 1440 minutes
 [GIN-debug] Listening and serving HTTP on :2222
 
 ```
+![](images/sshw5.jpg)
+
 ![](images/sshw2.png)
 
 ![](images/sshw3.png)
@@ -131,11 +133,6 @@ login expire in 1440 minutes
 ![](images/sshw4.png)
 
 ![](images/sshw1.png)
-
-
-
-
-
 
 ### command: `felix ginbro`  [ginbro doc](ginbro)
 
