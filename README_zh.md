@@ -30,8 +30,8 @@ Available Commands:
   brofist     Pewdiepie needs your help.Do your part to subscribe Pewdiepie's Youtube Channel.
   clean       purge all felix configuration
   ginbin      Ginbin allows you to embed a directory of static files into your Go binary to be later served from github.com/gin-goin/gin
-  ginbro      generate a RESTful code project from SQL database
-  goDoc       golang.google.cn/pkg
+  ginbro      generate a RESTful codebase from SQL database
+  godoc       golang.google.cn/pkg
   help        Help about any command
   json        open a tab in browser to convert json to golang struct
   scpd        scp download file or folder
@@ -47,7 +47,7 @@ Available Commands:
   sshproxy    ssh port proxy
   sshrm       delete a ssh connection
   sshsocks    start a socks4/5 proxy
-  sshw        open ssh terminal in web browser
+  sshw        open a web UI for Felix http://localhost:2222
   task        list all rows in TaskList
   taskad      add a row into TaskList
   taskok      set a row done in TaskList
