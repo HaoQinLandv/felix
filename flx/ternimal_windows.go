@@ -21,7 +21,7 @@ func (t *SSHTerminal) interactiveSession() error {
 			fmt.Fprintln(os.Stdout, t.exitMsg)
 		}
 	}()
-	termWidth, termHeight := 640, 480
+	termWidth, termHeight := 80, 120
 	//https://stackoverflow.com/questions/7949956/why-does-git-diff-on-windows-warn-that-the-terminal-is-not-fully-functional
 	termType := "msys"
 	if isatty.IsTerminal(os.Stdout.Fd()) {
@@ -37,7 +37,7 @@ func (t *SSHTerminal) interactiveSession() error {
 			return err
 		}
 	} else if isatty.IsCygwinTerminal(os.Stdout.Fd()) {
-		termType = "xterm-256color"
+		termType = "xterm"
 	}
 
 	err := t.Session.RequestPty(termType, termHeight, termWidth, ssh.TerminalModes{})

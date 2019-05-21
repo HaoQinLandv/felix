@@ -43,13 +43,14 @@ type wsMsg struct {
 
 // connect to ssh server using ssh session.
 type SshConn struct {
-	// calling Write() to write data to ssh server
+	// calling Write() to write data into ssh server
 	StdinPipe io.WriteCloser
 	// Write() be called to receive data from ssh server
 	ComboOutput *wsBufferWriter
 	Session     *ssh.Session
 }
 
+//flushComboOutput flush ssh.session combine output into websocket response
 func flushComboOutput(w *wsBufferWriter, wsConn *websocket.Conn) error {
 	if w.buffer.Len() != 0 {
 		err := wsConn.WriteMessage(websocket.TextMessage, w.buffer.Bytes())
@@ -77,11 +78,9 @@ func NewSshConn(cols, rows int, sshClient *ssh.Client) (*SshConn, error) {
 	if err != nil {
 		return nil, err
 	}
-	// in fact, stdin it is channel.
 
 	comboWriter := new(wsBufferWriter)
-	// set writer, such the we can receive ssh server's data and write the data to somewhere specified by WriterPipe.
-
+	//ssh.stdout and stderr will write output into comboWriter
 	sshSession.Stdout = comboWriter
 	sshSession.Stderr = comboWriter
 
@@ -105,9 +104,11 @@ func (s *SshConn) Close() {
 	if s.Session != nil {
 		s.Session.Close()
 	}
+
 }
 
-func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, exitCh chan bool) { // read messages from webSocket
+//ReceiveWsMsg  receive websocket msg do some handling then write into ssh.session.stdin
+func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, exitCh chan bool) {
 	//tells other go routine quit
 	defer setQuit(exitCh)
 	for {
@@ -115,33 +116,33 @@ func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, exitCh chan bool) { 
 		case <-exitCh:
 			return
 		default:
+			//read websocket msg
 			_, wsData, err := wsConn.ReadMessage()
-			// if WebSocket is closed by some reason, then this func will return,
-			// and 'done' channel will be set, the outer func will reach to the end.
-			// then ssh session will be closed in defer.
 			if err != nil {
 				logrus.WithError(err).Error("reading webSocket message failed")
 				return
 			}
-			//ssh 和 wConn 交互
+			//unmashal bytes into struct
 			msgObj := wsMsg{}
 			if err := json.Unmarshal(wsData, &msgObj); err != nil {
 				logrus.WithError(err).WithField("wsData", string(wsData)).Error("unmarshal websocket message failed")
 			}
 			switch msgObj.Type {
 			case wsMsgResize:
+				//handle xterm.js size change
 				if msgObj.Cols > 0 && msgObj.Rows > 0 {
 					if err := ssConn.Session.WindowChange(msgObj.Rows, msgObj.Cols); err != nil {
 						logrus.WithError(err).Error("ssh pty change windows size failed")
 					}
 				}
 			case wsMsgCmd:
+				//handle xterm.js stdin
 				decodeBytes, err := base64.StdEncoding.DecodeString(msgObj.Cmd)
 				if err != nil {
 					logrus.WithError(err).Error("websock cmd string base64 decoding failed")
 				}
 				if _, err := ssConn.StdinPipe.Write(decodeBytes); err != nil {
-					logrus.WithError(err).Error("ws cmd bytes write to ssh.stdin pip failed")
+					logrus.WithError(err).Error("ws cmd bytes write to ssh.stdin pipe failed")
 				}
 			}
 		}
@@ -150,13 +151,15 @@ func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, exitCh chan bool) { 
 func (ssConn *SshConn) SendComboOutput(wsConn *websocket.Conn, exitCh chan bool) {
 	//tells other go routine quit
 	defer setQuit(exitCh)
-	//TODO: buffer_checker_cycle_time
+
+	//every 120ms write combine output bytes into websocket response
 	tick := time.NewTicker(time.Millisecond * time.Duration(120))
 	//for range time.Tick(120 * time.Millisecond){}
 	defer tick.Stop()
 	for {
 		select {
 		case <-tick.C:
+			//write combine output bytes into websocket response
 			if err := flushComboOutput(ssConn.ComboOutput, wsConn); err != nil {
 				logrus.WithError(err).Error("ssh sending combo output to webSocket failed")
 				return

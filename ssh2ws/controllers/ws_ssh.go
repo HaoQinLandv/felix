@@ -50,13 +50,13 @@ func WsSsh(c *gin.Context) {
 	}
 	defer wsConn.Close()
 
-	quiteChan := make(chan bool, 3)
+	quitChan := make(chan bool, 3)
 
 	// most messages are ssh output, not webSocket input
-	go ssConn.ReceiveWsMsg(wsConn, quiteChan)
-	go ssConn.SendComboOutput(wsConn, quiteChan)
-	ssConn.SessionWait(quiteChan)
+	go ssConn.ReceiveWsMsg(wsConn, quitChan)
+	go ssConn.SendComboOutput(wsConn, quitChan)
+	ssConn.SessionWait(quitChan)
 
-	<-quiteChan
+	<-quitChan
 	logrus.Info("websocket finished")
 }
