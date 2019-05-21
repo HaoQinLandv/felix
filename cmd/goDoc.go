@@ -3,9 +3,8 @@ package cmd
 import (
 	"github.com/dejavuzhou/felix/utils"
 	"github.com/fatih/color"
-	"time"
-
 	"github.com/spf13/cobra"
+	"time"
 )
 
 // godocCmd represents the godoc command

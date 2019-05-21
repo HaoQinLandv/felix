@@ -23,7 +23,7 @@ import (
 // ginbinCmd represents the ginbin command
 var ginbinCmd = &cobra.Command{
 	Use:   "ginbin",
-	Short: "Ginbin allows you to embed a directory of static files into your Go binary to be later served from github.com/gin-goin/gin",
+	Short: "Ginbin allows you to embed a directory of static files into your Go binary to be later served from github.com/gin-goin/gin,used like gin middleware",
 	Long: `Is this a crazy idea? No, not necessarily.
 If you're building a tool that has a Web component,
 you typically want to serve some images, CSS and JavaScript.
