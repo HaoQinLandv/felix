@@ -1,6 +1,6 @@
-# ginbro(gin and gorm' brother) 详解
+# ginbro(gin and gorm's brother) 详解
 
-![](/images/ginbro_coverage.jpg)
+[![](/images/ginbro_coverage.jpg)](https://github.com/dejavuzhou/felix)
 
 ## 安装felix
 
@@ -12,13 +12,17 @@ go mod download
 go install
 echo "添加 GOBIN 到 PATH环境变量"
 
+echo "或者"
+
+go get github.com/dejavuzhou/felix
+
 echo "go build && ./felix -h"
 
 ```
 
 ## What is Ginbro
 
-- Gin脚手架工具:因为工作中非常多次的使用mysql数据库 + gin + GORM 来开发RESTful API程序,所以后开发一个Go语言的RESTful APIs的脚手架工具
+- Gin脚手架工具:因为工作中非常多次的使用mysql数据库 + gin + GORM 来开发RESTful API程序,所以开发一个Go语言的RESTful APIs的脚手架工具
 - Ginbro代码来源:Ginrbo的代码迭代自[github.com/dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro)
 - SPA二进制化工具:vuejs全家桶代码二进制化成go代码,编译的时候变成二进制,运行的时候直接加载到内存中,同时和gin API在一个域名下不需要再nginx中配置rewrite或者跨域,加快API访问速度
 
@@ -55,12 +59,10 @@ echo "go build && ./felix -h"
 
 ### 项目演示地址
 
+#### [felix sshw 网页UI演示地址 用户名和密码都是admin](http://felix.mojotv.cn/#/)
 #### [生成swagger API交互文档地址 http://ginbro.mojotv.cn/swagger/](http://ginbro.mojotv.cn/swagger/)
 #### [msql生成go代码地址](https://github.com/dejavuzhou/ginbro-son)
 #### [bili命令行演示视频地址](https://www.bilibili.com/video/av36804258/)
-
-
-<iframe width="100%" src="//player.bilibili.com/player.html?aid=36804258&cid=64633012&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe><video
 
 
 ### 命令行参数详解
@@ -171,8 +173,32 @@ Flags:
 
 ```
 
-## 引用
+### 使用说明:生成的二进制化go文件
+
+vuejs/dist 使用 `felix ginbin` 生成的go文件
+[https://github.com/dejavuzhou/felix/blob/master/staticbin/gin_static.go](https://github.com/dejavuzhou/felix/tree/master/staticbin)
+
+gin 路由应用二进制化的前端代码中间件如下:
+
+`import "github.com/dejavuzhou/felix/staticbin" //导入felix ginbin 生成的二进制化包`
+
+[https://github.com/dejavuzhou/felix/blob/master/ssh2ws/ssh2ws.go](https://github.com/dejavuzhou/felix/blob/master/ssh2ws/ssh2ws.go)
+
+````bash
+	r := gin.Default()
+	r.MaxMultipartMemory = 32 << 20
+
+	//sever static file in http's root path
+	binStaticMiddleware, err := staticbin.NewGinStaticBinMiddleware("/")
+	if err != nil {
+		return err
+	}
+	r.Use(binStaticMiddleware)
+````
+
+## 引用和代码仓库
 
 ### [dejavuzhou/felix Golang 工具集](https://github.com/dejavuzhou/felix)
 ### [felix ginbro 命令逻辑代码目录](https://github.com/dejavuzhou/felix/tree/master/ginbro)
 ### [前端代码二进制化成gin中间件代码](https://github.com/dejavuzhou/felix/blob/master/ginbro/ginstatic.go)
+### 文章来源 [MojoTech](https://tech.mojotv.cn/2019/05/22/golang-felix-ginbro)
