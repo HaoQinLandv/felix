@@ -1,7 +1,7 @@
 package ssh2ws
 
 import (
-	"github.com/dejavuzhou/felix/ssh2ws/controllers"
+	"github.com/dejavuzhou/felix/ssh2ws/internal"
 	"github.com/dejavuzhou/felix/staticbin"
 	"github.com/gin-gonic/gin"
 	"time"
@@ -19,29 +19,29 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 	r.Use(binStaticMiddleware)
 
 	api := r.Group("api")
-	r.POST("api/login", controllers.GetLoginHandler(user, password, expire, secret))
-	r.GET("dlg", controllers.GinbroDownload)
-	api.Use(controllers.JwtAuthMiddleware(secret))
+	r.POST("api/login", internal.GetLoginHandler(user, password, expire, secret))
+	r.GET("dlg", internal.GinbroDownload)
+	api.Use(internal.JwtAuthMiddleware(secret))
 	{
-		api.GET("ws/:id", controllers.WsSsh)
+		api.GET("ws/:id", internal.WsSsh)
 
-		api.GET("ssh", controllers.SshAll)
-		api.POST("ssh", controllers.SshCreate)
-		api.GET("ssh/:id", controllers.SshOne)
-		api.PATCH("ssh/:id", controllers.SshUpdate)
-		api.DELETE("ssh/:id", controllers.SshDelete)
+		api.GET("ssh", internal.SshAll)
+		api.POST("ssh", internal.SshCreate)
+		api.GET("ssh/:id", internal.SshOne)
+		api.PATCH("ssh/:id", internal.SshUpdate)
+		api.DELETE("ssh/:id", internal.SshDelete)
 
-		api.GET("sftp/:id", controllers.SftpLs)
-		api.GET("sftp/:id/dl", controllers.SftpDl)
-		api.GET("sftp/:id/cat", controllers.SftpCat)
-		api.GET("sftp/:id/rm", controllers.SftpRm)
-		api.GET("sftp/:id/rename", controllers.SftpRename)
-		api.GET("sftp/:id/mkdir", controllers.SftpMkdir)
-		api.POST("sftp/:id/up", controllers.SftpUp)
+		api.GET("sftp/:id", internal.SftpLs)
+		api.GET("sftp/:id/dl", internal.SftpDl)
+		api.GET("sftp/:id/cat", internal.SftpCat)
+		api.GET("sftp/:id/rm", internal.SftpRm)
+		api.GET("sftp/:id/rename", internal.SftpRename)
+		api.GET("sftp/:id/mkdir", internal.SftpMkdir)
+		api.POST("sftp/:id/up", internal.SftpUp)
 
-		api.POST("ginbro/gen", controllers.GinbroGen)
-		api.POST("ginbro/db", controllers.GinbroDb)
-		api.GET("ginbro/dl", controllers.GinbroDownload)
+		api.POST("ginbro/gen", internal.GinbroGen)
+		api.POST("ginbro/db", internal.GinbroDb)
+		api.GET("ginbro/dl", internal.GinbroDownload)
 	}
 
 	if err := r.Run(bindAddress); err != nil {

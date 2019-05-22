@@ -1,108 +1,177 @@
-# [MySQL数据库生成RESTful APIs APP](https://github.com/dejavuzhou/felix)
-[![Build Status](https://travis-ci.org/dejavuzhou/felix.svg?branch=master)](https://travis-ci.org/dejavuzhou/felix) 
-[![GoDoc](http://godoc.org/github.com/dejavuzhou/felix?status.svg)](http://godoc.org/github.com/dejavuzhou/felix) 
-[![Go Report Card](https://goreportcard.com/badge/github.com/dejavuzhou/felix)](https://goreportcard.com/report/github.com/dejavuzhou/felix)
-![stability-stable](https://img.shields.io/badge/stability-stable-brightgreen.svg)
-[![codebeat badge](https://codebeat.co/badges/650029a5-fcea-4416-925e-277e2f178e96)](https://codebeat.co/projects/github-com-dejavuzhou-ginbro-master)
-[![codecov](https://codecov.io/gh/dejavuzhou/felix/branch/master/graph/badge.svg)](https://codecov.io/gh/dejavuzhou/felix)
+# ginbro(gin and gorm' brother) 详解
 
-## 一个命令行工具:快速生成go语言RESTful APIs应用 
-## 文档和DEMO
-- [在线DEMO](http://ginbro.mojotv.cn/swagger/)
-- [中文文档](readme_zh.md)            
-- [Video-Demo-Youtube](https://www.youtube.com/watch?v=TvWQhNKfmCo&feature=youtu.be)
-- [Video-Demo-Bilibili](https://www.bilibili.com/video/av36804258/)
+![](/images/ginbro_coverage.jpg)
 
-## Feature
-- [生成完善RESTful APIs 应用](/boilerplate)
-- [自动生成完善的Swagger文档](_boilerplate/static/swagger)
-- [自动生成数据库表的模型和标注](_boilerplate/models)
-- 支持 [JWT Authorization Bearer](_boilerplate/handlers/middleware_jwt.go) [身份验证](_boilerplate/handlers/handler_auth.go) and [JWT 中间件](_boilerplate/models/jwt.go)
-- [支持登陆防火墙](_boilerplate/models/model_users.go)
-- [支持静态资源替代nginx](_boilerplate/static)
-- [可配置的跨域cors中间件](_boilerplate/handlers/gin_helper.go)
-- [用户友好的自定义配置](tpl/config.toml)
-- [支持定时任务](_boilerplate/tasks)
-- [内置高效率的内存数据库](https://github.com/dejavuzhou/felix/blob/master/boilerplate/models/db_memory.go)
+## 安装felix
 
+```bash
+git clone https://github.com/dejavuzhou/felix
+cd felix
+go mod download
 
-## 使用
-`felix ginbro -u root -p ginbro -c utf8 -a 127.0.0.1:3306 --authTable=users --authPassword=password  --outPackage=github.com/dejavuzhou/felix_demo -d=ginbro`
-- cd 到生成的项目
-- go build  和run
-- 访问[`http://127.0.0.1:5555/swagger`](http://127.0.0.1:5555/swagger)
+go install
+echo "添加 GOBIN 到 PATH环境变量"
 
-### 生成新project目录树 [ginbro-son DEMO代码](https://github.com/dejavuzhou/felix-son)
-```shell
-C:\Users\zhouqing1\go\src\github.com\mojocn\apiapp>tree /f /a
-|   config.toml
-|   main.go
-|   readme.md
-|
-+---config
-|       viper.go
-+---handlers
-|       gin.go
-|       handler_wp_posts.go
-|       handler_wp_users.go
-|
-+---models
-|       db.go
-|       model_wp_posts.go
-|       model_wp_users.go
-|
-+---static
-|   |   .gitignore
-|   |   index.html
-|   |   readme.md
-|   |
-|   \---index_files
-|           style.css
-|           syntax.css
-|
-\---swagger
-        .gitignore
-        doc.yml
-        favicon-16x16.png
-        favicon-32x32.png
-        index.html
-        oauth2-redirect.html
-        readme.md
+echo "go build && ./felix -h"
 
 ```
-### 命令参数说明
-```shell
-felix ginbro -h
-generate a RESTful APIs app with gin and gorm for gophers. For example:
-        felix ginbro -u eric -p password -a "127.0.0.1:3306" -d "mydb"
+
+## What is Ginbro
+
+- Gin脚手架工具:因为工作中非常多次的使用mysql数据库 + gin + GORM 来开发RESTful API程序,所以后开发一个Go语言的RESTful APIs的脚手架工具
+- Ginbro代码来源:Ginrbo的代码迭代自[github.com/dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro)
+- SPA二进制化工具:vuejs全家桶代码二进制化成go代码,编译的时候变成二进制,运行的时候直接加载到内存中,同时和gin API在一个域名下不需要再nginx中配置rewrite或者跨域,加快API访问速度
+
+
+## 功能一:Gin+GORM_SQL RESTful 脚手架工具
+
+### 工作原理
+
+1. 通过cobra 获取命令行参数
+2. 使用sql参数连接数据库
+3. 后去数据库表的名称和字段类型等数据库
+4. 数据库边的表名和字段信息,转换成 [Swagger doc 规范](https://swagger.io/specification/)字段 和 GORM 模型字段
+5. 使用标准库 [`text/template`](https://golang.google.cn/pkg/text/template/) 生成swagger.yaml, GORM 模型文件, GIN handler 文件 ...
+6. 使用 `go fmt ./...` 格式化代码
+7. 使用标准库`archive/zip`打包`*.go config.toml ...`代码,提供zip文件下载(命令行模式没有)
+
+### 支持数据库大多数SQL数据库
+- mysql
+- SQLite
+- postgreSQL
+- mssql(TODO:: sqlserver)
+
+### ginbro 生成app代码包含功能简介
+
+- 每一张数据库表生成一个RESTful规范的资源(`GET<pagination>/POST/GET<one>/PATCH/DELETE`)
+- 支持API-json数据分页-和总数分页缓存,减少全表扫描
+- 支持golang-内存单机缓存缓存
+- 前端代码和API公用一个服务,减少跨域OPTION的请求时间和配置时间,同时完美支持前后端分离
+- 开箱支持jwt-token认证和Bearer Token 路由中间件
+- 开箱即用的logrus数据库
+- 开箱即用的viper配置文件
+- 开箱即用的swagger API 文档
+- 开箱即用的定时任务系统
+
+### 项目演示地址
+
+#### [生成swagger API交互文档地址 http://ginbro.mojotv.cn/swagger/](http://ginbro.mojotv.cn/swagger/)
+#### [msql生成go代码地址](https://github.com/dejavuzhou/ginbro-son)
+#### [bili命令行演示视频地址](https://www.bilibili.com/video/av36804258/)
+
+<iframe width="100%" src="//player.bilibili.com/player.html?aid=36804258&cid=64633012&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<video
+
+### 命令行参数详解
+
+```bash
+[root@ericzhou felix]# felix ginbro -h
+generate a RESTful APIs app with gin and gorm for gophers
 
 Usage:
-  create gen [flags]
+  felix ginbro [flags]
+
+示例:
+felix ginbro -a dev.wordpress.com:3306 -P go_package_name -n db_name -u db_username -p 'my_db_password' -d '~/thisDir'
 
 Flags:
-  -a, --Mysql IP PORT    mysql host:port (default "dev.mojotv.com:3306")
-  -l, --应用地址端口    app listen Address eg:mojotv.cn, use domain will support gin-TLS (default "127.0.0.1:5555")
-  -c, --数据库字符集    database charset (default "utf8")
-  -d, --数据库名称   database name (default "dbname")
-  -h, --help              help for gen
-  -o, --输出地址      输出地址相对于$GOPATH/src
-  -p, --数据库密码   database password (default "Password")
-  -u, --数据库用户     database user name (default "root")
-  --authTable 登陆用户表名  default users
-  --authPassword 登陆用户密码字段 default password
+      --authColumn string   使用bcrypt方式加密的用户表密码字段名称 (default "password")
+      --authTable string    认知登陆用户表名称 (default "users")
+  -a, --dbAddr string       数据库连接的地址 (default "127.0.0.1:3306")
+  -c, --dbChar string       数据库字符集 (default "utf8")
+  -n, --dbName string       数据库名称
+  -p, --dbPassword string   数据库密码 (default "password")
+  -t, --dbType string       数据库类型: mysql/postgres/mssql/sqlite (default "mysql")
+  -u, --dbUser string       数据库用户名 (default "root")
+  -d, --dir string          golang代码输出的目录,默认是当前目录 (default ".")
+  -h, --help                帮助
+  -l, --listen string       生成go app 接口监听的地址 (default "127.0.0.1:5555")
+      --pkg string          生成go app 包名称(go version > 1.12) 生成go.mod文件, eg: ginbroSon
+
+[root@ericzhou felix]# 
 ```
 
 
-## 注意
-- mysql表中没有id/ID/Id/iD字段将不会生成路由和模型
-- json字段 在update/create的时候 必须使可以序列号的json字符串(`eg0:"{}" eg1:"[]"`),否则mysql会报错
+### web界面
 
-## 致谢
-- [swagger规范](https://swagger.io/specification/)
-- [gin-gonic/gin框架](https://github.com/gin-gonic/gin)
-- [GORM数据库ORM](http://gorm.io/)
-- [viper配置文件读取](https://github.com/spf13/viper)
-- [cobra命令行工具](https://github.com/spf13/cobra#getting-started)
-- [我的另外一个go图像验证码开源项目](https://github.com/mojocn/base64Captcha)
+对于那些喜欢使用命令行的同学,你们可以选择使用web界面来操作
 
-## 请各位大神不要吝惜提[`issue`](https://github.com/dejavuzhou/felix/issues)同时附上数据库表结构文件
+```bash
+git clone https://github.com/dejavuzhou/felix
+cd felix
+go mod download
+
+go install
+echo "添加 GOBIN 到 PATH环境变量"
+
+echo "go build && ./felix -h"
+
+echo 打开Web界面
+
+felix sshw -h
+
+felix sshw
+
+echo "三秒钟之后会自动帮助你打开浏览器,如果如果你使用的windows或者mac系统"
+
+```
+
+#### 1.登陆界面
+
+默认用户名和密码都是 `admin`
+
+![](/images/ginrbo_00.png)
+
+#### 2.填写数据库连接信息
+
+![](/images/ginrbo_01.png)
+
+#### 3.配置app用户认证的表和字段
+
+![](/images/ginrbo_02.png)
+
+#### 4.配置app 包名称,导出目录和监听地址
+![](/images/ginrbo_03.png)
+
+#### 5.生成go代码
+![](/images/ginrbo_04.png)
+
+#### 6.下载代码或cd者到指定目录
+![](/images/ginrbo_05.png)
+
+
+## 功能二:前端代码二进化,通过gin中间件整合到API服务
+
+### 工作原理
+1. 遍历编译好的前端代码目录
+2. 使用`archive/zip`写入到`bytes.buffer`中
+3. 格式化输出层 字符串常量的 go文件中
+4. 创建gin中间件,加载字符串处理,解析出文件
+5. 中间件path如果命中文件,这http 输出文件,否在交给下一个handler
+
+### 参数说明
+```bash
+
+$ felix ginbin -h
+示例: felix ginbin -s dist -p staticbin
+Usage:
+  felix ginbin [flags]
+
+Flags:
+  -c, --comment string   代码注释说明.
+  -d, --dest string      出输go代码到目录. (default ".")
+  -f, --force            是否覆盖输出. (default true)
+  -h, --help             帮助
+  -m, --mtime            是否修改文件时间戳.
+  -p, --package string   输出的包名称. (default "felixbin")
+  -s, --src string       前端静态文件的目录地址. (default "dist")
+  -t, --tags string      go 语言的标签.
+  -z, --zip              是否zip压缩.
+
+```
+
+## 引用
+
+### [dejavuzhou/felix Golang 工具集](https://github.com/dejavuzhou/felix)
+### [felix ginbro 命令逻辑代码目录](https://github.com/dejavuzhou/felix/tree/master/ginbro)
+### [前端代码二进制化成gin中间件代码](https://github.com/dejavuzhou/felix/blob/master/ginbro/ginstatic.go)

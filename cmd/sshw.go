@@ -1,17 +1,3 @@
-// Copyright © 2019 Eric Freeman Zhou <neochau@qq.com>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
@@ -20,6 +6,8 @@ import (
 	"github.com/dejavuzhou/felix/utils"
 	"github.com/spf13/cobra"
 	"log"
+	"runtime"
+	"strings"
 	"time"
 )
 
@@ -38,11 +26,16 @@ var sshwCmd = &cobra.Command{
 		fmt.Println("login user:", user)
 		fmt.Println("login password:", password)
 		fmt.Printf("login expire in %d minutes\n", expire)
-		//time.AfterFunc(time.Second*3, func() {
-		//	if err = utils.BrowserOpen(fmt.Sprintf("http://localhost%s", bindAddress)); err != nil {
-		//		log.Println(err)
-		//	}
-		//})
+
+		sl := strings.Split(addr, ":")
+		if len(sl) == 2 && (runtime.GOOS == "windows" || runtime.GOOS == "darwin") {
+			time.AfterFunc(time.Second*3, func() {
+				if err := utils.BrowserOpen(fmt.Sprintf("http://localhost:%s", sl[1])); err != nil {
+					log.Println(err)
+				}
+			})
+		}
+
 		if err := ssh2ws.RunSsh2ws(addr, user, password, ex, []byte(secret)); err != nil {
 			log.Fatal(err)
 		}
