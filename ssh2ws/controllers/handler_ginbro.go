@@ -1,9 +1,18 @@
 package controllers
 
 import (
+	"archive/zip"
+	"bytes"
+	"fmt"
 	"github.com/dejavuzhou/felix/ginbro"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
 )
 
 func GinbroGen(c *gin.Context) {
@@ -34,5 +43,67 @@ func GinbroDb(c *gin.Context) {
 		return
 	}
 	jsonData(c, data)
+}
+
+func GinbroDownload(c *gin.Context) {
+	srcPath := c.Query("p")
+	if srcPath == "" {
+		jsonError(c, "query argument is required")
+		return
+	}
+	srcPath = filepath.Clean(srcPath)
+
+	buf := new(bytes.Buffer)
+
+	// Create a new zip archive.
+	w := zip.NewWriter(buf)
+
+	err := filepath.Walk(srcPath, func(path string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		// Ignore directories and hidden files.
+		// No entry is needed for directories in a zip file.
+		// Each file is represented with a path, no directory
+		// entities are required to build the hierarchy.
+		if fi.IsDir() || strings.HasPrefix(fi.Name(), ".") {
+			return nil
+		}
+		relPath, err := filepath.Rel(srcPath, path)
+		if err != nil {
+			return err
+		}
+		b, err := ioutil.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		fHeader, err := zip.FileInfoHeader(fi)
+		if err != nil {
+			return err
+		}
+		fHeader.Name = filepath.ToSlash(relPath)
+		fHeader.Method = zip.Deflate
+		fHeader.Comment = "https://github.com/mojocn"
+
+		writer, err := w.CreateHeader(fHeader)
+		if err != nil {
+			return err
+		}
+		_, err = writer.Write(b)
+		return err
+	})
+	if handleError(c, err) {
+		return
+	}
+	err = w.Close()
+	if handleError(c, err) {
+		return
+	}
+	zipName := time.Now().Format("FelixGinbro_2006_01_02T15_04_05.zip")
+	extraHeaders := map[string]string{
+		"Content-Disposition": fmt.Sprintf(`attachment; filename="%s"`, zipName),
+	}
+
+	c.DataFromReader(http.StatusOK, int64(buf.Len()), "application/zip", buf, extraHeaders)
 
 }

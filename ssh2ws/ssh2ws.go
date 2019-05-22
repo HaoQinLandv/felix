@@ -20,6 +20,7 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 
 	api := r.Group("api")
 	r.POST("api/login", controllers.GetLoginHandler(user, password, expire, secret))
+	r.GET("dlg", controllers.GinbroDownload)
 	api.Use(controllers.JwtAuthMiddleware(secret))
 	{
 		api.GET("ws/:id", controllers.WsSsh)
@@ -40,7 +41,7 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 
 		api.POST("ginbro/gen", controllers.GinbroGen)
 		api.POST("ginbro/db", controllers.GinbroDb)
-
+		api.GET("ginbro/dl", controllers.GinbroDownload)
 	}
 
 	if err := r.Run(bindAddress); err != nil {
