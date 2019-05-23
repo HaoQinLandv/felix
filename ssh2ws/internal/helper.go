@@ -10,7 +10,6 @@ import (
 )
 
 func jsonError(c *gin.Context, msg interface{}) {
-	logrus.WithField("errer", msg).Error("json return")
 	c.AbortWithStatusJSON(200, gin.H{"ok": false, "msg": msg})
 }
 func jsonAuthError(c *gin.Context, msg interface{}) {
@@ -33,6 +32,14 @@ func jsonPagination(c *gin.Context, list interface{}, total uint, query *models.
 func handleError(c *gin.Context, err error) bool {
 	if err != nil {
 		jsonError(c, err.Error())
+		return true
+	}
+	return false
+}
+
+func wshandleError(c *gin.Context, err error) bool {
+	if err != nil {
+		logrus.WithError(err).Error("[WS-ERROR]")
 		return true
 	}
 	return false

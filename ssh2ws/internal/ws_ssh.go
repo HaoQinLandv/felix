@@ -30,42 +30,42 @@ func WsSsh(c *gin.Context) {
 
 	v, ok := c.Get("user")
 	if !ok {
-		jsonError(c, "jwt token can't find auth user")
+		logrus.Error("jwt token can't find auth user")
 		return
 	}
 	userM, ok := v.(*models.User)
 	if !ok {
-		jsonError(c, "context user is not a models.User type obj")
+		logrus.Error("context user is not a models.User type obj")
 		return
 	}
 	cols, err := strconv.Atoi(c.DefaultQuery("cols", "120"))
-	if handleError(c, err) {
+	if wshandleError(c, err) {
 		return
 	}
 	rows, err := strconv.Atoi(c.DefaultQuery("rows", "32"))
-	if handleError(c, err) {
+	if wshandleError(c, err) {
 		return
 	}
 	id := c.Param("id")
 	idx, err := strconv.Atoi(id)
-	if handleError(c, err) {
+	if wshandleError(c, err) {
 		return
 	}
 	idxu := uint(idx)
 	client, err := flx.NewSshClient(idxu)
-	if handleError(c, err) {
+	if wshandleError(c, err) {
 		return
 	}
 	defer client.Close()
 	startTime := time.Now()
 	ssConn, err := utils.NewSshConn(cols, rows, client)
-	if handleError(c, err) {
+	if wshandleError(c, err) {
 		return
 	}
 	defer ssConn.Close()
 	// after configure, the WebSocket is ok.
 	wsConn, err := upGrader.Upgrade(c.Writer, c.Request, nil)
-	if handleError(c, err) {
+	if wshandleError(c, err) {
 		return
 	}
 	defer wsConn.Close()
@@ -81,9 +81,9 @@ func WsSsh(c *gin.Context) {
 
 	<-quitChan
 	//write logs
-	logObj := models.TermLog{EndTime: time.Now(), StartTime: startTime, UserId: userM.Id, Log: logBuff.String(), MachineId: idxu}
-	err = logObj.Create()
-	if handleError(c, err) {
+	xtermLog := models.TermLog{EndTime: time.Now(), StartTime: startTime, UserId: userM.Id, Log: logBuff.String(), MachineId: idxu}
+	err = xtermLog.Create()
+	if wshandleError(c, err) {
 		return
 	}
 	logrus.Info("websocket finished")
