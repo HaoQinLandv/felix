@@ -8,7 +8,7 @@ GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
 
 run: build
 	./build/felix -V
-goinstall:
+install:
 	go install
 vuejs: goinstall
 	felix ginbin -s dist -p staticbin

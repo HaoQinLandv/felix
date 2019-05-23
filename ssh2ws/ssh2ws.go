@@ -1,14 +1,24 @@
 package ssh2ws
 
 import (
+	"github.com/dejavuzhou/felix/models"
 	"github.com/dejavuzhou/felix/ssh2ws/internal"
 	"github.com/dejavuzhou/felix/staticbin"
 	"github.com/gin-gonic/gin"
 	"time"
 )
 
-func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret []byte) error {
-	r := gin.Default()
+func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration) error {
+
+	//config jwt variables
+	models.AppSecret = secret
+	models.ExpireTime = expire
+	models.AppIss = "felix.mojotv.cn"
+	models.DefaultUser = user
+	models.DefaultPassword = password
+
+	//gin.SetMode(gin.ReleaseMode)
+	r := gin.New()
 	r.MaxMultipartMemory = 32 << 20
 
 	//sever static file in http's root path
@@ -19,9 +29,9 @@ func RunSsh2ws(bindAddress, user, password string, expire time.Duration, secret 
 	r.Use(binStaticMiddleware)
 
 	api := r.Group("api")
-	r.POST("api/login", internal.GetLoginHandler(user, password, expire, secret))
+	r.POST("api/login", internal.Login)
 	r.GET("dlg", internal.GinbroDownload)
-	api.Use(internal.JwtAuthMiddleware(secret))
+	api.Use(internal.JwtMiddleware)
 	{
 		api.GET("ws/:id", internal.WsSsh)
 

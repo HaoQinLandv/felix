@@ -4,11 +4,13 @@ import (
 	"errors"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
 
 func jsonError(c *gin.Context, msg interface{}) {
+	logrus.WithField("errer", msg).Error("json return")
 	c.AbortWithStatusJSON(200, gin.H{"ok": false, "msg": msg})
 }
 func jsonAuthError(c *gin.Context, msg interface{}) {

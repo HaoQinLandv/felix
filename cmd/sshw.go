@@ -36,7 +36,7 @@ var sshwCmd = &cobra.Command{
 			})
 		}
 
-		if err := ssh2ws.RunSsh2ws(addr, user, password, ex, []byte(secret)); err != nil {
+		if err := ssh2ws.RunSsh2ws(addr, user, password, secret, ex); err != nil {
 			log.Fatal(err)
 		}
 	},

@@ -10,17 +10,12 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
-func NewSshClient(id string) (*ssh.Client, error) {
-	idx, err := strconv.Atoi(id)
-	if err != nil {
-		return nil, err
-	}
-	mc, err := models.MachineFind(uint(idx))
+func NewSshClient(id uint) (*ssh.Client, error) {
+	mc, err := models.MachineFind(id)
 	if err != nil {
 		return nil, err
 	}

@@ -108,7 +108,7 @@ func (s *SshConn) Close() {
 }
 
 //ReceiveWsMsg  receive websocket msg do some handling then write into ssh.session.stdin
-func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, exitCh chan bool) {
+func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, logBuff *bytes.Buffer, exitCh chan bool) {
 	//tells other go routine quit
 	defer setQuit(exitCh)
 	for {
@@ -143,6 +143,10 @@ func (ssConn *SshConn) ReceiveWsMsg(wsConn *websocket.Conn, exitCh chan bool) {
 				}
 				if _, err := ssConn.StdinPipe.Write(decodeBytes); err != nil {
 					logrus.WithError(err).Error("ws cmd bytes write to ssh.stdin pipe failed")
+				}
+				//write input cmd to log buffer
+				if _, err := logBuff.Write(decodeBytes); err != nil {
+					logrus.WithError(err).Error("write received cmd into log buffer failed")
 				}
 			}
 		}

@@ -1,13 +1,16 @@
 package internal
 
 import (
+	"bytes"
 	"github.com/dejavuzhou/felix/flx"
+	"github.com/dejavuzhou/felix/models"
 	"github.com/dejavuzhou/felix/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 var upGrader = websocket.Upgrader{
@@ -24,6 +27,17 @@ var upGrader = websocket.Upgrader{
 // That is, read webSocket data from browser (e.g. 'ls' command) and send data to ssh server via ssh connection;
 // the other hand, read returned ssh data from ssh server and write back to browser via webSocket API.
 func WsSsh(c *gin.Context) {
+
+	v, ok := c.Get("user")
+	if !ok {
+		jsonError(c, "jwt token can't find auth user")
+		return
+	}
+	userM, ok := v.(*models.User)
+	if !ok {
+		jsonError(c, "context user is not a models.User type obj")
+		return
+	}
 	cols, err := strconv.Atoi(c.DefaultQuery("cols", "120"))
 	if handleError(c, err) {
 		return
@@ -33,11 +47,17 @@ func WsSsh(c *gin.Context) {
 		return
 	}
 	id := c.Param("id")
-	client, err := flx.NewSshClient(id)
+	idx, err := strconv.Atoi(id)
+	if handleError(c, err) {
+		return
+	}
+	idxu := uint(idx)
+	client, err := flx.NewSshClient(idxu)
 	if handleError(c, err) {
 		return
 	}
 	defer client.Close()
+	startTime := time.Now()
 	ssConn, err := utils.NewSshConn(cols, rows, client)
 	if handleError(c, err) {
 		return
@@ -52,11 +72,19 @@ func WsSsh(c *gin.Context) {
 
 	quitChan := make(chan bool, 3)
 
+	var logBuff = new(bytes.Buffer)
+
 	// most messages are ssh output, not webSocket input
-	go ssConn.ReceiveWsMsg(wsConn, quitChan)
+	go ssConn.ReceiveWsMsg(wsConn, logBuff, quitChan)
 	go ssConn.SendComboOutput(wsConn, quitChan)
-	ssConn.SessionWait(quitChan)
+	go ssConn.SessionWait(quitChan)
 
 	<-quitChan
+	//write logs
+	logObj := models.TermLog{EndTime: time.Now(), StartTime: startTime, UserId: userM.Id, Log: logBuff.String(), MachineId: idxu}
+	err = logObj.Create()
+	if handleError(c, err) {
+		return
+	}
 	logrus.Info("websocket finished")
 }
