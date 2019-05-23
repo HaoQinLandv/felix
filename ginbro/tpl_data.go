@@ -1038,6 +1038,7 @@ package handlers
 
 import (
 	"{{.AppPkg}}/models"
+	"net/http"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -1051,8 +1052,7 @@ func jwtCheck() gin.HandlerFunc {
 		token := strings.Replace(c.GetHeader("Authorization"), tokenPrefix, "", 1)
 		user, err := models.JwtParseUser(token)
 		if err != nil {
-			handleError(c, err)
-			//c.Abort has been called
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"msg": err.Error()})
 			return
 		}
 		//store the user Model in the context

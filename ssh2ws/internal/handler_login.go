@@ -26,7 +26,7 @@ func JwtMiddleware(c *gin.Context) {
 	if !ok {
 		hToken := c.GetHeader("Authorization")
 		if len(hToken) < bearerLength {
-			c.AbortWithStatusJSON(401, gin.H{"msg": "header Authorization has not Bearer token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"msg": "header Authorization has not Bearer token"})
 			return
 		}
 		token = strings.TrimSpace(hToken[bearerLength:])
