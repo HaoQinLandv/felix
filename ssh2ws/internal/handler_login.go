@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/gin-gonic/gin"
 	"strings"
@@ -25,14 +26,13 @@ func JwtMiddleware(c *gin.Context) {
 	if !ok {
 		hToken := c.GetHeader("Authorization")
 		if len(hToken) < bearerLength {
-			jsonAuthError(c, "header Authorization has not Bearer token")
+			handlerAuthMiddlewareError(c, fmt.Errorf("%s", "header Authorization has not Bearer token"))
 			return
 		}
 		token = strings.TrimSpace(hToken[bearerLength:])
 	}
 	user, err := models.JwtParseUser(token)
-	if err != nil {
-		handleError(c, err)
+	if handlerAuthMiddlewareError(c, err) {
 		//c.Abort has been called
 		return
 	}

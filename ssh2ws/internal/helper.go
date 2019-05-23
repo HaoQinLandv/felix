@@ -36,6 +36,13 @@ func handleError(c *gin.Context, err error) bool {
 	}
 	return false
 }
+func handlerAuthMiddlewareError(c *gin.Context, err error) bool {
+	if err != nil {
+		c.AbortWithStatusJSON(401, gin.H{"msg": err.Error()})
+		return true
+	}
+	return false
+}
 
 func wshandleError(c *gin.Context, err error) bool {
 	if err != nil {
