@@ -12,7 +12,7 @@
 
 - 管理大量SSH连接配置
 - 快速的使用SSH登陆功能和再应用层免去输入sudo密码
-- 快速的更具SQL数据库表结构生成RESTfual Golang APIs 代码 [gin-gonic/gin](https://github.com/gin-gonic/gin) and [GORM](https://github.com/jinzhu/gorm) in GO
+- 快速的根据SQL数据库表结构生成RESTfual Golang APIs 代码 [gin-gonic/gin](https://github.com/gin-gonic/gin) and [GORM](https://github.com/jinzhu/gorm) in GO
 - 利用SSH快速的开启TCP和SOCKS5/4 代理
 - 建议的命令行TODO-LIST
 - Pewdiepie's brofit command to subscribe the Youtube channel
@@ -138,7 +138,7 @@ login expire in 1440 minutes
 ![](images/sshw1.png)
 
 
-### `felix ginbro` 快速的更具SQL(支持 MySql/SQLite/PostgreSQL)数据库生成
+### `felix ginbro` 快速的根据SQL(支持 MySql/SQLite/PostgreSQL)数据库生成
 
 `felix ginbro` command 功能迁移自 [dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro).项目
 [生成的wordpress项目golang RESTful APIs](http://ginbro.mojotv.cn/swagger/)
@@ -211,6 +211,6 @@ required flag(s) "appDir", "dbAddr" not set
 2. 使用 [olekukonko/tablewriter](https://github.com/olekukonko/tablewriter) 输出表格到命令行
 
 ### `felix ssh 9` Logic
-1. 更具ID从书库中获取一行SSH连接配置
+1. 根据ID从书库中获取一行SSH连接配置
 2. 使用 [golang.org/x/crypto/ssh](https://golang.org/x/crypto/ssh)包开启一个ssh session
 3. 自定义 `stdin` and `stdout` 监听sudo命令行提示输入密码信息.自动输入sudo密码.
