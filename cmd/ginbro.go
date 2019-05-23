@@ -30,7 +30,7 @@ func init() {
 
 	restCmd.Flags().StringVarP(&gc.AppAddr, "listen", "l", "127.0.0.1:5555", "app's listening addr")
 	restCmd.Flags().StringVarP(&gc.AppDir, "dir", "d", ".", "code project output directory,default is current working dir")
-	restCmd.Flags().StringVarP(&gc.AppPkg, "pkg", "", "", "eg1: github.com/dejavuzhou/ginSon, eg2: ginbroSon")
+	restCmd.Flags().StringVarP(&gc.AppPkg, "pkg", "P", "", "eg1: github.com/dejavuzhou/ginSon, eg2: ginbroSon")
 	restCmd.Flags().StringVar(&gc.AuthTable, "authTable", "users", "login user table")
 	restCmd.Flags().StringVar(&gc.AuthColumn, "authColumn", "password", "bcrypt password column")
 	restCmd.Flags().StringVarP(&gc.DbUser, "dbUser", "u", "root", "database username")

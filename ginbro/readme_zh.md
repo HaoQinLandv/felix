@@ -22,7 +22,7 @@ echo "go build && ./felix -h"
 
 ## What is Ginbro
 
-- Gin脚手架工具:因为工作中非常多次的使用mysql数据库 + gin + GORM 来开发RESTful API程序,所以开发一个Go语言的RESTful APIs的脚手架工具
+- Gin脚手架工具:因为工作中非常多次的使用mysql数据库 + gin + GORM 开发RESTful API程序,所以开发一个Go语言的RESTful APIs的脚手架工具
 - Ginbro代码来源:Ginrbo的代码迭代自[github.com/dejavuzhou/ginbro](https://github.com/dejavuzhou/ginbro)
 - SPA二进制化工具:vuejs全家桶代码二进制化成go代码,编译的时候变成二进制,运行的时候直接加载到内存中,同时和gin API在一个域名下不需要再nginx中配置rewrite或者跨域,加快API访问速度
 
@@ -33,7 +33,7 @@ echo "go build && ./felix -h"
 
 1. 通过cobra 获取命令行参数
 2. 使用sql参数连接数据库
-3. 后去数据库表的名称和字段类型等数据库
+3. 获取数据库表的名称和字段类型等数据库
 4. 数据库边的表名和字段信息,转换成 [Swagger doc 规范](https://swagger.io/specification/)字段 和 GORM 模型字段
 5. 使用标准库 [`text/template`](https://golang.google.cn/pkg/text/template/) 生成swagger.yaml, GORM 模型文件, GIN handler 文件 ...
 6. 使用 `go fmt ./...` 格式化代码
@@ -47,10 +47,11 @@ echo "go build && ./felix -h"
 
 ### ginbro 生成app代码包含功能简介
 
-- 每一张数据库表生成一个RESTful规范的资源(`GET<pagination>/POST/GET<one>/PATCH/DELETE`)
+- 每一张数据库表生成一个RESTful规范的资源(`GET-pagination/POST/GET-one/PATCH/DELETE`)
 - 支持API-json数据分页-和总数分页缓存,减少全表扫描
-- 支持golang-内存单机缓存缓存
-- 前端代码和API公用一个服务,减少跨域OPTION的请求时间和配置时间,同时完美支持前后端分离
+- 支持golang-内存单机缓存
+- 支持`gin autotls`
+- 前端代码和API公用一个服务,减少跨域OPTIONS的请求时间和配置时间,同时完美支持前后端分离
 - 开箱支持jwt-token认证和Bearer Token 路由中间件
 - 开箱即用的logrus数据库
 - 开箱即用的viper配置文件

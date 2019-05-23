@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/dejavuzhou/felix/models"
 	"github.com/dejavuzhou/felix/utils"
+	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -32,7 +33,7 @@ func Run(gc models.Ginbro) (*GinbroApp, error) {
 	//go fmt codebase
 	err = app.goFmtCodeBase()
 	if err != nil {
-		return nil, err
+		logrus.WithError(err).Error("go fmt code base failed")
 	}
 	app.IsSuccess = true
 	return app, err
@@ -93,10 +94,16 @@ func (app *GinbroApp) generateCodeBase() error {
 }
 
 func (app *GinbroApp) goFmtCodeBase() error {
-	//TODO fix go fmt
-	cmd := exec.Command("go", "fmt", app.AppPkg+"/...")
-	_, err := cmd.Output()
-	return err
+	cmd := exec.Command("go", "fmt", "./...")
+	cmd.Dir = app.AppDir
+	cmd.Env = append(os.Environ(), "GOPROXY=https://goproxy.io")
+	bb, err := cmd.CombinedOutput()
+	if err != nil {
+		//print gin-goinc/autols failure
+		// fix it :::  https://github.com/gin-gonic/gin/issues/1673
+		return fmt.Errorf("%s   %s", string(bb), err)
+	}
+	return nil
 }
 func (app *GinbroApp) ListAppFileTree() error {
 	return filepath.Walk(app.AppDir, func(path string, info os.FileInfo, err error) error {
