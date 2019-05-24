@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration) error {
+func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration, verbose bool) error {
 
 	//config jwt variables
 	models.AppSecret = secret
@@ -16,8 +16,9 @@ func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration)
 	models.AppIss = "felix.mojotv.cn"
 	models.DefaultUser = user
 	models.DefaultPassword = password
-
-	//gin.SetMode(gin.ReleaseMode)
+	if !verbose {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.New()
 	r.MaxMultipartMemory = 32 << 20
 
