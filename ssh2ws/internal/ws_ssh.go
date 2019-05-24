@@ -92,6 +92,7 @@ func WsSsh(c *gin.Context) {
 		MachineId:   idx,
 		MachineName: mc.Name,
 		MachineIp:   mc.Ip,
+		MachineHost: mc.Host,
 		UserName:    userM.Username,
 	}
 

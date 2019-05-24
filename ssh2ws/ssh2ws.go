@@ -59,11 +59,11 @@ func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration,
 		api.DELETE("term-log/:id", internal.TermLogDelete)
 		//api.PATCH("term-log/:id", internal.TermLogOne)
 
-		api.GET("user", internal.SshAll)
-		api.POST("user", internal.SshAll)
-		api.GET("user/:id", internal.SshAll)
-		api.DELETE("user/:id", internal.SshAll)
-		api.PATCH("user/:id", internal.SshAll)
+		api.GET("user", internal.UserAll)
+		api.POST("user", internal.UserCreate)
+		//api.GET("user/:id", internal.SshAll)
+		api.DELETE("user/:id", internal.UserDelete)
+		api.PATCH("user/:id", internal.UserUpdate)
 
 	}
 
