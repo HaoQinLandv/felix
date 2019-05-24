@@ -14,14 +14,7 @@ import (
 	"time"
 )
 
-func NewSshClient(id uint) (*ssh.Client, error) {
-	mc, err := models.MachineFind(id)
-	if err != nil {
-		return nil, err
-	}
-	return newSshClient(mc)
-}
-func newSshClient(h *models.Machine) (*ssh.Client, error) {
+func NewSshClient(h *models.Machine) (*ssh.Client, error) {
 	config := &ssh.ClientConfig{
 		Timeout:         time.Second,
 		User:            h.User,

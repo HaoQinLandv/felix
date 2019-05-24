@@ -58,7 +58,7 @@ func transType1(dataType, columnName, columnType, columnKey string) (string, str
 	case "time", "datetime", "timestamp":
 		modelType, swgFormat, swgType = "*time.Time", "date-time", "string"
 	}
-	if (columnName == "ID" || columnName == "Id" || columnName == "iD" || columnName == "id") && columnKey == "PRI" {
+	if (columnName == "ID" || columnName == "ID" || columnName == "iD" || columnName == "id") && columnKey == "PRI" {
 		modelType, swgFormat, swgType = "uint", "int64", "integer"
 	}
 	return modelType, swgType, swgFormat
@@ -107,7 +107,7 @@ func transType(dataType, columnName, columnType, columnKey string) (string, stri
 
 	}
 
-	if (columnName == "ID" || columnName == "Id" || columnName == "iD" || columnName == "id") && columnKey == "PRI" {
+	if (columnName == "ID" || columnName == "ID" || columnName == "iD" || columnName == "id") && columnKey == "PRI" {
 		modelType, swgFormat, swgType = "uint", "int64", "integer"
 	}
 	return modelType, swgType, swgFormat

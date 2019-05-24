@@ -16,7 +16,7 @@ type sshProxy struct {
 }
 
 func RunProxy(h *models.Machine, localAddr, remoteAddr string) error {
-	client, err := newSshClient(h)
+	client, err := NewSshClient(h)
 	if err != nil {
 		return err
 	}

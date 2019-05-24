@@ -9,7 +9,7 @@ import (
 const maxPacket = 1 << 15
 
 func NewSftpClient(h *models.Machine) (*sftp.Client, error) {
-	conn, err := newSshClient(h)
+	conn, err := NewSshClient(h)
 	if err != nil {
 		return nil, err
 	}

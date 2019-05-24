@@ -398,7 +398,7 @@ func fmtBytes(val uint64) string {
 }
 
 func ShowHardwareInfo(mac *models.Machine) error {
-	client, err := newSshClient(mac)
+	client, err := NewSshClient(mac)
 	if err != nil {
 		return err
 	}
@@ -406,7 +406,7 @@ func ShowHardwareInfo(mac *models.Machine) error {
 	return nil
 }
 func FetchHardwareInfo(mc *models.Machine) (*Stats, error) {
-	client, err := newSshClient(mc)
+	client, err := NewSshClient(mc)
 	if err != nil {
 		return nil, err
 	}

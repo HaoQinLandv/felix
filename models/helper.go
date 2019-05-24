@@ -20,9 +20,9 @@ func parseParamID(c *gin.Context) (uint, error) {
 
 //PaginationQuery gin handler query binding struct
 type PaginationQuery struct {
-	Where  string `form:"where"`
-	Fields string `form:"fields"`
-	Order  string `form:"order"`
+	Where  string `form:"where"`  // todo deprecated
+	Fields string `form:"fields"` // todo deprecated
+	Order  string `form:"order"`  // todo deprecated
 	Size   uint   `form:"size"`
 	Page   uint   `form:"page"`
 }
@@ -52,6 +52,22 @@ func crudAll(m interface{}, q *PaginationQuery, list interface{}) (total uint, e
 	}
 	offset := (q.Page - 1) * q.Size
 	err = tx.Offset(offset).Limit(q.Size).Find(list).Error
+	return
+}
+
+func crudAllV2(countQuery *gorm.DB, query *gorm.DB, q *PaginationQuery, list interface{}) (total uint, err error) {
+	err = countQuery.Count(&total).Error
+	if err != nil {
+		return 0, err
+	}
+	if q.Size <= 0 {
+		q.Size = 15
+	}
+	if q.Page < 1 {
+		q.Page = 1
+	}
+	offset := (q.Page - 1) * q.Size
+	err = query.Offset(offset).Limit(q.Size).Find(list).Error
 	return
 }
 

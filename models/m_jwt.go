@@ -20,7 +20,7 @@ func jwtGenerateToken(m *User) (*jwtObj, error) {
 	stdClaims := jwt.StandardClaims{
 		ExpiresAt: expireTime.Unix(),
 		IssuedAt:  time.Now().Unix(),
-		Id:        fmt.Sprintf("%d", m.Id),
+		Id:        fmt.Sprintf("%d", m.ID),
 		Issuer:    AppIss,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, stdClaims)

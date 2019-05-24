@@ -31,15 +31,17 @@ func CreateSqliteDB(verbose bool) {
 
 	db = sqlite
 	//TODO::optimize
+	//db.DropTable("users","term_logs","ginbros")
 	db.AutoMigrate(Config{}, Machine{}, Task{}, User{}, Ginbro{}, TermLog{})
 	db.LogMode(verbose)
 
-	if DefaultPassword == "" || DefaultUser == "" {
-		logrus.Error("wrong default user and password")
-		return
-	}
+	//todo 废弃
+	//if DefaultPassword == "" || DefaultUser == "" {
+	//	logrus.Error("wrong default user and password")
+	//	return
+	//}
 
-	userObj := User{Username: DefaultUser, Password: DefaultPassword, Email: "admin@felix.mojotv.cn", Avatar: "https://tech.mojotv.cn/assets/image/logo01.png"}
+	userObj := User{Username: "admin", Password: "admin", Email: "admin@felix.mojotv.cn", Avatar: "https://tech.mojotv.cn/assets/image/logo01.png"}
 	if err := userObj.CreateInitUser(); err != nil {
 		logrus.WithError(err).Error("create init user failed")
 	}

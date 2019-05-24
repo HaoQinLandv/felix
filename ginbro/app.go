@@ -31,6 +31,7 @@ func Run(gc models.Ginbro) (*GinbroApp, error) {
 		return nil, err
 	}
 	//go fmt codebase
+	//https://cloud.tencent.com/developer/article/1417112
 	err = app.goFmtCodeBase()
 	if err != nil {
 		logrus.WithError(err).Error("go fmt code base failed")

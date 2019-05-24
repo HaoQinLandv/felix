@@ -130,7 +130,7 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
 
-  /{{.ResourceName}}/{Id}:
+  /{{.ResourceName}}/{ID}:
     get:
       tags:
       - "{{.ResourceName}}"
@@ -141,7 +141,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "Id"
+      - name: "ID"
         in: "path"
         description: "ID of {{.ResourceName}} to return"
         required: true
@@ -162,7 +162,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "Id"
+      - name: "ID"
         in: "path"
         description: "ID of {{.ResourceName}} to delete"
         required: true
@@ -263,7 +263,7 @@ var tReadme = tplNode{
 - API baseURL : _[BACKQUOTE]_http://{{.AppAddr}}/api/v1_[BACKQUOTE]_
 
 ## Info
-- table'schema which has no "ID","id","Id" or "iD" will not generate model or route.
+- table'schema which has no "ID","id","ID" or "iD" will not generate model or route.
 - the column which type is json value must be a string which is able to decode to a JSON,when call POST or PATCH.
 ## Thanks
 - [swagger Specification](https://swagger.io/specification/)
@@ -314,22 +314,22 @@ func (m *{{.ModelName}}) All(q *PaginationQuery) (list *[]{{.ModelName}}, total 
 }
 //Update
 func (m *{{.ModelName}}) Update() (err error) {
-	where := {{.ModelName}}{Id: m.Id}
-	m.Id = 0
+	where := {{.ModelName}}{ID: m.ID}
+	m.ID = 0
 	{{if .IsAuthTable }}m.makePassword()
 	{{end}}
 	return crudUpdate(m, where)
 }
 //Create
 func (m *{{.ModelName}}) Create() (err error) {
-	m.Id = 0
+	m.ID = 0
     {{if .IsAuthTable }}m.makePassword()
     {{end}}
 	return db.Create(m).Error
 }
 //Delete
 func (m *{{.ModelName}}) Delete() (err error) {
-	if m.Id == 0 {
+	if m.ID == 0 {
 		return errors.New("resource must not be zero value")
 	}
 	return crudDelete(m)
@@ -338,7 +338,7 @@ func (m *{{.ModelName}}) Delete() (err error) {
 
 //Login
 func (m *{{.ModelName}}) Login(ip string) (*jwtObj, error) {
-	m.Id = 0
+	m.ID = 0
 	if m.{{.PasswordPropertyName}} == "" {
 		return nil, errors.New("password is required")
 	}
@@ -369,7 +369,7 @@ func (m *{{.ModelName}}) Login(ip string) (*jwtObj, error) {
 		return nil, err
 	}
     m.{{.PasswordPropertyName}} = ""
-	key := fmt.Sprintf("login:%d", m.Id)
+	key := fmt.Sprintf("login:%d", m.ID)
 
 	//save login user  into the memory store
 
@@ -416,7 +416,7 @@ func jwtGenerateToken(m *{{.ModelName}}) (*jwtObj, error) {
 	stdClaims := jwt.StandardClaims{
 		ExpiresAt: expireTime.Unix(),
 		IssuedAt:  time.Now().Unix(),
-		Id:        fmt.Sprintf("%d", m.Id),
+		ID:        fmt.Sprintf("%d", m.ID),
 		Issuer:    iss,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, stdClaims)
@@ -458,7 +458,7 @@ func JwtParseUser(tokenString string) (*{{.ModelName}}, error) {
 	if !claims.VerifyIssuer(appName, true) {
 		return nil, errors.New("token's issuer is wrong,greetings Hacker")
 	}
-	key := fmt.Sprintf("login:%s", claims.Id)
+	key := fmt.Sprintf("login:%s", claims.ID)
 	jwtObj, err := mem.GetJwtObj(key)
 	if err != nil {
 		return nil, err
@@ -520,7 +520,7 @@ func {{.HandlerName}}One(c *gin.Context) {
 	if handleError(c, err) {
 		return
 	}
-	mdl.Id = id
+	mdl.ID = id
 	data, err := mdl.One()
 	if handleError(c, err) {
 		return
@@ -562,7 +562,7 @@ func {{.HandlerName}}Delete(c *gin.Context) {
 	if handleError(c, err) {
 		return
 	}
-	mdl.Id = id
+	mdl.ID = id
 	err = mdl.Delete()
 	if handleError(c, err) {
 		return
@@ -1046,13 +1046,19 @@ import (
 var jwtMiddleware = jwtCheck()
 
 const tokenPrefix = "Bearer "
+const bearerLength = len(tokenPrefix)
 
 func jwtCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := strings.Replace(c.GetHeader("Authorization"), tokenPrefix, "", 1)
+		hToken := c.GetHeader("Authorization")
+		if len(hToken) < bearerLength {
+			c.AbortWithStatusJSON(http.StatusPreconditionFailed, gin.H{"msg": "header Authorization has not Bearer token"})
+			return
+		}
+		token := strings.TrimSpace(hToken[bearerLength:])
 		user, err := models.JwtParseUser(token)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"msg": err.Error()})
+			c.AbortWithStatusJSON(http.StatusPreconditionFailed, gin.H{"msg": err.Error()})
 			return
 		}
 		//store the user Model in the context

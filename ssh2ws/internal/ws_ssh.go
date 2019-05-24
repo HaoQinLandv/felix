@@ -50,8 +50,12 @@ func WsSsh(c *gin.Context) {
 	if wshandleError(c, err) {
 		return
 	}
+	mc, err := models.MachineFind(idx)
+	if wshandleError(c, err) {
+		return
+	}
 
-	client, err := flx.NewSshClient(idx)
+	client, err := flx.NewSshClient(mc)
 	if wshandleError(c, err) {
 		return
 	}
@@ -80,7 +84,17 @@ func WsSsh(c *gin.Context) {
 
 	<-quitChan
 	//write logs
-	xtermLog := models.TermLog{EndTime: time.Now(), StartTime: startTime, UserId: userM.Id, Log: logBuff.String(), MachineId: idx}
+	xtermLog := models.TermLog{
+		EndTime:     time.Now(),
+		StartTime:   startTime,
+		UserId:      userM.ID,
+		Log:         logBuff.String(),
+		MachineId:   idx,
+		MachineName: mc.Name,
+		MachineIp:   mc.Ip,
+		UserName:    userM.Username,
+	}
+
 	err = xtermLog.Create()
 	if wshandleError(c, err) {
 		return

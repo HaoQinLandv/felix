@@ -25,7 +25,7 @@ type SSHTerminal struct {
 }
 
 func RunSshTerminal(h *models.Machine, sudoMode bool) error {
-	client, err := newSshClient(h)
+	client, err := NewSshClient(h)
 	if err != nil {
 		return err
 	}

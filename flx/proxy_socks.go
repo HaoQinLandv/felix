@@ -16,7 +16,7 @@ type socksDialer interface {
 }
 
 func RunSocksProxy(h *models.Machine, port int) error {
-	conn, err := newSshClient(h)
+	conn, err := NewSshClient(h)
 	if err != nil {
 		return err
 	}
