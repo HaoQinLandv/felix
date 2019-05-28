@@ -85,10 +85,10 @@ func (m *User) Login(ip string) (*jwtObj, error) {
 		return nil, fmt.Errorf("for too many wrong login retries the %s will ban for login in %d minitues", ip, memExpire)
 	}
 	//you can implement more detailed login retry rule
-	//for i don't know what your login username i can't implement the ip+username rule in my boilerplate project
+	//for i don't know what your login usernago me i can't implement the ip+username rule in my boilerplate project
 	// about username and ip retry rule
 
-	err := db.Where(m).First(&m).Error
+	err := db.Where("username = ? or email = ?", m.Username, m.Username).First(&m).Error
 	if err != nil {
 		//username fail ip retries add 5
 		loginRetries = loginRetries + 5

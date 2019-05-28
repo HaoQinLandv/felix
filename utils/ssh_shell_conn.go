@@ -174,10 +174,10 @@ func (ssConn *SshConn) SendComboOutput(wsConn *websocket.Conn, exitCh chan bool)
 	}
 }
 
-func (ssConn *SshConn) SessionWait(quiteChan chan bool) {
+func (ssConn *SshConn) SessionWait(quitChan chan bool) {
 	if err := ssConn.Session.Wait(); err != nil {
 		logrus.WithError(err).Error("ssh session wait failed")
-		setQuit(quiteChan)
+		setQuit(quitChan)
 	}
 }
 

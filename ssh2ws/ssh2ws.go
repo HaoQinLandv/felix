@@ -9,7 +9,6 @@ import (
 )
 
 func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration, verbose bool) error {
-
 	//config jwt variables
 	models.AppSecret = secret
 	models.ExpireTime = expire
@@ -21,7 +20,6 @@ func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration,
 	}
 	r := gin.New()
 	r.MaxMultipartMemory = 32 << 20
-
 	//sever static file in http's root path
 	binStaticMiddleware, err := staticbin.NewGinStaticBinMiddleware("/")
 	if err != nil {
