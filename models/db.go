@@ -41,7 +41,7 @@ func CreateSqliteDB(verbose bool) {
 	//	return
 	//}
 
-	userObj := User{RoleId: 2, Username: "admin", Password: "admin", Email: "admin@felix.mojotv.cn", Avatar: "https://tech.mojotv.cn/assets/image/logo01.png"}
+	userObj := User{RoleId: 2, Username: "admin", Password: "admin", Email: "dejavuzhou@qq.com", Avatar: "https://tech.mojotv.cn/assets/image/logo01.png"}
 	if err := userObj.CreateInitUser(); err != nil {
 		logrus.WithError(err).Error("create init user failed")
 	}

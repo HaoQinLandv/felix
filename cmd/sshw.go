@@ -6,6 +6,7 @@ import (
 	"github.com/dejavuzhou/felix/utils"
 	"github.com/spf13/cobra"
 	"log"
+	//_ "net/http/pprof"
 	"runtime"
 	"strings"
 	"time"
@@ -17,6 +18,15 @@ var sshwCmd = &cobra.Command{
 	Short: "open a web UI for Felix http://localhost:2222",
 	Long:  `the demo website is http://home.mojotv.cn:2222`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		//go func() {
+		//	ip := ":6060"
+		//	if err := http.ListenAndServe(ip, nil); err != nil {
+		//		fmt.Printf("start pprof failed on %s\n", ip)
+		//		os.Exit(1)
+		//	}
+		//}()
+
 		if secret == "" {
 			secret = utils.RandomString(32)
 			fmt.Printf("use random string as jwt secret: %s\n", secret)
@@ -30,7 +40,7 @@ var sshwCmd = &cobra.Command{
 		sl := strings.Split(addr, ":")
 		if len(sl) == 2 && (runtime.GOOS == "windows" || runtime.GOOS == "darwin") {
 			time.AfterFunc(time.Second*3, func() {
-				if err := utils.BrowserOpen(fmt.Sprintf("http://localhost:%s", sl[1])); err != nil {
+				if err := utils.BrowserOpen(fmt.Sprintf("http://localhost:%s/#/login", sl[1])); err != nil {
 					log.Println(err)
 				}
 			})
