@@ -31,7 +31,7 @@ func CreateSqliteDB(verbose bool) {
 
 	db = sqlite
 	//TODO::optimize
-	//db.DropTable("users","term_logs","ginbros")
+	//db.DropTable("term_logs")
 	db.AutoMigrate(Config{}, Machine{}, Task{}, User{}, Ginbro{}, TermLog{})
 	db.LogMode(verbose)
 

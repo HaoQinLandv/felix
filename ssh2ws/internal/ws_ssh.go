@@ -27,7 +27,7 @@ var upGrader = websocket.Upgrader{
 // That is, read webSocket data from browser (e.g. 'ls' command) and send data to ssh server via ssh connection;
 // the other hand, read returned ssh data from ssh server and write back to browser via webSocket API.
 func WsSsh(c *gin.Context) {
-
+	cIp := c.ClientIP()
 	v, ok := c.Get("user")
 	if !ok {
 		logrus.Error("jwt token can't find auth user")
@@ -94,6 +94,7 @@ func WsSsh(c *gin.Context) {
 		MachineIp:   mc.Ip,
 		MachineHost: mc.Host,
 		UserName:    userM.Username,
+		Ip:          cIp,
 	}
 
 	err = xtermLog.Create()

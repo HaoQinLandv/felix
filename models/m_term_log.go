@@ -21,6 +21,7 @@ type TermLog struct {
 	StartTime   time.Time `json:"start_time"`
 	EndTime     time.Time `json:"end_time"`
 	Log         string    `json:"log" gorm:"size:10240"`
+	Ip          string    `json:"ip" gorm:"size:84"`
 }
 
 func (m *TermLog) One() (one *Machine, err error) {
@@ -49,4 +50,10 @@ func (m *TermLog) Delete() (err error) {
 		return errors.New("resource must not be zero value")
 	}
 	return crudDelete(m)
+}
+
+//Update a row
+func (m *TermLog) Update() (err error) {
+	where := TermLog{Model: gorm.Model{ID: m.ID}}
+	return crudUpdate(m, where)
 }

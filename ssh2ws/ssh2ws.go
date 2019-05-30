@@ -37,7 +37,7 @@ func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration,
 		api.GET("ssh", internal.SshAll)
 		api.POST("ssh", internal.SshCreate)
 		api.GET("ssh/:id", internal.SshOne)
-		api.PATCH("ssh/:id", internal.SshUpdate)
+		api.PATCH("ssh", internal.SshUpdate)
 		api.DELETE("ssh/:id", internal.SshDelete)
 
 		api.GET("sftp/:id", internal.SftpLs)
@@ -55,13 +55,13 @@ func RunSsh2ws(bindAddress, user, password, secret string, expire time.Duration,
 		api.GET("term-log", internal.TermLogAll)
 		api.GET("term-log/:id", internal.TermLogOne)
 		api.DELETE("term-log/:id", internal.TermLogDelete)
-		//api.PATCH("term-log/:id", internal.TermLogOne)
+		api.PATCH("term-log", internal.TermLogUpdate)
 
 		api.GET("user", internal.UserAll)
 		api.POST("user", internal.UserCreate)
 		//api.GET("user/:id", internal.SshAll)
 		api.DELETE("user/:id", internal.UserDelete)
-		api.PATCH("user/:id", internal.UserUpdate)
+		api.PATCH("user", internal.UserUpdate)
 
 	}
 

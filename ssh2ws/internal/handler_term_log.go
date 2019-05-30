@@ -46,3 +46,15 @@ func TermLogDelete(c *gin.Context) {
 	}
 	jsonSuccess(c, "item has been removed")
 }
+func TermLogUpdate(c *gin.Context) {
+	var mdl models.TermLog
+	err := c.ShouldBind(&mdl)
+	if handleError(c, err) {
+		return
+	}
+	err = mdl.Update()
+	if handleError(c, err) {
+		return
+	}
+	jsonSuccess(c, "")
+}
